@@ -1,32 +1,43 @@
 .message-input {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    border-radius: 15px;
+    border-radius: 10px;
     margin: 20px;
     background-color: var(--grey);
     padding: 0 10px;
+    padding-top: 10px;
 }
 
-.message-input input {
+.message-input textarea {
     flex-grow: 1;
+    width: 100%;
     background-color: var(--grey);
     outline: none;
     border: none;
     border-radius: 10px;
-    padding: 15px;
+    padding: 20px;
+    resize: none;
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.9rem;
 }
 
 .message-input__buttons {
     display: flex;
     flex-direction: row;
-    gap: 5px
+    justify-content: flex-end;
+    width: 100%;
+    flex-direction: row;
+    gap: 10px;
+    padding: 5px;
+    padding-bottom: 15px;
+    padding-right: 15px;
 }
 
 .message-input__buttons svg {
     fill: var(--black);
     opacity: 0.5;
-    transform: scale(0.7);
+    transform: scale(0.9);
     cursor: pointer;
 }
 
@@ -49,7 +60,7 @@
 }
 
 .message-input__buttons svg:last-child {
-    transform: scale(0.8);
+    transform: scale(0.9);
     /* opacity: 1; */
     /* fill: var(--purple); */
 }

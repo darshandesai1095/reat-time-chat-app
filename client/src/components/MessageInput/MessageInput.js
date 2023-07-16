@@ -1,7 +1,6 @@
 import './MessageInput.css';
 import SendIcon from '@mui/icons-material/Send';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import SentimentSatisfiedRoundedIcon from '@mui/icons-material/SentimentSatisfiedRounded';
 
 const MessageInput = ({setCurrentMessage, currentMessage, sendMessage}) => {
@@ -21,25 +20,24 @@ const MessageInput = ({setCurrentMessage, currentMessage, sendMessage}) => {
 
     return (
         <div className="message-input">
-                <input 
-                    type="text"
-                    rows="2"
-                    placeholder='Message...'
-                    onChange={(e) => setCurrentMessage(e.target.value)}
-                    value={currentMessage}
-                    onKeyDown={(e) => handleKeyDown(e)}
-                />
-                
-                <div className='message-input__buttons'>
-                    <AttachFileIcon/>
-                    <SentimentSatisfiedRoundedIcon/>
-                    <DeleteForeverRoundedIcon/>
-                    &nbsp;
-                    <SendIcon 
-                        className='buttons__send'
-                        onClick={sendMessage}>
-                    </SendIcon>
-                </div> 
+            <textarea
+                type="text"
+                rows="1"
+                placeholder='Message...'
+                onChange={(e) => setCurrentMessage(e.target.value)}
+                value={currentMessage}
+                onKeyDown={(e) => handleKeyDown(e)}
+            >
+            </textarea>
+            
+            <div className='message-input__buttons'>
+                <AttachFileIcon/>
+                <SentimentSatisfiedRoundedIcon/>
+                <SendIcon
+                    className='buttons__send'
+                    onClick={sendMessage}
+                />   
+            </div> 
         </div>
     )
 }

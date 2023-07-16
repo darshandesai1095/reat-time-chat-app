@@ -18,11 +18,6 @@ const App = () => {
 
   useEffect(() => {
     setConnected(true)
-
-    return () => {
-      socket.disconnect()
-    }
-
   }, [socket])
 
 

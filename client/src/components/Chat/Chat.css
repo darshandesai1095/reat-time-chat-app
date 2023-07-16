@@ -7,10 +7,11 @@
 .chat__messages {
     display: flex;
     flex-direction: column;
+    margin-bottom: 54px;
 }
 
 .chat__message-input {
-    background-color: white;
+    background-color: var(--light-grey);
     padding: 1px 0;
     position: fixed;
     bottom: 0;
