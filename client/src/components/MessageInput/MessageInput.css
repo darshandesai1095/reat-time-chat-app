@@ -1,0 +1,55 @@
+.message-input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 15px;
+    margin: 20px;
+    background-color: var(--grey);
+    padding: 0 10px;
+}
+
+.message-input input {
+    flex-grow: 1;
+    background-color: var(--grey);
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.message-input__buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 5px
+}
+
+.message-input__buttons svg {
+    fill: var(--black);
+    opacity: 0.5;
+    transform: scale(0.7);
+    cursor: pointer;
+}
+
+.message-input__buttons svg:nth-child(1):hover {
+    fill: var(--purple);
+    opacity: 1;
+    cursor: pointer;
+}
+
+.message-input__buttons svg:nth-child(2):hover {
+    fill: var(--purple);
+    opacity: 1;
+    cursor: pointer;
+}
+
+.message-input__buttons svg:nth-child(3):hover {
+    fill: var(--purple);
+    opacity: 1;
+    cursor: pointer;
+}
+
+.message-input__buttons svg:last-child {
+    transform: scale(0.8);
+    /* opacity: 1; */
+    /* fill: var(--purple); */
+}
