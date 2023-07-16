@@ -3,7 +3,7 @@ import MessageInput from '../MessageInput/MessageInput';
 import './Chat.css';
 import { useState, useEffect } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
-import padNumberWithZeros from '../../functions/padNumbersWithZeros'
+import padNumberWithZeros from '../../../functions/padNumbersWithZeros'
 
 const Chat = ({socket, room, username}) => {
 
