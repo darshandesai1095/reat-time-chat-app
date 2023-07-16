@@ -38,28 +38,29 @@ const Chat = ({socket, room, username}) => {
 
     return (
         <ScrollToBottom className="chat">
-                <div className='chat__messages'>
-                    {    
-                        messageList.map((messageObj, index) => {
-                        return (
-                            <MessageBubble
-                                key={index}
-                                prevMessageUser={messageList[index-1]?.username || null}
-                                user={username}
-                                messageData={messageObj}
-                            />
-                            )
-                        })
-                    }
-                </div>
+            <div className='chat__messages'>
+                {    
+                    messageList.map((messageObj, index) => {
+                    return (
+                        <MessageBubble
+                            key={index}
+                            prevMessageUser={messageList[index-1]?.username || null}
+                            user={username}
+                            messageData={messageObj}
+                        />
+                        )
+                    })
+                }
+            </div>
 
-                <div className='chat__message-input'>
-                    <MessageInput
-                        setCurrentMessage={setCurrentMessage}
-                        currentMessage={currentMessage}
-                        sendMessage={sendMessage}
-                    />
-                </div>
+            <div className='chat__message-input'>
+                <MessageInput
+                    setCurrentMessage={setCurrentMessage}
+                    currentMessage={currentMessage}
+                    sendMessage={sendMessage}
+                />
+            </div>
+
      </ScrollToBottom>
     )
 }

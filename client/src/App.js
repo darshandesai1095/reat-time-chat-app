@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { io } from "socket.io-client";
 import './App.css';
 import Chat from './components/MainChat/Chat/Chat';
+import Groups from './components/MainGroups/Groups/Groups';
 
 const URL = "http://localhost:3001/"
 const socket = io.connect(URL)
@@ -23,32 +24,14 @@ const App = () => {
 
   return (
     <div className="App">
-      { connected ? "connected" : "not connected"}
 
-      <div>
-      <input 
-          type="text" 
-          placeholder='room'
-          onChange={(e) => setRoom(e.target.value)}
-          value={username}
-          disabled
+        <Groups
+          connected={connected}
+          username={username}
+          room={room}
+          setRoom={setRoom}
+          joinRoom={joinRoom}
         />
-        <button 
-          onClick={() => joinRoom({room})}>
-            Username
-        </button>
-        <br/>
-        <input 
-          type="text" 
-          placeholder='room'
-          onChange={(e) => setRoom(e.target.value)}
-          value={room}
-          disabled
-        />
-        <button 
-          onClick={() => joinRoom({room})}>
-            Join Room
-        </button>
 
         <Chat
           socket={socket}
@@ -56,7 +39,6 @@ const App = () => {
           username={username}
         />
        
-      </div>
     </div>
   );
 }
