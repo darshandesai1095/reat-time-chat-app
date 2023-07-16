@@ -1,0 +1,19 @@
+.chat {
+    background-color: var(--light-grey);
+    height: 100vh;
+    padding-bottom: 100px;
+}
+
+.chat__messages {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat__message-input {
+    background-color: white;
+    padding: 1px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
