@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import './App.css';
 import { io } from "socket.io-client";
+import './App.css';
+import Chat from './components/Chat/Chat';
 
 const URL = "http://localhost:3001/"
 const socket = io.connect(URL)
@@ -8,22 +9,22 @@ const socket = io.connect(URL)
 const App = () => {
 
   const [connected, setConnected] = useState(false)
-  const [message, setMessage] = useState("")
-  const [room, setRoom] = useState("")
-  
+  const [username, setUsername] = useState(`User_${Math.floor(Math.random()*1000)}`)
+  const [room, setRoom] = useState(100)
+
+  const joinRoom = (data) => {
+    socket.emit("join", data)
+  }
+
   useEffect(() => {
     setConnected(true)
 
-    // return () => {
-    //   socket.disconnect()
-    // }
+    return () => {
+      socket.disconnect()
+    }
 
   }, [socket])
 
-  const handleSendMessage = (data) => {
-    socket.emit("fromClient", data)
-    setMessage("")
-  }
 
   return (
     <div className="App">
@@ -34,18 +35,32 @@ const App = () => {
           type="text" 
           placeholder='room'
           onChange={(e) => setRoom(e.target.value)}
-          value={room}
-        />
-        <input 
-          type="text" 
-          placeholder='message'
-          onChange={(e) => setMessage(e.target.value)}
-          value={message}
+          value={username}
+          disabled
         />
         <button 
-          onClick={() => handleSendMessage({message, room})}>
-            Send
+          onClick={() => joinRoom({room})}>
+            Username
         </button>
+        <br/>
+        <input 
+          type="text" 
+          placeholder='room'
+          onChange={(e) => setRoom(e.target.value)}
+          value={room}
+          disabled
+        />
+        <button 
+          onClick={() => joinRoom({room})}>
+            Join Room
+        </button>
+
+        <Chat
+          socket={socket}
+          room={room}
+          username={username}
+        />
+       
       </div>
     </div>
   );
