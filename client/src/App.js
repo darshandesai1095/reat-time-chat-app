@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { io } from "socket.io-client";
 import './App.css';
-import Chat from './components/MainChat/Chat/Chat';
-import Groups from './components/MainGroups/Groups/Groups';
+import Chat from './components/ChatMain/Chat/Chat';
+import GroupsCol from './components/GroupsMain/GroupsCol/GroupsCol';
 
-const URL = "http://localhost:3001/"
+const URL = "http://localhost:4000/"
 const socket = io.connect(URL)
 
 const App = () => {
@@ -25,19 +25,19 @@ const App = () => {
   return (
     <div className="App">
 
-        <Groups
-          connected={connected}
-          username={username}
-          room={room}
-          setRoom={setRoom}
-          joinRoom={joinRoom}
-        />
+      <GroupsCol 
+        connected={connected}
+        username={username}
+        room={room}
+        setRoom={setRoom}
+        joinRoom={joinRoom}
+      />
 
-        <Chat
-          socket={socket}
-          room={room}
-          username={username}
-        />
+      <Chat
+        socket={socket}
+        room={room}
+        username={username}
+      />
        
     </div>
   );

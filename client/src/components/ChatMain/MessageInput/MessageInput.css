@@ -20,6 +20,7 @@
     resize: none;
     font-family: 'Raleway', sans-serif;
     font-size: 0.9rem;
+    font-weight: 600;
 }
 
 .message-input__buttons {

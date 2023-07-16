@@ -1,9 +1,9 @@
 import MessageBubble from '../MessageBubble/MessageBubble';
 import MessageInput from '../MessageInput/MessageInput';
-import './Chat.css';
 import { useState, useEffect } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import padNumberWithZeros from '../../../functions/padNumbersWithZeros'
+import './Chat.css';
 
 const Chat = ({socket, room, username}) => {
 

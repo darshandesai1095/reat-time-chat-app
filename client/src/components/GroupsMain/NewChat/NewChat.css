@@ -1,0 +1,20 @@
+.new-chat {
+    margin-right: 15px;
+    background-color: var(--grey);
+    border-radius: 10px;
+    padding: 8.5px;
+    cursor: pointer;
+}
+
+.new-chat > svg {
+    fill: var(--black);
+    opacity: 0.6;
+    transition: 0.2s;
+    transform: scale(0.9);
+}
+
+.new-chat > svg:hover {
+    cursor: pointer;
+    fill: var(--purple);
+    opacity: 1;
+}
