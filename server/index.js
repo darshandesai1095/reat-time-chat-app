@@ -20,8 +20,12 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     console.log(`${socket.id} connected`)
 
-    socket.on("fromClient", (data) => {
-        console.log("MESSAGE: ", data.message, "\n", "ROOM: ", data.room)
+    socket.on("join", (data) => {
+        socket.join(data.room)
+    })
+
+    socket.on("send", (data) => {
+        socket.to(data.room).emit("receive", data)
     })
 
     socket.on("disconnect", () => {
