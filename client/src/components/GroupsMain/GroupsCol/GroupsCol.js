@@ -38,6 +38,13 @@ const GroupsCol = ({connected, username, room, setRoom, joinRoom}) => {
           setRoom={setRoom}
           joinRoom={joinRoom}
         />
+        <Group
+          connected={connected}
+          username={username}
+          room={4}
+          setRoom={setRoom}
+          joinRoom={joinRoom}
+        />
        
     </div>
   );
