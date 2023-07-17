@@ -3,6 +3,8 @@ import { io } from "socket.io-client";
 import './App.css';
 import Chat from './components/ChatMain/Chat/Chat';
 import GroupsCol from './components/GroupsMain/GroupsCol/GroupsCol';
+import Login from './components/Admin/Login/Login';
+import AuthenticationPage from './components/Admin/AuthenticationPage/AuthenticationPage';
 
 const URL = "http://localhost:4000/"
 const socket = io.connect(URL)
@@ -25,6 +27,8 @@ const App = () => {
   return (
     <div className="App">
 
+      <AuthenticationPage/>
+{/* 
       <GroupsCol 
         connected={connected}
         username={username}
@@ -37,7 +41,7 @@ const App = () => {
         socket={socket}
         room={room}
         username={username}
-      />
+      /> */}
        
     </div>
   );
