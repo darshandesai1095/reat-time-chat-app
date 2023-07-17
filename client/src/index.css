@@ -28,6 +28,12 @@ body {
   --light-grey: rgb(250,250,250);
   --black: rgb(42,42,42);
   --white:  rgb(250,250,250);
+
+  --black: rgb(19,19,19);
+  --white:  rgb(253,253,253);
+  --blue: rgb(107,138,253);
+  --dark-gray: rgb(32,35,40);
+  --light-gray:  rgb(46,51,61);
 }
 
 
