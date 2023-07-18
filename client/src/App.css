@@ -3,4 +3,5 @@
   color: snow;
   display: flex;
   flex-direction: row;
+  background-color: var(--dark-gray);
 }
