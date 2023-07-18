@@ -6,22 +6,19 @@
     padding: 10px;
     display: flex;
     flex-direction: row;
-    color: var(--black);
+    color: var(--white);
     min-width: 300px;
     justify-content: space-around;
     align-items: center;
     font-size: 0.8rem;
-    border-radius: 10px;
+    border-radius: 20px;
     /* border-bottom: 1px solid var(--grey); */
-    user-select: none
+    user-select: none;
+    background-color: var(--dark-gray);
 }
 
 .group:hover {
-    background-color: var(--purple);
-    color: var(--white);
-
-    background-color: var(--grey);
-    color: var(--black);
+    background-color: var(--light-gray);
 }
 
 .group__info {
@@ -52,6 +49,8 @@
 .info__message {
     font-weight: 300;
     font-size: 0.7rem;
+    opacity: 0.7;
+    font-weight: 600;
 }
 
 .group__avatar {
@@ -60,7 +59,6 @@
     margin-left: 10px;
 }
 
-
 .active-chat {
-    background-color: var(--purple);
+    background-color: var(--blue);
 }
