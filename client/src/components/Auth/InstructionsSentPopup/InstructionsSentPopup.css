@@ -1,0 +1,57 @@
+.modal-background {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hide-page {
+    display: none
+}
+
+.instructions-sent-popup {
+    background-color: var(--light-gray);
+    color: var(--white);
+    width: 400px;
+    height: 245px;
+    padding: 30px 40px;
+    border-radius: 20px;
+}
+
+.instructions-sent-popup > h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.instructions-sent-popup > h4 {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    font-weight: 500;
+    margin-bottom: 20px;
+    line-height: 1.4rem;
+}
+
+.close-popup-button {
+    background-color: var(--blue);
+    color: var(--white);
+    border: none;
+    outline: none;
+    margin-bottom: 10px;
+    height: 40px;
+    width: 100%;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.1s;
+    margin-top: 5px;
+}
+
+.close-popup-button:hover {
+    background-color: rgba(107,138,253,0.8);
+}
