@@ -1,13 +1,22 @@
 const express = require("express")
 const { Server } = require("socket.io")
 const cors = require("cors")
+require('dotenv').config()
+const connectToDatabase = require("./config/connectToDatabse")
 
 const app = express()
 app.use(cors())
 app.use(express.json())
+connectToDatabase()
 
-const server = app.listen(4000, () => {
-    console.log(`Server listening on port 4000`)
+// Include the users route
+const usersRoute = require('./routes/usersRoute');
+app.use('/api/users', usersRoute);
+
+
+const PORT = process.env.PORT || 5000
+const server = app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`)
 })
 
 const io = new Server(server, {
@@ -33,3 +42,4 @@ io.on("connection", (socket) => {
     })
 })
 
+module.exports = app
