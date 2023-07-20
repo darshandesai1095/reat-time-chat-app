@@ -1,8 +1,11 @@
 const Room = require('../models/roomModel')
 const User = require('../models/userModel')
+const ChatLog = require('../models.chatLog')
+
 
 const roomController = {
-    createNewRoom: async (req, res) => {
+    createNewRoom: async (req, res) => { 
+        // also create new chat log and give assign room to creator
         try {
             // Get room name from the request body
             const { roomName, usersArray } = req.body
@@ -14,9 +17,27 @@ const roomController = {
             })
 
             // Save the room to the database
-            const savedRoom = await newRoom.save()
+            await newRoom.save()
+            const roomId = newRoom._id
+
+            // go through each user and add the room to their rooms list
+            for (let userEmail of usersArray) {
+                try {
+                // for each user in the array, get user -> check if room in
+                // users list -> if not, push to users rooms [...]
+                const user = await User.findOne({ email: userEmail })
+                if (user && !user.rooms.includes(roomId)) {
+                    user.rooms.push(roomId)
+                    await user.save() // Await the user document update
+                }
+                } catch (error) {
+                console.error("Error updating user rooms:", error)
+                }
+            }
+
             // Respond with the saved user data
-            res.status(201).json(savedRoom)
+            res.status(201).json(newRoom)
+
         } catch {
             res.status(500).json({ error: 'Error creating a new room' })
         }
