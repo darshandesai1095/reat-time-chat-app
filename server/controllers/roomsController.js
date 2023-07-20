@@ -25,10 +25,10 @@ const roomController = {
     getRoom: async (req, res) => {
         try {
             // Get the room id from the request parameters
-            const roomId = req.params.roomId
+            const _id = req.params.roomId
 
             // Query the database to find the room
-            const room = await Room.findById(roomId)
+            const room = await Room.findById(_id)
 
             if (!room) {
                 return res.status(404).json({ error: 'Room not found'})
@@ -44,9 +44,11 @@ const roomController = {
 
     addUserToRoom: async (req, res) => { // also update user document to include room
         try {
-            const { roomId, email } = req.params
 
-            const room = await Room.findById(roomId)
+            const _id = req.params.roomId
+            const email = req.params.email
+
+            const room = await Room.findById(_id)
             if (!room) {
                 return res.status(404).json({ error: 'Room not found' })
             }
@@ -61,11 +63,11 @@ const roomController = {
                 return res.status(409).json({ error: 'User already in room' })
             }
 
-            if ( user.rooms.includes(roomId) ) {
+            if ( user.rooms.includes(_id) ) {
                 return res.status(409).json({ error: 'User already in room' })
             }
 
-            user.rooms.push(roomId)
+            user.rooms.push(_id)
             await user.save()
             
             room.users.push(userId)
@@ -80,9 +82,10 @@ const roomController = {
 
     removeUserFromRoom: async (req, res) => { // also update user document to remove room
         try {
-            const { roomId, email } = req.params
+            const _id = req.params.roomId
+            const email = req.params.email
 
-            const room = await Room.findById(roomId)
+            const room = await Room.findById(_id)
             if (!room) {
                 return res.status(404).json({ error: 'Room not found' })
             }
@@ -97,11 +100,11 @@ const roomController = {
                 return res.status(409).json({ error: 'User not in room' })
             }
 
-            if ( !user.rooms.includes(roomId) ) {
+            if ( !user.rooms.includes(_id) ) {
                 return res.status(409).json({ error: 'User not in room' })
             }
 
-            const roomIndex = user.rooms.indexOf(roomId)
+            const roomIndex = user.rooms.indexOf(_id)
             user.rooms.splice(roomIndex, 1)
             await user.save()
 
@@ -118,14 +121,14 @@ const roomController = {
 
     updateRoomName: async (req, res) => {
         try {
-            const roomId = req.params.roomId
+            const _id = req.params.roomId
             const newRoomName = req.body.newRoomName
 
             if (!newRoomName || newRoomName.trim() === "") {
                 return res.status(400).json({ error: "New room name not provided" })
             }
 
-            const room = await Room.findById(roomId)
+            const room = await Room.findById(_id)
             if (!room) {
                 res.status(404).json({ error: "Room not found" })
             }

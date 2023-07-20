@@ -10,13 +10,13 @@ router.post('./create', roomController.createNewRoom)
 router.get('./:roomId', roomController.getRoom)
 
 // Route for adding user to room
-router.put('./addUser/:userId/:roomId', roomController.addUserToRoom)
+router.patch('./addUser/:email/:roomId', roomController.addUserToRoom)
 
 // Route for removing user from room
-router.put('./removeUser/:userId/:roomId', roomController.removeUserFromRoom)
+router.patch('./removeUser/:email/:roomId', roomController.removeUserFromRoom)
 
 // Route for updating room name
-router.put('./:roomId', roomController.updateRoomName)
+router.patch('./:roomId', roomController.updateRoomName)
 
 // Route for deleting room
 router.delete('./:roomId', roomController.deleteRoom)

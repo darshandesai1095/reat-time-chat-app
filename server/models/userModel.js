@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    user_id: mongoose.Schema.Types.ObjectId, // Primary identifier ObjectId
     firebaseUserId: {
         type: String, // Assuming Firebase UID is a string
         required: true,
