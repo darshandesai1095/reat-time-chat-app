@@ -16,9 +16,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    dateCreated: {
+        type: Date,
+        required: true,
+        default: Date.now, 
+    },
     profilePictureUrl: {
         type: String,
-      },
+    },
     rooms: [
         {
             type: mongoose.Schema.Types.ObjectId,
