@@ -9,9 +9,17 @@ app.use(cors())
 app.use(express.json())
 connectToDatabase()
 
-// Include the users route
-const usersRoute = require('./routes/usersRoute');
-app.use('/api/users', usersRoute);
+// Include the users, rooms routes
+
+const usersRoute = require('./routes/usersRoute')
+app.use('/api/users', usersRoute)
+
+const roomsRoute = require('./routes/roomsRoute')
+app.use('/api/rooms', roomsRoute)
+
+const chatLogsRoute = require('./routes/chatLogsRoute')
+app.use('/api/chatLogs', chatLogsRoute)
+
 
 
 const PORT = process.env.PORT || 8080
