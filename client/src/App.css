@@ -3,5 +3,7 @@
   color: snow;
   display: flex;
   flex-direction: row;
-  background-color: var(--dark-gray);
+  background-color: rgb(250,247,246);
+  height: 100vh;
+  overflow: hidden
 }
