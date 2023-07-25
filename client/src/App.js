@@ -1,12 +1,14 @@
+import './App.css';
 import { useState, useEffect } from 'react';
 import { io } from "socket.io-client";
-import './App.css';
-import Chat from './components/ChatMain/Chat/Chat';
-import GroupsCol from './components/GroupsMain/GroupsCol/GroupsCol';
 import AuthenticationPage from './components/Auth/AuthenticationPage/AuthenticationPage';
 import { auth } from './firebase';
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import AllChats from './components/AllChats/AllChats';
+import CurrentChat from './components/CurrentChat/CurrentChat';
+import CreateNewGroupModal from './components/AllChats/CreateNewGroupModal/CreateNewGroupModal';
+import NavBar from './components/NavBar/NavBar';
 
 const URL = "http://localhost:4000/"
 const socket = io.connect(URL)
@@ -29,24 +31,35 @@ const App = () => {
 
   return (
     <div className="App">
-
       { 
         !signedIn ? (
 
-          <>
-            <GroupsCol 
-              connected={connected}
-              username={username}
-              room={room}
-              setRoom={setRoom}
-              joinRoom={joinRoom}
-            />
+          // <>
+          //   <GroupsCol 
+          //     connected={connected}
+          //     username={username}
+          //     room={room}
+          //     setRoom={setRoom}
+          //     joinRoom={joinRoom}
+          //   />
     
-            <Chat
-              socket={socket}
-              room={room}
-              username={username}
-            />
+          //   <Chat
+          //     socket={socket}
+          //     room={room}
+          //     username={username}
+          //   />
+          // </>
+          <>
+              <NavBar/>
+              <AllChats/>
+              <CurrentChat
+                socket={socket}
+                connected={connected}
+                username={username}
+                room={room}
+                setRoom={setRoom}
+                joinRoom={joinRoom}
+              />
           </>
 
         ) : (
