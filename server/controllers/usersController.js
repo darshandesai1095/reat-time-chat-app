@@ -39,10 +39,10 @@ const userController = {
     // Controller for getting user details by MongoDB _id
     getUserByMongoDBUserId: async (req, res) => {
         try {
-          const userId = req.params.userId // Get the MongoDB _id from the request parameters
+          const _id = req.params.userId // Get the MongoDB _id from the request parameters
 
           // Query the database to find the user by MongoDB _id
-          const user = await User.findById(userId)
+          const user = await User.findById(_id)
 
           if (!user) {
               // If the user is not found, return a 404 status with a custom message
@@ -54,7 +54,7 @@ const userController = {
 
         } catch (error) {
           // If there is an error, return a 500 status with a generic error message
-          res.status(500).json({ error: 'Error fetching user details' })
+          res.status(500).json({ error: 'Error fetching user details by MongoDB _id' })
         }
     },
 
@@ -83,10 +83,10 @@ const userController = {
     updateUsername: async (req,res) => {
         try {
             // Get the MongoDB _id from the request parameters
-            const userId = req.params.userId
+            const _id = req.params.userId
 
             // Query the database to find the user by MongoDB _id
-            const user = await User.findById(userId)
+            const user = await User.findById(_id)
 
             if (!user) {
                 // If the user is not found, return a 404 status with a custom message
@@ -97,13 +97,13 @@ const userController = {
             const { newUsername } = req.body
 
             const updatedUserDetails = await User.findByIdAndUpdate(
-              userId, { username: newUsername }, {new: true}
+              _id, { username: newUsername }, {new: true}
             )
             res.status(201).json(updatedUserDetails)
 
         } catch {
             // If there is an error, return a 500 status with a generic error message
-            res.status(500).json({ error: 'Error fetching user details' })
+            res.status(500).json({ error: 'Error updating username' })
         }
 
     },
@@ -117,36 +117,33 @@ const userController = {
     deleteUser: async (req, res) => {
         try {
             const userId = req.params.userId
-        
-            // Check if the userId is a valid ObjectId
-            if (!isValidObjectId(userId)) {
-            return res.status(400).json({ error: 'Invalid user ID' })
-            }
+            const userIdObj = mongoose.Types.ObjectId(userId)
       
             // Find the user by userId
-            const user = await User.findById(userId)
+            const user = await User.findById(_id)
         
             // Check if the user exists
             if (!user) {
                 return res.status(404).json({ error: 'User not found' })
             }
 
-            // First, delete the user from Firebase authentication
-            await firebaseAdmin.auth().deleteUser(user.firebaseUserId);
+            // // First, delete the user from Firebase authentication
+            // await firebaseAdmin.auth().deleteUser(user.firebaseUserId)
 
             // Delete the user from the database
-            const deletedUser = await User.findByIdAndDelete(userId);
+            const deletedUser = await User.findByIdAndDelete(userIdObj)
 
             if (!deletedUser) {
-              return res.status(404).json({ error: 'User not found' });
+                return res.status(404).json({ error: 'User not found' })
             }
         
             // Return a success response
             res.status(200).json({ message: 'User deleted successfully' })
+
             } catch (error) {
-            // Handle any errors that occurred during the process
-            console.error(error);
-            res.status(500).json({ error: 'Error deleting user' })
+                // Handle any errors that occurred during the process
+                console.error(error)
+                res.status(500).json({ error: 'Error deleting user' })
             }
     },
 

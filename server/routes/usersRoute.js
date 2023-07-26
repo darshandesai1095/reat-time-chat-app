@@ -16,7 +16,7 @@ router.get('/:userId', userController.getUserByMongoDBUserId)
 router.get('/firebase/:firebaseUserId', userController.getUserByFirebaseUserId)
 
 // Route for updating user details; username
-router.patch('/updateUsername/:userId', authorizationMiddleware, userController.updateUsername)
+router.patch('/updateUsername/:userId', userController.updateUsername)
 
 // // Route for updating user details; email
 // router.put('/resetEmail/:userId', authorizationMiddleware, userController.updateUser)
@@ -29,4 +29,3 @@ router.patch('/updateUsername/:userId', authorizationMiddleware, userController.
 router.delete('/:userId', userController.deleteUser)
 
 module.exports = router
-

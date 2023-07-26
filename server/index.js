@@ -11,8 +11,8 @@ connectToDatabase()
 
 // Include the users, rooms routes
 
-const usersRoute = require('./routes/usersRoute')
-app.use('/api/users', usersRoute)
+// const usersRoute = require('./routes/usersRoute')
+// app.use('/api/users', usersRoute)
 
 const roomsRoute = require('./routes/roomsRoute')
 app.use('/api/rooms', roomsRoute)

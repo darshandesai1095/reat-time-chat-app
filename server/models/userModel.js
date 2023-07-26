@@ -29,6 +29,11 @@ const userSchema = new mongoose.Schema({
             ref: 'Room',
         },
     ],
+    activeUser: {
+        type: Boolean,
+        required: true,
+        default: true
+    }
 })
 
 const User = mongoose.model('User', userSchema)
