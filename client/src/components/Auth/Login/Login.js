@@ -91,8 +91,8 @@ const Login = ({goToRegistrationPage}) => {
 
                 <button className='form__login-button' type="submit">Log In</button>
             </form>
-            <div className='login__register'>
-                <p>Need an account?&nbsp;<span onClick={goToRegistrationPage}>Resister</span></p>
+            <div className='login__need-an-account'>
+                <p>Need an account?&nbsp;<span onClick={goToRegistrationPage}>Register</span></p>
             </div>
         </div>
 

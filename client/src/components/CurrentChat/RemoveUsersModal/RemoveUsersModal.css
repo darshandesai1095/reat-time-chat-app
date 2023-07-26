@@ -1,0 +1,35 @@
+.remove-user__users-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.remove-user__user {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 25px;
+}
+
+.remove-user__user > p {
+    font-weight: 500;
+}
+
+.remove-user__user > svg {
+    fill: var(--black);
+    transform: scale(0.8);
+    cursor: pointer;
+}
+
+.remove-user__user > svg:hover {
+    fill: var(--primary-color);
+}
+
+.remove-users-button {
+    margin-top: 20px;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+    color: #6c757d;
+}

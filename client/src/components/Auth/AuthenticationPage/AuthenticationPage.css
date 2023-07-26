@@ -1,10 +1,11 @@
 .authentication-page {
-    /* background-image: url('/public/bkg2.jpg'); */
-    background-color: var(--black);
+    /* background-image: url('/public/background4.jpg');
+    background-size: cover; */
     width: 100vw;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: var(--black);
 }
 

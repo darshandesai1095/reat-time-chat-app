@@ -6,7 +6,13 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../../../firebase';
 import './CreateAccount.css';
 
+import { useSelector, useDispatch } from 'react-redux'
+import { loginRequest, loginSuccess, loginFailure, logout } from '../../../redux/features/auth/authSlice';
+
+
 const CreateAccount = ({goToLoginPage}) => {
+
+    const dispatch = useDispatch()
 
     const datesArray = createDatesArray()
     const yearsArray = createYearsArray()
@@ -18,17 +24,19 @@ const CreateAccount = ({goToLoginPage}) => {
 
     const createAccount = (event) => {
         event.preventDefault()
+        dispatch(loginRequest())
 
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user
                 console.log("new account created!", user)
+                dispatch(loginSuccess(user))
             })
             .catch((error) => {
                 setError(true)
-                // const errorCode = error.code
-                // const errorMessage = error.message
+                dispatch(loginFailure(error.message))
+                alert("Account creation failed")
                 console.log("doesn't work", error.message)
         })
     }
@@ -68,54 +76,20 @@ const CreateAccount = ({goToLoginPage}) => {
                     <input
                         type="password"
                         pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$"
-                        
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         title="
                             At least 8 characters |
                             At least one letter |
-                            At least one digit
+                            At least one digit |
+                            At least one special character;
+                            !, @, #, $, %, ^, &, *
                         "
                     />
                 </div>
 
-                {/* <div className='form__details'>
-                    <p>DATE OF BIRTH</p>
-                    <div className='dropdown'>
-
-                        <select className='minimal'>
-                            {
-                                datesArray.map((date, i) => {
-                                    return (
-                                        <option value="1" key={i}>{date}</option>
-                                    )
-                                })
-                            }
-                        </select>
-                        <select className='minimal'>
-                            {
-                                monthsArray.map((month, i) => {
-                                    return (
-                                        <option value="1" key={i}>{month}</option>
-                                    )
-                                })
-                            }
-                        </select>
-                        <select className='minimal'>
-                            {
-                                yearsArray.map((year, i) => {
-                                    return (
-                                        <option value="1" key={i}>{year}</option>
-                                    )
-                                })
-                            }
-                        </select>
-                        
-                    </div>
-                </div>             */}
-
-                <button className='form__login-button continue-button' type="submit">Continue</button>
+                <button className='form__continue-button' type="submit">Continue</button>
             </form>
             <p className='already-have-an-account' onClick={goToLoginPage}>Already have an account?</p>
         </div>

@@ -11,6 +11,7 @@ const AuthenticationPage = () => {
 
   return (
     <div className="authentication-page">
+
         {
           login ? (
 
@@ -26,7 +27,6 @@ const AuthenticationPage = () => {
 
           )
         }
-        
         
     </div>
   );

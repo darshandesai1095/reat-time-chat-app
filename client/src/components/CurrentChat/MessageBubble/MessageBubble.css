@@ -1,0 +1,84 @@
+
+/* left message bubble*/
+
+.message-bubble {
+    align-self: flex-start;
+    margin: 3px 0;
+    max-width: 70%;
+    border-radius: 15px;
+    border-top-left-radius: 0;
+}
+
+.message-bubble .visible {
+    margin-top: 20px;
+}
+
+.message-bubble__username {
+    color: var(--black);
+    margin-left: 5px;
+    margin-bottom: 7px;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.message-bubble__main {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--light-gray);
+    color: var(--white);
+    padding: 7px 15px;
+    border-radius: 15px;
+    line-height: 1.2rem;
+    letter-spacing: 0.1px;
+    justify-content: flex-start;
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-width: 75px;
+    border-top-left-radius: 0;
+}
+
+.main__meta-data {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.meta-data__time {
+    font-size: 0.6rem;
+    font-weight: 600;
+    opacity: 0.7;
+}
+
+/* right message bubble*/
+
+.message-bubble.align-right {
+    align-self: flex-end;
+}
+
+.align-right .message-bubble__main {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-radius: 15px;
+    border-bottom-right-radius: 0;
+}
+
+.align-right .main__meta-data {
+    flex-direction: row-reverse;
+}
+
+.align-right .message-bubble__username {
+    margin-right: 5px;
+    text-align: right;
+}
+
+/* general */
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    visibility: visible;
+}

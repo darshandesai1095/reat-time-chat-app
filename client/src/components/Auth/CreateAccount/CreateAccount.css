@@ -1,10 +1,11 @@
 .create-account {
-    background-color: var(--light-gray);
-    color: var(--white);
+    background-color: rgb(250,250,250);
+    color: var(--black);
     width: 400px;
-    height: 440px;
-    padding: 30px 40px;
-    border-radius: 20px;
+    height: 490px;
+    padding: 40px 40px;
+    border-radius: 10px;
+    border: 2px solid rgb(240,240,240);
 }
 
 .create-account > h3 {
@@ -23,22 +24,22 @@
 
 .form__details > input,
 .form__details select {
-    background-color: var(--dark-gray);
+    background-color: white;
     border: none;
     outline: none;
     margin-bottom: 20px;
     height: 40px;
     width: 100%;
-    border-radius: 15px;
+    border-radius: 10px;
     padding: 0 20px;
-    color: var(--white)
+    color: var(--black);
+    border: 2px solid rgb(240,240,240);
 }
 
 .form__details > input,
 .form__details select  {
     margin-bottom: 20px;
 }
-
 
 .form__details .dropdown {
     display: flex;
@@ -56,40 +57,38 @@
     text-align: left;
     font-size: 0.7rem;
     font-weight: 600;
-    color: var(--blue);
+    color: var(--primary-color);
     cursor: pointer;
     transition: 0.1s;
-    border-bottom: 1px solid var(--light-gray);
+    border-bottom: 1px solid rgb(250,250,250);
     white-space: nowrap;
     width: min-content;
+    transition: 0.3s;
 }
 
 .already-have-an-account:hover {
-    border-bottom: 1px solid var(--blue)
+    border-bottom: 1px solid var(--black);
 }
 
-.form__login-button {
-    background-color: var(--blue);
+.form__continue-button {
+    background-color: var(--primary-color);
     color: var(--white);
     border: none;
     outline: none;
     margin-bottom: 10px;
     height: 40px;
     width: 100%;
-    border-radius: 15px;
+    border-radius: 10px;
     font-size: 0.9rem;
     font-weight: 700;
     cursor: pointer;
     transition: 0.1s;
-    margin-top: 5px;
+    margin-top: 15px;
+    transition: 0.3s;
 }
 
 .form__login-button:hover {
-    background-color: rgba(107,138,253,0.8);
-}
-
-.continue-button {
-  margin-top: 15px
+    background-color: rgba(94, 43, 255, 0.8);
 }
 
 .login__register {
@@ -97,19 +96,26 @@
     text-align: left;
     font-size: 0.7rem;
     font-weight: 600;
-    color: var(--white);
+    color: var(--black);
     opacity: 0.8;
 }
 
 .login__register > p > span {
-    color: var(--blue);
-    border-bottom: 1px solid var(--light-gray);
+    color: var(--black);
+    border-bottom: 1px solid rgb(250,250,250);
     cursor: pointer;
 }
 
 .login__register > p > span:hover {
-    border-bottom: 1px solid var(--blue);
+    border-bottom: 1px solid var(--black);
 }
+
+.already-have-an-account {
+  color: var(--black);
+}
+
+
+
 
 select {
 
