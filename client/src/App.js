@@ -13,13 +13,12 @@ import NavBar from './components/NavBar/NavBar';
 import { useSelector, useDispatch } from 'react-redux'
 import { loginRequest, loginSuccess, loginFailure, logout } from './redux/features/auth/authSlice';
 
-const URL = "http://localhost:4000/"
+const URL = "http://localhost:8080/"
 const socket = io.connect(URL)
 
 const App = () => {
 
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
-  const dispatch = useDispatch()
 
   const [connected, setConnected] = useState(false)
   const [username, setUsername] = useState(`User_${Math.floor(Math.random()*1000)}`)
