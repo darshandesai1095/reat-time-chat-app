@@ -9,10 +9,21 @@ app.use(cors())
 app.use(express.json())
 connectToDatabase()
 
+// const allowedOrigins = ['http://example.com', 'http://localhost:3000'];
+// app.use(cors({
+//     origin: function (origin, callback) {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true)
+//       } else {
+//         callback(new Error('Not allowed by CORS'))
+//       }
+//     },
+// }))
+
 // Include the users, rooms routes
 
-// const usersRoute = require('./routes/usersRoute')
-// app.use('/api/users', usersRoute)
+const usersRoute = require('./routes/usersRoute')
+app.use('/api/users', usersRoute)
 
 const roomsRoute = require('./routes/roomsRoute')
 app.use('/api/rooms', roomsRoute)
