@@ -1,44 +1,51 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    isAuthenticated: false, // Represents if the user is authenticated or not
-    userEmail: null, // Holds user data when logged in
-    userName: null, // Holds user data when logged in
-    loading: false, // Represents the loading state during authentication
-    error: null, // Holds any authentication-related errors
+    isAuthenticated: false,
+    loading: false,
+    error: false,
+    email: null,
+    username: null,
+    firebaseUserId: null,
+    mongoDbUserId: null,
 }
 
 export const authSlice = createSlice({
-  name: 'auth',
-  initialState,
-  reducers: {
-    // Define reducers for updating the state during authentication process
-    loginRequest: (state) => {
-        state.loading = true
-        state.error = null
-    },
+    name: 'auth',
+    initialState,
+    reducers: {
 
-    loginSuccess: (state, action) => {
-        state.user = action.payload
-        state.isAuthenticated = true
-        state.loading = false
-        state.error = null
-    },
+        loginRequest: (state) => {
+            state.loading = true
+            state.error = false
+        },
 
-    loginFailure: (state, action) => {
-        state.user = null
-        state.isAuthenticated = false
-        state.loading = false
-        state.error = action.payload
-    },
+        loginSuccess: (state, action) => {
+            state.isAuthenticated = true
+            state.loading = false
+            state.error = false
+            state.email = action.payload.userEmail
+            state.username = action.payload.userName
+            state.firebaseUserId = action.payload.firebaseUserId
+            state.mongoDbUserId = null
+        },
 
-    logout: (state) => {
-        state.user = null
-        state.isAuthenticated = false
-        state.loading = false
-        state.error = null
+        loginFailure: (state, action) => {
+            state.isAuthenticated = false
+            state.loading = false
+            state.error = action.payload.error
+        },
+
+        logout: (state) => {
+            state.isAuthenticated = false
+            state.loading = false
+            state.error = false
+            state.email = null
+            state.username = null
+            state.firebaseUserId = null
+            state.mongoDbUserId = null
+        },
     },
-  },
 })
 
 export const { loginRequest, loginSuccess, loginFailure, logout } = authSlice.actions
