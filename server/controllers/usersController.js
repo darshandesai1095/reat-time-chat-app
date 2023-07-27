@@ -14,6 +14,7 @@ const userController = {
     // Controller for creating a new user
     createNewUser: async (req, res) => {
         try {
+            // res.status(200).json("*** it works ***")
             // Get user data from the request body
             const { firebaseUserId, email, username, profilePictureUrl } = req.body
 
@@ -32,7 +33,8 @@ const userController = {
         res.status(201).json(savedUser)
 
         } catch (error) {
-          res.status(500).json({ error: 'Error creating a new user ( ˘︹˘ )' })
+            console.log(error.message)
+            res.status(500).json({ error: 'Error creating a new user ( ˘︹˘ )' })
         }
     },
 
