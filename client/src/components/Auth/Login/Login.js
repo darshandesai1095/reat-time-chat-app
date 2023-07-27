@@ -5,7 +5,13 @@ import './Login.css';
 import InstructionsSentPopup from '../InstructionsSentPopup/InstructionsSentPopup';
 import validator from 'validator';
 
+import { useDispatch } from 'react-redux'
+import { loginRequest, loginSuccess, loginFailure } from '../../../redux/features/auth/authSlice';
+
+
 const Login = ({goToRegistrationPage}) => {
+
+    const dispatch = useDispatch()
 
     const [email, setEmail] = useState("")
     const [isEmailValid, setIsEmailValid] = useState(true)
@@ -13,16 +19,21 @@ const Login = ({goToRegistrationPage}) => {
     const [error, setError] = useState(false)
     const [showPopup, setShowPopup] = useState(false)
 
-    const handleLogin = (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault()
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // Signed in 
-                const user = userCredential.user
-            })
-            .catch((error) => {
-                setError(true)
-        })
+        dispatch(loginRequest)
+
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password)
+            dispatch(loginSuccess({
+                firebaseUserId: userCredential.user.uid,
+                email: email
+            }))
+
+        } catch (error) {
+            setError(true)
+            dispatch(loginFailure)
+        }
     }
 
     const handleForgottenPasssword = (email) => {

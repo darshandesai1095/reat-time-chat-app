@@ -25,7 +25,6 @@ const CreateAccount = ({goToLoginPage}) => {
     
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-            console.log("User account created:", userCredential.user.uid)
             dispatch(loginSuccess({
                 firebaseUserId: userCredential.user.uid,
                 email: email,
@@ -45,8 +44,6 @@ const CreateAccount = ({goToLoginPage}) => {
         }
     }
 
-    const { data, isLoading, isFetching, isError } = result
-    
 
     return (
         <div className="create-account">
@@ -81,12 +78,12 @@ const CreateAccount = ({goToLoginPage}) => {
                     <p>PASSWORD</p>
                     <input
                         type="password"
-                        pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$"
+                        pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{7,}$"
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         title="
-                            At least 8 characters |
+                            At least 7 characters |
                             At least one letter |
                             At least one digit |
                             At least one special character;
@@ -105,7 +102,7 @@ const CreateAccount = ({goToLoginPage}) => {
 export default CreateAccount;
 
 
-// At least 8 characters in length.
+// At least 7 characters in length.
 // At least one uppercase letter (A-Z).
 // At least one lowercase letter (a-z).
 // At least one digit (0-9).

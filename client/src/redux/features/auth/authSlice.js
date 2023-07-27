@@ -25,7 +25,7 @@ export const authSlice = createSlice({
             state.loading = false
             state.error = false
             state.email = action.payload.userEmail
-            state.username = action.payload.userName
+            state.username = action.payload.userName || null
             state.firebaseUserId = action.payload.firebaseUserId
             state.mongoDbUserId = null
         },
@@ -45,8 +45,13 @@ export const authSlice = createSlice({
             state.firebaseUserId = null
             state.mongoDbUserId = null
         },
+
+        updateCredentials: (state, action) => {
+            state.username = action.payload.userName
+            state.mongoDbUserId = action.mongoDbUserId
+        }
     },
 })
 
-export const { loginRequest, loginSuccess, loginFailure, logout } = authSlice.actions
+export const { loginRequest, loginSuccess, loginFailure, logout, updateCredentials } = authSlice.actions
 export default authSlice.reducer
