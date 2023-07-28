@@ -4,9 +4,8 @@ import { auth } from '../../../firebase';
 import './Login.css';
 import InstructionsSentPopup from '../InstructionsSentPopup/InstructionsSentPopup';
 import validator from 'validator';
-
 import { useDispatch } from 'react-redux'
-import { loginRequest, loginSuccess, loginFailure } from '../../../redux/features/auth/authSlice';
+import { loginRequest, loginSuccess, loginFailure } from '../../../redux/features/users/userSlice';
 
 
 const Login = ({goToRegistrationPage}) => {
