@@ -37,6 +37,30 @@ const chatLogController = {
         } catch {
             res.status(500).json({ error: 'Error updating chat log' })
         }
+    },
+
+    getChatLogs: async (req, res) => {
+        try {
+            const { roomIdsArray } = req.body
+            const allChats = []
+
+            for (let roomId of roomIdsArray) {
+                const room = await Room.findById(roomId)
+                if (!room) { 
+                    continue 
+                }
+                const chatLog = await ChatLog.find({ roomId })
+                allChats.push({
+                    room,
+                    chatLog
+                })
+            }
+            
+            res.status(201).json(allChats)
+
+        } catch (error) {
+            res.status(500).json({error: error.message})
+        }
     }
 }
 
