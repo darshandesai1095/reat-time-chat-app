@@ -36,7 +36,6 @@ const roomController = {
                     uniqueUsersArray.push(memberId)
                 }
             }
-    
 
             // Create new room instance using Room model
             const newRoom = new Room({
@@ -68,8 +67,7 @@ const roomController = {
             } catch (error) {
                 res.status(500).json({ error: 'Error creating a new room', message: error.message })
             }
-        },
-      
+    },  
 
     getRoom: async (req, res) => {
         try {
@@ -91,36 +89,38 @@ const roomController = {
 
     },
 
-    addUserToRoom: async (req, res) => { // also update user document to include room
+    addUsersToRoom: async (req, res) => { // also update user document to include room
         try {
 
             const _id = req.params.roomId
-            const email = req.body.email
+            const { emailsArray } = req.body
 
             const room = await Room.findById(_id)
             if (!room) {
                 return res.status(404).json({ error: 'Room not found' })
             }
 
-            const user = await User.findOne({ email: email })
-            const userId = user._id
-            if (!userId) {
-                return res.status(404).json({ error: 'User not found' })
+            for (let email of emailsArray) {
+                const user = await User.findOne({ email: email })
+                const userId = user._id
+                if (!userId) {
+                    continue
+                }
+    
+                if ( room.users.includes(userId) ) {
+                    continue
+                }
+    
+                if ( user.rooms.includes(_id) ) {
+                    continue
+                }
+    
+                user.rooms.push(_id)
+                await user.save()
+                
+                room.users.push(userId)
+                await room.save()
             }
-
-            if ( room.users.includes(userId) ) {
-                return res.status(409).json({ error: 'User already in room' })
-            }
-
-            if ( user.rooms.includes(_id) ) {
-                return res.status(409).json({ error: 'User already in room' })
-            }
-
-            user.rooms.push(_id)
-            await user.save()
-            
-            room.users.push(userId)
-            await room.save()
 
             res.status(201).json(room.users)
 
@@ -129,10 +129,10 @@ const roomController = {
         }
     },
 
-    removeUserFromRoom: async (req, res) => { // also update user document to remove room
+    removeUsersFromRoom: async (req, res) => { // also update user document to remove room
         try {
             const roomId = req.params.roomId
-            const email = req.body.email
+            const { emailsArray } = req.body
 
             const room = await Room.findById(roomId)
             if (!room) {
@@ -140,34 +140,26 @@ const roomController = {
             }
             const roomIdObj = room._id
 
-            const user = await User.findOne({email})
-            if (!user) {
-                return res.status(404).json({ error: 'User not found' })
+            for (let email of emailsArray) {
+                const user = await User.findOne({email})
+                if (!user) {
+                    continue
+                }
+                const userIdObj = user._id
+    
+                await Room.findOneAndUpdate( 
+                    { _id: roomIdObj },  
+                    { $pull: { users: userIdObj } },
+                    { new: true }
+                )
+    
+                await User.findOneAndUpdate( 
+                    { _id: userIdObj },  
+                    { $pull: { rooms: roomIdObj } },
+                    { new: true }
+                )
             }
-            const userIdObj = user._id
-
-            // const userIdToRemove = await room.exists({user: userId})
-            // // if ( !userExists ) {
-            // //     return res.status(409).json({ error: 'User not in room' })
-            // // }
-
-            // const roomIdToRemove = await user.exists({room: _id})
-            // // if ( !roomExists ) {
-            // //     return res.status(409).json({ error: 'User not in room' })
-            // // }
-
-            await Room.findOneAndUpdate( 
-                { _id: roomIdObj },  
-                { $pull: { users: userIdObj } },
-                { new: true }
-            )
-
-            await User.findOneAndUpdate( 
-                { _id: userIdObj },  
-                { $pull: { rooms: roomIdObj } },
-                { new: true }
-            )
-
+    
             res.status(201).json(room)
 
         } catch (error) {
