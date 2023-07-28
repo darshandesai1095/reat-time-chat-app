@@ -24,4 +24,7 @@ router.patch('/updateChatLog/:roomId', chatLogController.updateChatLog)
 //   ]
 // }
 
+// route for getting chat logs by roomId
+router.get('getChatLogs', chatLogController.getChatLogs)
+
 module.exports = router
