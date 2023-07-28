@@ -69,8 +69,8 @@ const userController = {
             const user = await User.find({firebaseUserId})
 
             if (!user) {
-            // If the user is not found, return a 404 status with a custom message
-            return res.status(404).json({ error: 'User not found' })
+                // If the user is not found, return a 404 status with a custom message
+                return res.status(404).json({ error: 'User not found' })
             }
 
             // Return the user details in the response
