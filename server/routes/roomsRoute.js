@@ -10,10 +10,10 @@ router.post('/create/:userId', roomController.createNewRoom)
 router.get('/:roomId', roomController.getRoom)
 
 // Route for adding user to room
-router.patch('/addUser/:roomId', roomController.addUserToRoom)
+router.patch('/addUser/:roomId', roomController.addUsersToRoom)
 
 // Route for removing user from room
-router.patch('/removeUser/:roomId', roomController.removeUserFromRoom)
+router.patch('/removeUser/:roomId', roomController.removeUsersFromRoom)
 
 // Route for updating room name
 router.patch('/:roomId', roomController.updateRoomName)
