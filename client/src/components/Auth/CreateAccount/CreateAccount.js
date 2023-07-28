@@ -1,11 +1,10 @@
+import './CreateAccount.css';
 import { useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../../../firebase';
-import './CreateAccount.css';
-
 import { useDispatch } from 'react-redux'
-import { loginRequest, loginSuccess, loginFailure } from '../../../redux/features/auth/authSlice';
-import { useCreateNewUserMutation } from '../../../redux/api/auth/authApi';
+import { loginRequest, loginSuccess, loginFailure } from '../../../redux/features/users/userSlice';
+import { useCreateNewUserMutation } from '../../../redux/api/users/userApi';
 
 
 const CreateAccount = ({goToLoginPage}) => {
