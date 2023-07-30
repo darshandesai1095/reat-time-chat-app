@@ -12,15 +12,15 @@ const Login = ({goToRegistrationPage}) => {
 
     const dispatch = useDispatch()
 
-    const [email, setEmail] = useState("")
+    const [email, setEmail] = useState("darshandesai3@gmail.com")
     const [isEmailValid, setIsEmailValid] = useState(true)
-    const [password, setPassword] = useState("")
+    const [password, setPassword] = useState("Password^123")
     const [error, setError] = useState(false)
     const [showPopup, setShowPopup] = useState(false)
 
     const handleLogin = async (event) => {
         event.preventDefault()
-        dispatch(loginRequest)
+        dispatch(loginRequest)        
 
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
@@ -28,11 +28,11 @@ const Login = ({goToRegistrationPage}) => {
                 firebaseUserId: userCredential.user.uid,
                 email: email
             }))
-
         } catch (error) {
             setError(true)
             dispatch(loginFailure)
         }
+ 
     }
 
     const handleForgottenPasssword = (email) => {
