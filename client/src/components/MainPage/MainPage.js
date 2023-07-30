@@ -28,13 +28,18 @@ const MainPage = () => {
         setConnected(true)
     }, [socket])
     
-    const firebaseUserId = useSelector(state => state.auth.firebaseUserId)
-    const {data: userInfo, isError, isLoading} = useGetUserByFirebaseUserIdQuery(firebaseUserId)
-    dispatch(updateUserCredentials({
-        username: userInfo?.username || null,
-        mongoDbUserId: userInfo?.mongoDbUserId || null
-    }))
-
+    const firebaseUserId = useSelector(state => state.user.firebaseUserId)
+    const {data: userInfo, isError, isLoading, isFetching} = useGetUserByFirebaseUserIdQuery({firebaseUserId})
+    if (userInfo) {
+        dispatch(updateUserCredentials({
+            username: userInfo[0].username,
+            mongoDbUserId: userInfo[0]._id,
+            email: userInfo[0].email
+        }))
+    }
+    console.log("USER INFO",userInfo)
+    const user = useSelector(state => state.user)
+    console.log("USER:",user)
 
     return (
         <div className="main-page">
