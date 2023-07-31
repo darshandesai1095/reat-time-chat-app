@@ -1,6 +1,6 @@
 import './CurrentChat.css';
 import { useState, useEffect } from 'react';
-import padNumberWithZeros from '../../functions/padNumbersWithZeros';
+import padNumberWithZeros from '../../functions/misc/padNumbersWithZeros';
 import MessagesWindow from './Chat/MessagesWindow';
 import MessageInput from './MessageInput/MessageInput';
 import ChatHeader from './ChatHeader/ChatHeader';
