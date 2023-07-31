@@ -4,4 +4,7 @@
   flex-direction: column;
   height: fit-content;
   gap: 5px;
+  overflow-y: scroll;
+  position: relative;
+  scroll-behavior: smooth;
 }
