@@ -2,15 +2,17 @@ import { useState, useRef } from 'react';
 import './CreateNewGroupModal.css';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import InputField from '../../InputField/InputField';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { useCreateNewRoomMutation } from '../../../redux/api/rooms/roomApi';
-import { useSelector } from 'react-redux';
+import { createNewRoom } from '../../../redux/features/rooms/roomSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 
 const CreateNewGroupModal = ({showCreateGroupPopup, setShowCreateGroupPopup}) => {
 
-    const [createNewRoom, {data, isError, isLoading, isSuccess}] = useCreateNewRoomMutation()
+    // const [createNewRoom, {data, isError, isLoading, isSuccess}] = useCreateNewRoomMutation()
     const userId = useSelector(state => state.user.mongoDbUserId)
+    const roomError = useSelector(state => state.rooms.error)
+    const dispatch = useDispatch()
 
     const [groupName, setGroupName] = useState('')
     const [emails, setEmails] = useState([''])
@@ -26,16 +28,18 @@ const CreateNewGroupModal = ({showCreateGroupPopup, setShowCreateGroupPopup}) =>
 
     const createGroup = () => {
         try {
-            createNewRoom({
-                userId: userId,
-                roomName: groupName,
-                membersArray: emails
-            })
+            dispatch(
+                createNewRoom({
+                    userId: userId,
+                    roomName: groupName,
+                    membersArray: emails
+                })
+            )
         } catch (error) {
-            console.log(error.message)
+            console.log("Create new room error: ", error.message);
         }
         setShowCreateGroupPopup(false)
-        if (isSuccess) {
+        if (roomError === null) {
             alert(`${groupName} created!`)
         } else {
             alert('Error creating group')
