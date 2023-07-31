@@ -12,7 +12,7 @@ const Login = ({goToRegistrationPage}) => {
 
     const dispatch = useDispatch()
 
-    const [email, setEmail] = useState("darshandesai3@gmail.com")
+    const [email, setEmail] = useState("darshan1@gmail.com")
     const [isEmailValid, setIsEmailValid] = useState(true)
     const [password, setPassword] = useState("Password^123")
     const [error, setError] = useState(false)
