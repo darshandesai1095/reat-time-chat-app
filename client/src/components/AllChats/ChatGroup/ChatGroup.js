@@ -1,6 +1,6 @@
 import './ChatGroup.css';
 
-const Group = ({ connected, username, room, setRoom, joinRoom }) => {
+const ChatGroup = ({ connected, roomName, room, setRoom, joinRoom }) => {
 
 
   return (
@@ -10,7 +10,7 @@ const Group = ({ connected, username, room, setRoom, joinRoom }) => {
 
             <div className='chat-group__message'>
                 <div className='message__sender'>
-                    <p>Joe Bloggs</p>
+                    <p>{roomName}</p>
                 </div>
                 <div className='message__preview'>
                     <p>Lorem ipsum dolor sit amet, 
@@ -33,7 +33,7 @@ const Group = ({ connected, username, room, setRoom, joinRoom }) => {
   );
 }
 
-export default Group
+export default ChatGroup
 
             /* <input 
                 type="text" 
