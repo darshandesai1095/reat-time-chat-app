@@ -1,7 +1,7 @@
 import MessageBubble from '../MessageBubble/MessageBubble';
 import { useState, useEffect } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
-import padNumberWithZeros from '../../../functions/padNumbersWithZeros'
+import padNumberWithZeros from '../../../functions/misc/padNumbersWithZeros'
 import './MessagesWindow.css';
 
 const MessagesWindow = ({socket, room, username, messageList, setMessageList}) => {
