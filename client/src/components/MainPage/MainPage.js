@@ -5,9 +5,7 @@ import CurrentChat from '../CurrentChat/CurrentChat';
 import { useState, useEffect } from 'react';
 import { io } from "socket.io-client";
 import { useSelector, useDispatch } from 'react-redux'
-import { useGetUserByFirebaseUserIdQuery } from '../../redux/api/users/userApi';
-import { updateUserCredentials } from '../../redux/features/users/userSlice';
-
+import { getUserByFirebaseUserId } from '../../redux/features/users/userSlice';
 
 const URL = "http://localhost:8080/"
 const socket = io.connect(URL)
@@ -27,19 +25,25 @@ const MainPage = () => {
     useEffect(() => {
         setConnected(true)
     }, [socket])
-    
+
+
     const firebaseUserId = useSelector(state => state.user.firebaseUserId)
-    const {data: userInfo, isError, isLoading, isFetching} = useGetUserByFirebaseUserIdQuery({firebaseUserId})
-    if (userInfo) {
-        dispatch(updateUserCredentials({
-            username: userInfo[0].username,
-            mongoDbUserId: userInfo[0]._id,
-            email: userInfo[0].email
-        }))
-    }
-    console.log("USER INFO",userInfo)
-    const user = useSelector(state => state.user)
-    console.log("USER:",user)
+    const userError = useSelector(state => state.user.userError)
+
+    useEffect(() => {
+
+        if (firebaseUserId) {
+            try {
+                dispatch(getUserByFirebaseUserId( { firebaseUserId } ))
+            } catch (error) {
+                console.log(error, userError)
+            }
+        } else {
+            console.log("no id") // send to error/loading page
+        }
+
+    }, [firebaseUserId, dispatch])
+
 
     return (
         <div className="main-page">
