@@ -46,7 +46,8 @@ body {
   --light-gray:  rgb(45,50,60);
 
   --primary-color: #5e2bff;
-  --black: #212529;
+  /* --black: #212529; */
+  --black: #2F2F2F;
 }
 
 
