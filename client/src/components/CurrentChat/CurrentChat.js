@@ -4,6 +4,8 @@ import padNumberWithZeros from '../../functions/misc/padNumbersWithZeros';
 import MessagesWindow from './Chat/MessagesWindow';
 import MessageInput from './MessageInput/MessageInput';
 import ChatHeader from './ChatHeader/ChatHeader';
+import { useSelector, useDispatch } from 'react-redux';
+import { getChatLogsByRoomsArray } from '../../redux/features/chatLogs/chatLogSlice';
 
 
 const CurrentChat = ({socket, connected, username, room, setRoom, joinRoom}) => {
@@ -22,12 +24,27 @@ const CurrentChat = ({socket, connected, username, room, setRoom, joinRoom}) => 
                   padNumberWithZeros(new Date(Date.now()).getMinutes(), 2)
         }
     
-    
-    
         await socket.emit("send", messageData)
         setMessageList(list => [...list, messageData])
         setCurrentMessage("")
       }
+
+      const activeRoomId = useSelector(state => state.rooms.currentActiveRoomId)
+      const dispatch = useDispatch()
+
+      const getChatLog = async () => {
+        try {
+          await Promise.resolve(
+            dispatch(
+              getChatLogsByRoomsArray([activeRoomId])
+            )
+          )
+        } catch (error) {
+            console.log("get chat log: ", error)
+        }
+      }
+      getChatLog()
+
 
   return (
     <div className="current-chat">
