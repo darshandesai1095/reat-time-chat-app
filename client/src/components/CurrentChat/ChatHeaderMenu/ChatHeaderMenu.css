@@ -1,0 +1,54 @@
+.chat-header-menu {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    position: relative;
+    transition: 0.2s;
+}
+
+.chat-header-menu > svg {
+    fill: var(--black);
+    transform: scale(0.9);
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.chat-header-menu > svg:hover {
+    fill: var(--primary-color);
+}
+
+.chat-header-menu > .visible {
+    transition: 0.5s;
+    visibility: visible;
+}
+
+
+.chat-header-menu > .hidden {
+    transition: 0.5s;
+    visibility: hidden;
+    opacity: 0;
+}
+
+svg.rot0deg {
+    transition: 0.3s;
+    transform: rotate(0deg);
+}
+
+svg.rot45deg {
+    transition: 0.3s;
+    transform: rotate(45deg);
+}
+
+svg.rot-45deg {
+    transition: 0.3s;
+    transform: rotate(-45deg);
+}
+
+svg.x {
+    position: absolute;
+    right: 0px
+}
+
+.chat-header-menu > svg.close-menu {
+    fill: crimson;
+}
