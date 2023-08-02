@@ -1,36 +1,34 @@
 import './AllChatsBody.css';
 import ChatGroup from "../ChatGroup/ChatGroup"
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 
 const AllChatsBody = ({connected, username, room, setRoom, joinRoom}) => {
-  
 
-  const isLoading = useSelector(state => state.rooms.loading)
-  const roomsData = useSelector(state => state.rooms.roomsData)
-  const chatRooms = roomsData?.map(room => {
+    const currentActiveRoomId = useSelector(state => state.rooms.currentActiveRoomId)
+
+    const roomsData = useSelector(state => state.rooms.roomsData)
+    const chatRooms = roomsData?.map(room => {
+      return (
+          <ChatGroup
+            key={room.roomId}
+            connected={connected}
+            roomName={room.roomName}
+            roomId={room.roomId}
+            setRoom={setRoom}
+            joinRoom={joinRoom}
+            active={currentActiveRoomId === room.roomId ? true : false}
+          />
+      )
+    })
+
+
     return (
-        <ChatGroup
-        key={room.roomId}
-        connected={connected}
-        roomName={room.roomName}
-        room={room.roomId}
-        setRoom={setRoom}
-        joinRoom={joinRoom}
-      />
+
+      <div className="all-chats-body">
+        {chatRooms?.reverse()}
+      </div>
     )
-  })
-
-
-  return (
-
-    <div className="all-chats-body">
-
-      { isLoading ? <p style={{color:"black"}}>Loading...</p> : chatRooms }
-
-    </div>
-  )
 }
 
 export default AllChatsBody;
