@@ -1,8 +1,7 @@
 import './AllChatsHeader.css';
-import { useState } from 'react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
-const AllChatsHeader = ({setShowCreateGroupPopup}) => {
+const AllChatsHeader = ({ setShowCreateGroupPopup }) => {
 
     return (
         <div className="all-chats-header" >
