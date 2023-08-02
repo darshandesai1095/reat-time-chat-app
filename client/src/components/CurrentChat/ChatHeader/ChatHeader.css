@@ -1,5 +1,5 @@
 .chat-header {
-    color: black;
+    color: var(--black);
     margin: 40px 0px;
     margin-bottom: 0px;
     display: flex;
@@ -40,6 +40,10 @@
     margin-bottom: -4px;
     font-size: 1.2rem;
     font-weight: 800;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* Number of lines to display */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .chat-header__meta-data > p {
@@ -48,25 +52,5 @@
     color: #6c757d;
 }
 
-.chat-header__menu {
-    display: flex;
-    flex-direction: row;
-    gap: 15px;
-}
 
-.chat-header__menu > svg {
-    fill: var(--black);
-    transition: 0.2s;
-    cursor: pointer;
-}
-
-.chat-header__menu > svg:hover {
-    fill: var(--primary-color);
-    opacity: 1;
-}
-
-.chat-header__menu > svg:last-of-type:hover {
-    fill: crimson;
-    opacity: 1;
-}
 
