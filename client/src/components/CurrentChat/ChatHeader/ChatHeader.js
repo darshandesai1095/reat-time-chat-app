@@ -1,15 +1,44 @@
 import './ChatHeader.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UpdateGroupNameModal from '../UpdateGroupNameModal/UpdateGroupNameModal';
 import AddMoreUsersModal from '../AddMoreUsersModal/AddMoreUsersModal';
 import RemoveUsersModal from '../RemoveUsersModal/RemoveUsersModal';
-import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
-import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
-import CreateRoundedIcon from '@mui/icons-material/CreateRounded';
-import DisabledByDefaultRoundedIcon from '@mui/icons-material/DisabledByDefaultRounded';
 import DeleteGroup from '../DeleteGroupModal/DeleteGroup';
+import ChatHeaderMenu from '../ChatHeaderMenu/ChatHeaderMenu';
+import { useSelector } from 'react-redux';
+
 
 const ChatHeader = ({}) => {
+
+    const roomId = useSelector(state => state.rooms.currentActiveRoomId)
+    const roomsData = useSelector(state => state.rooms.roomsData)
+    const currentActiveRoomIndex = roomsData?.findIndex(room => room.roomId == roomId)
+    const mongoDbUserId = useSelector(state => state.user.mongoDbUserId)
+    console.log(":::roomData:::", roomsData[currentActiveRoomIndex].roomName)
+
+    const numberOfMembers = roomsData ? roomsData[currentActiveRoomIndex].roomUsers?.length : null
+
+    const displayNumberOfMembers = (numberOfMembers = null) => {
+        if (numberOfMembers === null || numberOfMembers === undefined) {
+            return (
+                <p className='meta-data__members'>
+                Loading...
+                </p>
+            )
+        }
+        if (numberOfMembers == 1) {
+            return (
+                <p className='meta-data__members'>
+                    1 Member
+                </p>
+            )
+        }
+        return (
+            <p className='meta-data__members'>
+                {numberOfMembers} Members
+            </p>
+        )
+    }
 
     const [updateGroupNamePopupVisible, setUpdateGroupNamePopupVisible] = useState(false)
     const [updateAddUsersModalVisible, setUpdateAddUsersModalVisible] = useState(false)
@@ -22,6 +51,10 @@ const ChatHeader = ({}) => {
         <UpdateGroupNameModal
             updateGroupNamePopupVisible={updateGroupNamePopupVisible}
             setUpdateGroupNamePopupVisible={setUpdateGroupNamePopupVisible}
+            activeRoomId={roomId || null}
+            activeRoomIndex={currentActiveRoomIndex || null}
+            mongoDbUserId={mongoDbUserId || null}
+            roomName={roomsData ? roomsData[currentActiveRoomIndex].roomName : null}
         />
 
         <AddMoreUsersModal
@@ -53,30 +86,22 @@ const ChatHeader = ({}) => {
 
                 <div className='chat-header__meta-data'>
                     <h3 className='meta-data__group-name'>
-                        Group Name
+                        {roomsData ? roomsData[currentActiveRoomIndex].roomName : "Loading..."}
                     </h3>
-                    <p className='meta-data__members'>
-                        10 members
-                    </p>
+
+                    {displayNumberOfMembers(numberOfMembers)}
+
                 </div>
 
             </div>
 
 
-            <div className='chat-header__menu'>
-                <CreateRoundedIcon
-                    onClick={() => setUpdateGroupNamePopupVisible(true)}
-                />
-                <AddCircleRoundedIcon
-                    onClick={() => setUpdateAddUsersModalVisible(true)}
-                />
-                <RemoveCircleRoundedIcon
-                    onClick={() => setRemoveUsersModalVisible(true)}
-                />
-                <DisabledByDefaultRoundedIcon
-                    onClick={() => setDeleteGroupModalVisible(true)}
-                />
-            </div>
+           <ChatHeaderMenu
+                setUpdateGroupNamePopupVisible={setUpdateGroupNamePopupVisible}
+                setUpdateAddUsersModalVisible={setUpdateAddUsersModalVisible}
+                setRemoveUsersModalVisible={setRemoveUsersModalVisible}
+                setDeleteGroupModalVisible={setDeleteGroupModalVisible}
+           />
 
         </div>
         </>
