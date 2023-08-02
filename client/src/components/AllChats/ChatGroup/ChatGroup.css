@@ -24,10 +24,8 @@
 
 .chat-group:hover {
     background-color: white;
-    /* box-shadow: 0px 2px 5px rgba(94, 43, 255, 0.1) */
     background-color: rgba(94, 43, 255, 0.05);
     background-color: rgba(33, 37, 41, 0.05);
-    /* color: rgba(94, 43, 255, 1); */
 }
 
 .chat-group__avatar {
@@ -72,5 +70,10 @@
 }
 
 .active-chat {
-    background-color: var(--blue);
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.active-chat:hover {
+    background-color: var(--purple);
 }
