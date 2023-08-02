@@ -1,17 +1,16 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import './CreateNewGroupModal.css';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import InputField from '../../InputField/InputField';
-import { useCreateNewRoomMutation } from '../../../redux/api/rooms/roomApi';
-import { createNewRoom } from '../../../redux/features/rooms/roomSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import createNewRoomAndSyncData from '../../../functions/rooms/createNewRoomAndSyncData';
 
 
 const CreateNewGroupModal = ({showCreateGroupPopup, setShowCreateGroupPopup}) => {
 
-    // const [createNewRoom, {data, isError, isLoading, isSuccess}] = useCreateNewRoomMutation()
-    const userId = useSelector(state => state.user.mongoDbUserId)
     const roomError = useSelector(state => state.rooms.error)
+    const roomsData = useSelector((state) => state.rooms.roomsData)
+    const mongoDbUserId = useSelector(state => state.user.mongoDbUserId)
     const dispatch = useDispatch()
 
     const [groupName, setGroupName] = useState('')
@@ -26,22 +25,10 @@ const CreateNewGroupModal = ({showCreateGroupPopup, setShowCreateGroupPopup}) =>
         setEmails([''])
     }
 
-    const createGroup = () => {
-        try {
-            dispatch(
-                createNewRoom({
-                    userId: userId,
-                    roomName: groupName,
-                    membersArray: emails
-                })
-            )
-        } catch (error) {
-            console.log("Create new room error: ", error.message);
-        }
+    const createGroup = async () => {
         setShowCreateGroupPopup(false)
-        if (roomError === null) {
-            alert(`${groupName} created!`)
-        } else {
+        await createNewRoomAndSyncData(dispatch, mongoDbUserId, groupName, emails)
+        if (roomError !== null) {
             alert('Error creating group')
         }
         setGroupName('')
@@ -71,25 +58,27 @@ const CreateNewGroupModal = ({showCreateGroupPopup, setShowCreateGroupPopup}) =>
 
                 <div className='create-new-group__details'>
                     <p>ADD EMAIL</p>
-                    {emails.map( (email, i) => {
-                        return (
-                            <div className='email-input-field'>
+                    {
+                        emails.map( (email, i) => {
+                            return (
+                                <div className='email-input-field'>
 
-                                <InputField
-                                    key={i}
-                                    value={emails[i]}
-                                    setValue={(newValue) => {
-                                        const updatedEmails = [...emails]
-                                        updatedEmails[i] = newValue
-                                        setEmails(updatedEmails)
-                                    }}
-                                    required={false}
-                                />
+                                    <InputField
+                                        key={i}
+                                        value={emails[i]}
+                                        setValue={(newValue) => {
+                                            const updatedEmails = [...emails]
+                                            updatedEmails[i] = newValue
+                                            setEmails(updatedEmails)
+                                        }}
+                                        required={false}
+                                    />
 
-                            </div>
-      
-                        )
-                    })}
+                                </div>
+        
+                            )
+                        })
+                    }
                 </div>
 
                 <p className='add-more' onClick={handleAddMore}>Add more</p>
