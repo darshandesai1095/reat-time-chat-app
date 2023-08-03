@@ -2,27 +2,28 @@ import { useState } from 'react';
 import './RemoveUsersModal.css';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import UndoRoundedIcon from '@mui/icons-material/UndoRounded';
+import removeUsersFromRoomAndSyncData from '../../../functions/rooms/removeUsersFromRoomAndSyncData';
+import { useDispatch } from 'react-redux';
 
 
+const RemoveUsersModal = ({removeUsersModalVisible, setRemoveUsersModalVisible, mongoDbUserId, activeRoomId, usersList}) => {
 
-const RemoveUsersModal = ({removeUsersModalVisible, setRemoveUsersModalVisible}) => {
-
-    const [emails, setEmails] = useState([''])
-    const handleAddMore = () => {
-        setEmails([...emails, ''])
-    }
+    const dispatch = useDispatch()
 
     const closePopup = () => {
         setRemoveUsersModalVisible(false)
         setRemovedUsers([])
     }
 
-    const handleUpdateUsers = () => {
+    const handleUpdateUsers = async () => {
         setRemoveUsersModalVisible(false)
         setRemovedUsers([])
+        try {
+            await removeUsersFromRoomAndSyncData(dispatch, mongoDbUserId, activeRoomId, removedUsers)
+        } catch (error) {
+            alert("Error updating group name!")
+        }
     }
 
     const [removedUsers, setRemovedUsers] = useState([])
@@ -38,8 +39,7 @@ const RemoveUsersModal = ({removeUsersModalVisible, setRemoveUsersModalVisible})
         setRemovedUsers(removedUsersList)
     }
     
-
-    const usersList = ["user_1", "user_2", "user_3", "user_4", "user_5", "user_6", "user_7"]
+    const usersListArr = usersList ? usersList.map(user => user.email) : []
 
     return (
         <div className={`modal-background ${removeUsersModalVisible ? null : "hide-page"}`}>
@@ -53,7 +53,7 @@ const RemoveUsersModal = ({removeUsersModalVisible, setRemoveUsersModalVisible})
 
                 <div className='create-new-group__details remove-user__users-list'>
                     {
-                        usersList.map( (user, i) => {
+                        usersListArr.map( (user, i) => {
                             return (
                                 <div className='remove-user__user'>
                                     <p className={`${removedUsers.includes(user) && "strikethrough"}`}>
