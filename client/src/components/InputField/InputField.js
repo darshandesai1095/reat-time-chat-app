@@ -1,6 +1,6 @@
 import './InputField.css';
 
-const InputField = ({value, setValue, required}) => {
+const InputField = ({value, setValue, required, placeholder}) => {
 
 
     return (
@@ -10,6 +10,7 @@ const InputField = ({value, setValue, required}) => {
                     value={value}
                     required={required}
                     onChange={(e) => setValue(e.target.value)}
+                    placeholder={placeholder}
                 />
         </div>
     )
