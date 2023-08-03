@@ -2,9 +2,13 @@ import { useState } from 'react';
 import './AddMoreUsersModal.css';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import InputField from '../../InputField/InputField';
+import addUsersToRoomAndSyncData from '../../../functions/rooms/addUsersToRoomAndSyncData';
+import { useDispatch } from 'react-redux';
 
 
-const AddMoreUsersModal = ({updateAddUsersModalVisible, setUpdateAddUsersModalVisible}) => {
+const AddMoreUsersModal = ({updateAddUsersModalVisible, setUpdateAddUsersModalVisible, mongoDbUserId, activeRoomId}) => {
+
+    const dispatch = useDispatch()
 
     const [emails, setEmails] = useState([''])
     const handleAddMore = () => {
@@ -16,8 +20,13 @@ const AddMoreUsersModal = ({updateAddUsersModalVisible, setUpdateAddUsersModalVi
         setEmails([''])
     }
 
-    const handleUpdateUsers = () => {
+    const handleUpdateUsers = async () => {
         setUpdateAddUsersModalVisible(false)
+        try {
+            await addUsersToRoomAndSyncData(dispatch, activeRoomId, mongoDbUserId, emails)
+        } catch (error) {
+            alert("Error adding users!")
+        }
         setEmails([''])
     }
 
