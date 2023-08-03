@@ -10,7 +10,6 @@ const roomSchema = new mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-            unique: true,
         },
     ],
     
@@ -22,14 +21,6 @@ const roomSchema = new mongoose.Schema({
 
 })
 
-// // Middleware to ensure uniqueness of users in the room before saving
-// roomSchema.pre('save', async function (next) {
-//     // Remove duplicates from the users array
-//     this.users = [...new Set(this.users)]
-  
-//     // Proceed to save
-//     next()
-// })
 
 const Room = mongoose.model('Room', roomSchema)
 
