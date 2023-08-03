@@ -9,7 +9,6 @@ import createNewRoomAndSyncData from '../../../functions/rooms/createNewRoomAndS
 const CreateNewGroupModal = ({showCreateGroupPopup, setShowCreateGroupPopup}) => {
 
     const roomError = useSelector(state => state.rooms.error)
-    const roomsData = useSelector((state) => state.rooms.roomsData)
     const mongoDbUserId = useSelector(state => state.user.mongoDbUserId)
     const dispatch = useDispatch()
 
