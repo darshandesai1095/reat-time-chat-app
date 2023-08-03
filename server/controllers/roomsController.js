@@ -1,6 +1,7 @@
 const Room = require('../models/roomModel')
 const User = require('../models/userModel')
 const ChatLog = require('../models/chatLogModel')
+const mongoose = require('mongoose')
 
 
 const roomController = {
@@ -16,40 +17,47 @@ const roomController = {
             const userEmail = user.email
             const { roomName, membersArray } = req.body
 
+            // this deals with duplicates
             let membersEmailsArray = Array.from(new Set([userEmail, ...membersArray]))
         
             // Resolve all member emails to user IDs using Promise.all
             const memberIdPromises = membersEmailsArray.map( async (memberEmail) => {
                 const user = await User.findOne({ email: memberEmail })
-                return (user._id)
+                return (user?._id.toString())
             })
             const memberIdArray = await Promise.all(memberIdPromises)
-
-
+            const filteredMemberIdArray = memberIdArray.filter(user => ((user !== null) && (user !== undefined)))
 
             // Create a new array for unique user IDs
             const uniqueUsersArray = []
 
             // Add members to the uniqueUsersArray, excluding duplicates
-            for (const memberId of memberIdArray) {
+            for (let memberId of filteredMemberIdArray) {
                 if (!uniqueUsersArray.includes(memberId)) {
                     uniqueUsersArray.push(memberId)
                 }
             }
 
+            const uniqueUserIdsArray = Array.from(new Set(uniqueUsersArray));
+
             // Create new room instance using Room model
             const newRoom = new Room({
                 roomName: roomName,
-                users: uniqueUsersArray,
+                users: [...uniqueUserIdsArray],
             })
-        
+    
+
             // Save the room to the database
             await newRoom.save()
-            const roomId = newRoom._id
+            const roomId = newRoom._id.toString()
         
             // Update user rooms with the new room ID
             const usersToUpdate = [userEmail, ...membersArray]
-            const userPromises = usersToUpdate.map((email) => User.findOneAndUpdate({ email }, { $addToSet: { rooms: roomId } }))
+            const userPromises = usersToUpdate.map(async (email) => {
+                return (
+                    await User.findOneAndUpdate({ email }, { $addToSet: { rooms: roomId } })
+                )
+            })
         
             // Execute all user update promises
             await Promise.all(userPromises)
@@ -86,7 +94,78 @@ const roomController = {
         } catch {
             res.status(500).json({ error: 'Error fetching user room details' })
         }
+    },
 
+    getRoomsByMongoDbUserId:  async (req, res) => {
+        try {
+            const userId = req.params.userId
+
+            const user = await User.findById(userId)
+            const roomIdsArray = user.rooms.map(roomIdObj => roomIdObj.toString())
+
+            const allRooms = []
+
+            for (let roomId of roomIdsArray) {
+                const room = await Room.findById(roomId)?.populate("users")
+                if (!room) { 
+                    continue 
+                }
+                allRooms.push({
+                    roomId: room._id,
+                    roomName: room.roomName,
+                    dateCreated: room.dateCreated,
+                    roomUsers: room.users?.map(user => {
+                        return ({
+                            userId: user._id,
+                            firebaseUserId: user.firebaseUserId,
+                            email: user.email,
+                            username: user.username,
+                        })
+                    }) || null,
+                })
+            }
+            
+            res.status(201).send(allRooms)
+
+        } catch (error) {
+            res.status(500).json({error: error.message})
+        }
+    },
+
+    getRoomsByFirebaseUserId: async (req, res) => {
+        try {
+            const firebaseUserId = req.params.firebaseUserId
+
+            const user = await User.findOne({firebaseUserId})
+            const roomIdsArray = user.rooms.map(roomIdObj => roomIdObj.toString())
+
+            const allRooms = []
+
+            for (let roomId of roomIdsArray) {
+                const room = await Room.findById(roomId)?.populate("users")
+                if (!room) { 
+                    continue 
+                }
+                allRooms.push({
+                    roomId: room._id,
+                    roomName: room.roomName,
+                    dateCreated: room.dateCreated,
+                    roomUsers: room.users?.map(user => {
+                        return ({
+                            userId: user._id,
+                            firebaseUserId: user.firebaseUserId,
+                            email: user.email,
+                            username: user.username,
+                        })
+                    }) || null,
+                })
+            }
+            
+            res.status(201).send(allRooms)
+
+        } catch (error) {
+            res.status(500).json({error: error.message})
+        }
     },
 
     addUsersToRoom: async (req, res) => { // also update user document to include room
@@ -131,6 +210,7 @@ const roomController = {
 
     removeUsersFromRoom: async (req, res) => { // also update user document to remove room
         try {
+            console.log("request recieved")
             const roomId = req.params.roomId
             const { emailsArray } = req.body
 
@@ -170,12 +250,9 @@ const roomController = {
     updateRoomName: async (req, res) => {
         try {
             const _id = req.params.roomId
+            console.log(_id)
             const newRoomName = req.body.newRoomName
-
-            if (!newRoomName || newRoomName.trim() === "") {
-                return res.status(400).json({ error: "New room name not provided" })
-            }
-
+            console.log("new room name", newRoomName)
             const room = await Room.findById(_id)
             if (!room) {
                 res.status(404).json({ error: "Room not found" })
@@ -195,7 +272,7 @@ const roomController = {
     deleteRoom: async (req, res) => {
         try {
             const roomId = req.params.roomId
-            const roomIdObj = mongoose.Types.ObjectId(roomId);
+            const roomIdObj = new mongoose.Types.ObjectId(roomId)
 
             const room = await Room.findById(roomId)
             if (!room) {
@@ -203,11 +280,7 @@ const roomController = {
             }
 
             await Room.findByIdAndDelete(roomId)
-            res.status(200).json({ message: "Room deleted successfully" })
-
             await ChatLog.findOneAndDelete({ roomId })
-            res.status(200).json({ message: "Room deleted successfully" })
-
             const users = room.users
             const userPromisesArray = users.map( async (user) => {
                 return (
@@ -221,9 +294,10 @@ const roomController = {
 
             await Promise.all(userPromisesArray)
 
-
+            res.status(200).json({ message: "Room deleted successfully" })
 
         } catch (error) {
+            console.log(error)
             res.status(500).json({ error: "Error deleting room" })
         }
     },
