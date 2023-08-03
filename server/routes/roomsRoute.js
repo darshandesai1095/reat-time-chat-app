@@ -9,11 +9,17 @@ router.post('/create/:userId', roomController.createNewRoom)
 // Route for getting room
 router.get('/:roomId', roomController.getRoom)
 
+// Route for getting multiple rooms
+router.get('/mongo/:userId', roomController.getRoomsByMongoDbUserId)
+
+// Route for getting multiple rooms
+router.get('/firebase/:firebaseUserId', roomController.getRoomsByFirebaseUserId)
+
 // Route for adding user to room
-router.patch('/addUser/:roomId', roomController.addUsersToRoom)
+router.patch('/addUsers/:roomId', roomController.addUsersToRoom)
 
 // Route for removing user from room
-router.patch('/removeUser/:roomId', roomController.removeUsersFromRoom)
+router.patch('/removeUsers/:roomId', roomController.removeUsersFromRoom)
 
 // Route for updating room name
 router.patch('/:roomId', roomController.updateRoomName)
