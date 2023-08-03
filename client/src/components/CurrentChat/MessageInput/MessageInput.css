@@ -15,10 +15,6 @@
 .message-input:active,
 .message-input:focus-within {
     border: 1.5px solid var(--primary-color);
-
-    border: 1.5px solid var(--black);
-    border: 1.5px solid rgba(94, 43, 255, 1);
-
 }
 
 .message-input textarea {
