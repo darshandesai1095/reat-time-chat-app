@@ -6,9 +6,12 @@ import MessageInput from './MessageInput/MessageInput';
 import ChatHeader from './ChatHeader/ChatHeader';
 import { useSelector, useDispatch } from 'react-redux';
 import { getChatLogsByRoomsArray } from '../../redux/features/chatLogs/chatLogSlice';
+import StartNewChat from './StartNewChat/StartNewChat';
 
 
 const CurrentChat = ({socket, connected, username, room, setRoom, joinRoom}) => {
+
+    const totalGroups = useSelector(state => state.rooms.roomsData?.length)
 
     const [currentMessage, setCurrentMessage] = useState("")
     const [messageList, setMessageList] = useState([])
@@ -47,10 +50,15 @@ const CurrentChat = ({socket, connected, username, room, setRoom, joinRoom}) => 
 
 
   return (
-    <div className="current-chat">
+    <>
+        {
+          totalGroups == 0 ?
+
+          <StartNewChat/>
+          :
+          <div className="current-chat">
 
             <ChatHeader/>
-
 
             <MessagesWindow
                 socket={socket}
@@ -64,7 +72,11 @@ const CurrentChat = ({socket, connected, username, room, setRoom, joinRoom}) => 
                 setCurrentMessage={setCurrentMessage}
                 sendMessage={sendMessage}
             />
-    </div>
+          </div>
+
+        }
+    </>
+
   )
 }
 
