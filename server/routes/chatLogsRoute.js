@@ -24,7 +24,11 @@ router.patch('/updateChatLog/:roomId', chatLogController.updateChatLog)
 //   ]
 // }
 
+
 // route for getting chat logs by roomId
-router.get('getChatLogs', chatLogController.getChatLogs)
+router.get('/getChatLogs', chatLogController.getChatLogsByRoomsArray)
+
+// route for getting chat logs by firebase user ID
+router.get('/getChatLogsByFirebaseUserId/:firebaseUserId', chatLogController.getChatLogsByFirebaseUserId)
 
 module.exports = router
