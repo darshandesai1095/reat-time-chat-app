@@ -2,7 +2,7 @@
     background-color: rgb(250,250,250);
     display: flex;
     flex-direction: column;
-    min-width: 320px;
+    min-width: 380px;
     max-width: 420px;
     padding: 0 45px;
     border-right: 2px solid rgb(240,240,240);
@@ -10,3 +10,4 @@
     flex: 1;
     padding-bottom: 20px;
 }
+
