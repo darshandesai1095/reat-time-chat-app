@@ -33,7 +33,6 @@ const userController = {
         res.status(201).json(savedUser)
 
         } catch (error) {
-            console.log(error.message)
             res.status(500).json({ error: 'Error creating a new user ( ˘︹˘ )' })
         }
     },
@@ -41,23 +40,22 @@ const userController = {
     // Controller for getting user details by MongoDB _id
     getUserByMongoDBUserId: async (req, res) => {
         try {
-          const _id = req.params.userId // Get the MongoDB _id from the request parameters
+            const userId = req.params.userId // Get the MongoDB _id from the request parameters
+            // Query the database to find the user by MongoDB _id
+            const user = await User.findById(userId)
 
-          // Query the database to find the user by MongoDB _id
-          const user = await User.findById(_id)
+            if (!user) {
+                // If the user is not found, return a 404 status with a custom message
+                return res.status(404).json({ error: 'User not found' })
+            }
 
-          if (!user) {
-              // If the user is not found, return a 404 status with a custom message
-              return res.status(404).json({ error: 'User not found' })
-          }
+            // Return the user details in the response
+            res.status(200).json(user)
 
-          // Return the user details in the response
-          res.status(200).json(user)
-
-        } catch (error) {
-          // If there is an error, return a 500 status with a generic error message
-          res.status(500).json({ error: 'Error fetching user details by MongoDB _id' })
-        }
+            } catch (error) {
+            // If there is an error, return a 500 status with a generic error message
+            res.status(500).json({ error: 'Error fetching user details by MongoDB _id' })
+            }
     },
 
     // Controller for getting user details by firebase uid
