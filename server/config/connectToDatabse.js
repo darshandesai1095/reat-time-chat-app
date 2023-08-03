@@ -9,9 +9,9 @@ const connectToDatabase = async () => {
       useUnifiedTopology: true,
       dbName: "chatAppDB"
     })
-    console.log("Connected to the database")
+    console.log("CONNECTED TO THE DATABASE")
   } catch (error) {
-    console.error("Error connecting to the database:", error)
+    console.error("ERROR CONNNECTING TO THE DATABASE:", error)
   }
 }
 
