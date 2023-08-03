@@ -48,7 +48,7 @@ export const roomApi = createApi({
         }),
 
         deleteRoom: build.mutation({
-            query: (roomId) => ({
+            query: ({roomId}) => ({
                 url: `/${roomId}`,
                 method: 'DELETE',
             })
