@@ -8,8 +8,6 @@ import { getRoomsByFirebaseUserId } from '../../redux/features/rooms/roomSlice';
 import LoadingModal from './LoadingModal/LoadingModal';
 
 
-
-
 const AllChats = ({}) => {
 
     const dispatch = useDispatch()
