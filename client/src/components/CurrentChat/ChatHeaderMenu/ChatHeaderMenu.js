@@ -5,6 +5,8 @@ import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import CreateRoundedIcon from '@mui/icons-material/CreateRounded';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
 
 
 const ChatHeaderMenu = ({ setUpdateGroupNamePopupVisible, setUpdateAddUsersModalVisible, setRemoveUsersModalVisible, setDeleteGroupModalVisible }) => {
