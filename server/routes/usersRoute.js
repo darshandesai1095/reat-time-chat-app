@@ -19,10 +19,10 @@ router.get('/firebase/:firebaseUserId', userController.getUserByFirebaseUserId)
 router.patch('/updateUsername/:userId', userController.updateUsername)
 
 // // Route for updating user details; email
-// router.put('/resetEmail/:userId', authorizationMiddleware, userController.updateUser)
+// router.patch('/resetEmail/:userId', authorizationMiddleware, userController.updateUser)
 
 // // Route for updating user details; pic
-// router.put('updateProfilePicture/:userId', authorizationMiddleware, userController.updateUser)
+// router.patch('updateProfilePicture/:userId', authorizationMiddleware, userController.updateUser)
 
 
 // Route for deleting a user
