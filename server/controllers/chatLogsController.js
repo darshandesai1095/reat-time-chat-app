@@ -1,5 +1,6 @@
 const ChatLog = require('../models/chatLogModel')
 const Room = require('../models/roomModel')
+const User = require('../models/userModel')
 
 const chatLogController = {
 
@@ -39,24 +40,72 @@ const chatLogController = {
         }
     },
 
-    getChatLogs: async (req, res) => {
+    getChatLogsByRoomsArray: async (req, res) => {
         try {
-            const { roomIdsArray } = req.body
+            const roomIdsArray = req.query.roomIdsArray
             const allChats = []
 
             for (let roomId of roomIdsArray) {
-                const room = await Room.findById(roomId)
+                const room = await Room.findById(roomId).populate("users")
                 if (!room) { 
                     continue 
                 }
                 const chatLog = await ChatLog.find({ roomId })
                 allChats.push({
-                    room,
-                    chatLog
+                    roomId: room._id,
+                    roomName: room.roomName,
+                    roomUsers: room.users?.map(user => {
+                        return ({
+                            userId: user._id,
+                            email: user.email,
+                            username: user.username,
+                        })
+                        }) || null,
+                    dateCreated: room.dateCreated,
+                    messagesArray: "empty array" // chatLog.messages // convert messageSender to userName/email
+                })
+            }
+
+            console.log(allChats)
+            res.status(201).json(allChats)
+
+        } catch (error) {
+            res.status(500).json({error: error.message})
+        }
+    },
+
+    getChatLogsByFirebaseUserId: async (req, res) => {
+        try {
+            const { firebaseUserId } = req.params
+
+            const user = await User.find({firebaseUserId})
+            const roomIdsArray = user[0].rooms.map(roomIdObj => roomIdObj.toString())
+            console.log(user)
+
+            const allChats = []
+
+            for (let roomId of roomIdsArray) {
+                const room = await Room.findById(roomId).populate("users")
+                if (!room) { 
+                    continue 
+                }
+                const chatLog = await ChatLog.find({ roomId })
+                allChats.push({
+                    roomId: room._id,
+                    // roomName: room.roomName,
+                    // roomUsers: room.users?.map(user => {
+                    //     return ({
+                    //         userId: user._id,
+                    //         firebaseUserId: user.firebaseUserId,
+                    //         email: user.email,
+                    //         username: user.username,
+                    //     })
+                    //     }) || null,
+                    messagesArray: chatLog.messages // convert messageSender to userName/email
                 })
             }
             
-            res.status(201).json(allChats)
+            res.status(201).send(allChats)
 
         } catch (error) {
             res.status(500).json({error: error.message})
