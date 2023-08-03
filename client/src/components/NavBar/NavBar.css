@@ -1,6 +1,8 @@
 .nav-bar {
     height: 100vh;
     width: 65px;
+    min-width: 65px;
+    max-width: 65px;
     background-color: #212529;
     display: flex;
     flex-direction: column;
