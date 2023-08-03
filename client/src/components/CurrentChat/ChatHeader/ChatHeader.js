@@ -14,9 +14,10 @@ const ChatHeader = ({}) => {
     const roomsData = useSelector(state => state.rooms.roomsData)
     const currentActiveRoomIndex = roomsData?.findIndex(room => room.roomId == roomId)
     const mongoDbUserId = useSelector(state => state.user.mongoDbUserId)
-    console.log(":::roomData:::", roomsData[currentActiveRoomIndex].roomName)
+    const isLoading  = useSelector(state => state.rooms.loading)
 
-    const numberOfMembers = roomsData ? roomsData[currentActiveRoomIndex].roomUsers?.length : null
+
+    const numberOfMembers = roomsData ? roomsData[currentActiveRoomIndex]?.roomUsers?.length : null
 
     const displayNumberOfMembers = (numberOfMembers = null) => {
         if (numberOfMembers === null || numberOfMembers === undefined) {
@@ -54,24 +55,29 @@ const ChatHeader = ({}) => {
             activeRoomId={roomId || null}
             activeRoomIndex={currentActiveRoomIndex || null}
             mongoDbUserId={mongoDbUserId || null}
-            roomName={roomsData ? roomsData[currentActiveRoomIndex].roomName : null}
+            roomName={roomsData ? roomsData[currentActiveRoomIndex]?.roomName : null}
         />
 
         <AddMoreUsersModal
             updateAddUsersModalVisible={updateAddUsersModalVisible}
             setUpdateAddUsersModalVisible={setUpdateAddUsersModalVisible}
-        
+            activeRoomId={roomId || null}
+            mongoDbUserId={mongoDbUserId || null}
         />
 
         <RemoveUsersModal
             removeUsersModalVisible={removeUsersModalVisible}
             setRemoveUsersModalVisible={setRemoveUsersModalVisible}
-        
+            activeRoomId={roomId || null}
+            mongoDbUserId={mongoDbUserId || null}
+            usersList={roomsData ? roomsData[currentActiveRoomIndex].roomUsers : null}
         />
 
         <DeleteGroup
             deleteGroupModalVisible={deleteGroupModalVisible}
             setDeleteGroupModalVisible={setDeleteGroupModalVisible}
+            activeRoomId={roomId || null}
+            mongoDbUserId={mongoDbUserId || null}
         />
 
 
@@ -85,9 +91,17 @@ const ChatHeader = ({}) => {
                 </div>
 
                 <div className='chat-header__meta-data'>
-                    <h3 className='meta-data__group-name'>
-                        {roomsData ? roomsData[currentActiveRoomIndex].roomName : "Loading..."}
-                    </h3>
+                    {
+                        isLoading ?
+
+                        <h3 className='meta-data__group-name'>
+                            Loading...
+                        </h3>
+                        :
+                        <h3 className='meta-data__group-name'>
+                            {roomsData ? roomsData[currentActiveRoomIndex]?.roomName : "Loading..."}
+                        </h3>
+                    }
 
                     {displayNumberOfMembers(numberOfMembers)}
 
