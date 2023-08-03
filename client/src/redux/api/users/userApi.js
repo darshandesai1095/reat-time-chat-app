@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const userApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/users' }),
+    tagTypes: ['User'],
     endpoints: (build) => ({
 
         createNewUser: build.mutation({
@@ -9,7 +10,8 @@ export const userApi = createApi({
                 url: '/create',
                 method: 'POST',
                 body: userData
-            })
+            }),
+            invalidatesTags: ['User']
         }),
 
         getUserByMongoDBUserId: build.query({
@@ -17,13 +19,15 @@ export const userApi = createApi({
                 url: `/${userId}`,
                 method: 'GET',
             }),
+            providesTags: ['User']
         }),
 
         getUserByFirebaseUserId: build.query({
-            query: (firebaseUserId) => ({
+            query: ({firebaseUserId}) => ({
                 url: `/firebase/${firebaseUserId}`,
                 method: 'GET',
             }),
+            providesTags: ['User']
         }),
 
         updateUsername: build.mutation({
@@ -31,14 +35,14 @@ export const userApi = createApi({
                 url: `/updateUsername/${userId}`,
                 method: 'PATCH',
                 body: { newUsername }
-            })
+            }),
         }),
 
         deleteUser: build.mutation({
             query: (userId) => ({ //mongoDbId
                 url: `/${userId}`,
                 method: 'DELETE',
-            })
+            }),
         }),
 
         
@@ -52,5 +56,5 @@ export const {
     useGetUserByFirebaseUserIdQuery,
     useUpdateUsernameMutation,
     useDeleteUserMutation,
-    useGetMessageQuery
+    invalidatesTags
 } = userApi;
