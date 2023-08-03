@@ -1,21 +1,24 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
-import { userApi } from './api/users/userApi'
-import { roomApi } from './api/rooms/roomApi'
 import userReducer from './features/users/userSlice'
+import { userApi } from './api/users/userApi'
+import roomReducer from './features/rooms/roomSlice'
+import { roomApi } from './api/rooms/roomApi'
+import chatLogReducer from './features/chatLogs/chatLogSlice'
+
 
 export const store = configureStore({
     reducer: {
         user: userReducer,
         [userApi.reducerPath]: userApi.reducer,
-        // room: roomReducer,
-        [roomApi.reducerPath]: roomApi.reducer
+        rooms: roomReducer,
+        chatLog: chatLogReducer
     },
 
     middleware: (getDefaultMiddleware) => (
         getDefaultMiddleware().concat(
           userApi.middleware, 
-          roomApi.middleware
+          // roomApi.middleware
         )
     )
 })
