@@ -1,17 +1,15 @@
 import MessageBubble from '../MessageBubble/MessageBubble';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
-import padNumberWithZeros from '../../../functions/misc/padNumbersWithZeros'
 import './MessagesWindow.css';
 
 const MessagesWindow = ({socket, room, username, messageList, setMessageList}) => {
 
     useEffect(() => {
-  
         socket.on("receive", (data) => {
           setMessageList(list => [...list, data])
         })
-    
+        
     }, [socket])
 
     return (
@@ -30,7 +28,6 @@ const MessagesWindow = ({socket, room, username, messageList, setMessageList}) =
                     })
                 }
             </div>
-
      </ScrollToBottom>
     )
 }
