@@ -16,7 +16,6 @@ const MessageInput = ({setCurrentMessage, currentMessage, sendMessage}) => {
     }
  
     const onEmojiClick = (event) => {
-
         setCurrentMessage(prev => prev + event.emoji)
         console.log(event.emoji)
     }
