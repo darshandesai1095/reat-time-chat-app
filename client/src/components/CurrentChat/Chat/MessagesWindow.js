@@ -9,7 +9,7 @@ const MessagesWindow = ({socket, room, username, messageList, setMessageList}) =
         socket.on("receive", (data) => {
           setMessageList(list => [...list, data])
         })
-        
+
     }, [socket])
 
     return (
@@ -20,7 +20,7 @@ const MessagesWindow = ({socket, room, username, messageList, setMessageList}) =
                     return (
                         <MessageBubble
                             key={index}
-                            prevMessageUser={messageList[index-1]?.username || null}
+                            prevMessageSender={messageList[index-1]?.username || null}
                             user={username}
                             messageData={messageObj}
                         />

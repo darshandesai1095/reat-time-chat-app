@@ -1,14 +1,14 @@
 import './MessageBubble.css';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 
-const MessageBubble = ({user, prevMessageUser, messageData}) => {
+const MessageBubble = ({user, prevMessageSender, messageData}) => {
 
     const { room, username, currentMessage, time } = messageData
 
     return (
         <div className={`message-bubble ${username === user ? "align-right" : null}`}>
 
-            <p className={`message-bubble__username ${prevMessageUser === username ? "hidden" : "visible"}` }>
+            <p className={`message-bubble__username ${prevMessageSender === username ? "hidden" : "visible"}` }>
                 {username}
             </p>
 

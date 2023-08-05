@@ -80,30 +80,36 @@ io.on('connection', (socket) => {
     })
 
     socket.on('sendMessage', (messageData) => { 
-        // messageData = { roomId, senderId, username, email, messageContent }
+        // messageData = { roomId, senderId, username, messageContent }
+        console.log("new message: ", messageData)
 
-        // sent confirmation to sender -> once confirmation recieved update redux store
+        // send confirmation to sender -> once confirmation recieved update redux store
         const messageId = uuidv4()
         const date = new Date()
         const formattedDate = format(date, 'yyyy-MM-dd HH:mm:ss')
         socket.emit('messageSent', { messageSent: true, uuid: messageId, date: formattedDate })
 
         // get previous messages from redis and append new message
+        let messageLog
         client.HGET('chatLogs', messageData.roomId, (error, jsonMessageLog) => {
             if (error) {
                 console.log(`Error getting messages from Redis:`, error)
+            } else {
+                messageLog = jsonMessageLog ? JSON.parse(jsonMessageLog) : []
             }
         })
 
-        const message = {
+        // save to redis
+        const currentMessage = {
             messageId: messageId,
             senderId: senderId,
+            username: username,
             messageContent: messageContent,
             dateCreated: formattedDate
         }
 
-        // save to redis
-        client.HSET('chatLogs', messageData.roomId, JSON.stringify())
+        client.HSET('chatLogs', messageData.roomId, JSON.stringify([...messageLog, currentMessage]))
+
         // send message to rest of room 
         // messageData = { roomId, { messageId, senderId, messageContent, dateCreated} }
         // senderId: mapped to -> userId, firebaseUserId, email, username
@@ -114,6 +120,8 @@ io.on('connection', (socket) => {
         deleteUser(socket.id)
     })
 })
+
+const interval = setInterval(() => console.log("running"), 1000)
 
 
   
