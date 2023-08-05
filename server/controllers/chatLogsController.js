@@ -92,16 +92,24 @@ const chatLogController = {
                 const chatLog = await ChatLog.find({ roomId })
                 allChats.push({
                     roomId: room._id,
-                    // roomName: room.roomName,
-                    // roomUsers: room.users?.map(user => {
-                    //     return ({
-                    //         userId: user._id,
-                    //         firebaseUserId: user.firebaseUserId,
-                    //         email: user.email,
-                    //         username: user.username,
-                    //     })
-                    //     }) || null,
-                    messagesArray: chatLog.messages // convert messageSender to userName/email
+                    roomName: room.roomName, // delete
+                    roomUsers: room.users?.map(user => {
+                        return ({
+                            userId: user._id,
+                            firebaseUserId: user.firebaseUserId,
+                            email: user.email,
+                            username: user.username,
+                        })
+                        }) || null, // delete
+                    messagesArray: [
+                        {messageContent: room._id},
+                        {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...", messageSender: "user1"},
+                        {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...", messageSender: "user1"},
+                        {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...", messageSender: "user2"},
+                        {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...", messageSender: "user1"},
+                        {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", messageSender: "user2"}
+                    ],
+                    messages: chatLog.messages // convert messageSender to userName/email
                 })
             }
             
