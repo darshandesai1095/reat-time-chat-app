@@ -9,6 +9,8 @@ const ChatGroup = ({ connected, roomName, roomId, setRoom, joinRoom, active }) =
         dispatch(changeCurrentActiveRoom(roomId))
     }
 
+    const chatLog = useSelector(state => state.chatLogs?.chatLogData?.filter(chatLog => chatLog.roomId === roomId)[0])
+
     return (
         <div 
             className={`chat-group ${active ? "active-chat" : null}`} 
@@ -22,10 +24,13 @@ const ChatGroup = ({ connected, roomName, roomId, setRoom, joinRoom, active }) =
                         <p>{roomName}</p>
                     </div>
                     <div className='message__preview'>
-                        <p>Lorem ipsum dolor sit amet, 
-                            consectetur adipiscing elit, 
-                            sed do eiusmod tempor incididunt 
-                            ut labore et dolore magna aliqua..
+                        <p>
+                            {
+                                chatLog?.messagesArray ?
+                                chatLog.messagesArray[chatLog?.messagesArray?.length -1].messageContent
+                                :
+                                "Loading Content..."
+                            }  
                         </p>
                     </div>
         
@@ -70,3 +75,8 @@ export default ChatGroup
                 onClick={() => joinRoom({room})}>
                 Join Room
             </button> */
+
+            // Lorem ipsum dolor sit amet, 
+            //                 consectetur adipiscing elit, 
+            //                 sed do eiusmod tempor incididunt 
+            //                 ut labore et dolore magna aliqua..
