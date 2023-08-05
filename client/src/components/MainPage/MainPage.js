@@ -3,19 +3,11 @@ import NavBar from '../NavBar/NavBar';
 import AllChats from '../AllChats/AllChats';
 import CurrentChat from '../CurrentChat/CurrentChat';
 import { useState, useEffect } from 'react';
-import { io } from "socket.io-client";
+import { socket } from '../../redux/socket/socketIO';
 import { useSelector, useDispatch } from 'react-redux'
 import { getUserByFirebaseUserId } from '../../redux/features/users/userSlice';
 import { getChatLogsByFirebaseUserId } from '../../redux/features/chatLogs/chatLogSlice';
 
-
-
-const URL = "http://localhost:8080"
-const socket = io(URL, {
-        reconnection: true,       
-        reconnectionAttempts: Infinity,
-        reconnectionDelay: 1000
-    })
 
 
 const MainPage = () => {

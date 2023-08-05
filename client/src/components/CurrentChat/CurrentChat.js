@@ -5,12 +5,13 @@ import MessagesWindow from './Chat/MessagesWindow';
 import MessageInput from './MessageInput/MessageInput';
 import ChatHeader from './ChatHeader/ChatHeader';
 import { useSelector, useDispatch } from 'react-redux';
-import { getChatLogsByRoomsArray } from '../../redux/features/chatLogs/chatLogSlice';
 import StartNewChat from './StartNewChat/StartNewChat';
+import { sendMessageToServer } from '../../redux/features/chatLogs/chatLogSlice';
 
 
 const CurrentChat = ({socket, connected, username, room, setRoom, joinRoom}) => {
 
+    const dispatch = useDispatch()
 
     const totalGroups = useSelector(state => state.rooms.roomsData?.length)
 
@@ -19,35 +20,28 @@ const CurrentChat = ({socket, connected, username, room, setRoom, joinRoom}) => 
 
     const sendMessage = async () => {
         if (currentMessage.trim() === "") { return }
+
+         // messageData = { roomId, senderId, username, messageContent }
         const messageData = {
-          room: room,
-          username: username,
-          currentMessage: currentMessage,
-          time:   padNumberWithZeros(new Date(Date.now()).getHours(), 2) +
-                  ":" +
-                  padNumberWithZeros(new Date(Date.now()).getMinutes(), 2)
+            roomId: "100",
+            senderId: "1",
+            username: "darshan",
+            messageContent: currentMessage
         }
+        await Promise.resolve(dispatch(sendMessageToServer(messageData)))
+        // const messageData = {
+        //   room: room,
+        //   username: username,
+        //   currentMessage: currentMessage,
+        //   time:   padNumberWithZeros(new Date(Date.now()).getHours(), 2) +
+        //           ":" +
+        //           padNumberWithZeros(new Date(Date.now()).getMinutes(), 2)
+        // }
     
-        await socket.emit("response", messageData)
-        setMessageList(list => [...list, messageData])
-        setCurrentMessage("")
+        // await socket.emit("response", messageData)
+        // setMessageList(list => [...list, messageData])
+        // setCurrentMessage("")
       }
-
-      // const activeRoomId = useSelector(state => state.rooms.currentActiveRoomId)
-      // const dispatch = useDispatch()
-
-      // const getChatLog = async () => {
-      //   try {
-      //     await Promise.resolve(
-      //       dispatch(
-      //         getChatLogsByRoomsArray([activeRoomId])
-      //       )
-      //     )
-      //   } catch (error) {
-      //       console.log("get chat log: ", error)
-      //   }
-      // }
-      // getChatLog()
 
 
   return (

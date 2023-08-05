@@ -56,7 +56,6 @@ const MessageInput = ({setCurrentMessage, currentMessage, sendMessage}) => {
          
                 </div> 
 
-
                 <textarea
                     type="text"
                     rows="1"
@@ -64,8 +63,7 @@ const MessageInput = ({setCurrentMessage, currentMessage, sendMessage}) => {
                     onChange={(e) => handleupdateMessage(e)}
                     value={currentMessage}
                     onKeyDown={(e) => handleKeyDown(e)}
-                >
-                </textarea>
+                />
                 
                 <div className='message-input__buttons'>
                     <SendIcon
