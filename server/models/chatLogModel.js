@@ -10,14 +10,18 @@ const chatLogSchema = new mongoose.Schema({
     messages: [
         {
             messageId: {
-                type: mongoose.Schema.Types.ObjectId,
-                default: mongoose.Types.ObjectId, // This generates a new unique ObjectId for each message
+                type: String,
+                required: true,
             },
 
-            messageSender: {
+            senderId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User',
                 required: true
+            },
+
+            username: {
+                type: String
             },
 
             messageContent: {
@@ -25,7 +29,7 @@ const chatLogSchema = new mongoose.Schema({
                 required: true,
             },
 
-            messageCreated: {
+            dateCreated: {
                 type: Date,
                 default: Date.now,
                 required: true
