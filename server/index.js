@@ -1,8 +1,17 @@
 const express = require("express")
 const { Server } = require("socket.io")
 const cors = require("cors")
-require('dotenv').config()
 const connectToDatabase = require("./config/connectToDatabse")
+const redis = require("redis")
+const { v4: uuidv4 } = require('uuid')
+const { format } = require('date-fns')
+require('dotenv').config()
+
+
+const client = redis.createClient()
+client.on('error', (error) => console.log('Redis Client Error', error))
+client.connect()
+
 
 const app = express()
 app.use(cors())
@@ -46,13 +55,14 @@ const io = new Server(server, {
 })
   
 io.on("connection", (socket) => {
-    console.log(`${socket.id} connected`)
+    console.log(`socket.io ID: ${socket.id} connected to server, ${new Date()}`)
 
     socket.on("join", (data) => {
         socket.join(data.room)
+        console.log(`joined room ${data.room}`)
     })
 
-    socket.on("send", (data) => {
+    socket.on("response", (data) => {
         socket.to(data.room).emit("receive", data)
     })
 
@@ -61,15 +71,51 @@ io.on("connection", (socket) => {
     })
 })
 
-module.exports = app
 
 
-// http://localhost:8080/api/users/create
+io.on('connection', (socket) => {
 
-// {
-//     "firebaseUserId": "id001",
-//     "email": "email001@gmail.com",
-//     "username": "username001",
-//     "profilePictureUrl": "test_url_string"
-// }
+    socket.on('login', (userData) => {
+        userData.rooms.forEach(roomId => socket.join(roomId))
+    })
+
+    socket.on('sendMessage', (messageData) => { 
+        // messageData = { roomId, senderId, username, email, messageContent }
+
+        // sent confirmation to sender -> once confirmation recieved update redux store
+        const messageId = uuidv4()
+        const date = new Date()
+        const formattedDate = format(date, 'yyyy-MM-dd HH:mm:ss')
+        socket.emit('messageSent', { messageSent: true, uuid: messageId, date: formattedDate })
+
+        // get previous messages from redis and append new message
+        client.HGET('chatLogs', messageData.roomId, (error, jsonMessageLog) => {
+            if (error) {
+                console.log(`Error getting messages from Redis:`, error)
+            }
+        })
+
+        const message = {
+            messageId: messageId,
+            senderId: senderId,
+            messageContent: messageContent,
+            dateCreated: formattedDate
+        }
+
+        // save to redis
+        client.HSET('chatLogs', messageData.roomId, JSON.stringify())
+        // send message to rest of room 
+        // messageData = { roomId, { messageId, senderId, messageContent, dateCreated} }
+        // senderId: mapped to -> userId, firebaseUserId, email, username
+        io.to(messageData.roomId).emit('message', messageData)
+    })
+
+    socket.on('disconnect', () => {
+        deleteUser(socket.id)
+    })
+})
+
+
   
+
+module.exports = { app, client }
