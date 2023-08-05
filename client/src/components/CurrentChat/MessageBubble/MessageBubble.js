@@ -16,6 +16,7 @@ const MessageBubble = ({user, prevMessageUser, messageData}) => {
                 <p className='main__message'>{currentMessage}</p>
                 <div className='main__meta-data'>
                     <p className='meta-data__time'>{time}</p>
+                    {/* <AddCircleOutlineRoundedIcon style={{transform:"scale(0.5)", margin:"0px", padding:"0px"}}/> */}
                     <p className='meta-data__add-to-list'></p>
                 </div>
             </div>
