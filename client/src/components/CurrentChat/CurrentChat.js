@@ -11,13 +11,14 @@ import StartNewChat from './StartNewChat/StartNewChat';
 
 const CurrentChat = ({socket, connected, username, room, setRoom, joinRoom}) => {
 
+
     const totalGroups = useSelector(state => state.rooms.roomsData?.length)
 
     const [currentMessage, setCurrentMessage] = useState("")
     const [messageList, setMessageList] = useState([])
 
     const sendMessage = async () => {
-        if (currentMessage === "") return
+        if (currentMessage.trim() === "") { return }
         const messageData = {
           room: room,
           username: username,
@@ -27,26 +28,26 @@ const CurrentChat = ({socket, connected, username, room, setRoom, joinRoom}) => 
                   padNumberWithZeros(new Date(Date.now()).getMinutes(), 2)
         }
     
-        await socket.emit("send", messageData)
+        await socket.emit("response", messageData)
         setMessageList(list => [...list, messageData])
         setCurrentMessage("")
       }
 
-      const activeRoomId = useSelector(state => state.rooms.currentActiveRoomId)
-      const dispatch = useDispatch()
+      // const activeRoomId = useSelector(state => state.rooms.currentActiveRoomId)
+      // const dispatch = useDispatch()
 
-      const getChatLog = async () => {
-        try {
-          await Promise.resolve(
-            dispatch(
-              getChatLogsByRoomsArray([activeRoomId])
-            )
-          )
-        } catch (error) {
-            console.log("get chat log: ", error)
-        }
-      }
-      getChatLog()
+      // const getChatLog = async () => {
+      //   try {
+      //     await Promise.resolve(
+      //       dispatch(
+      //         getChatLogsByRoomsArray([activeRoomId])
+      //       )
+      //     )
+      //   } catch (error) {
+      //       console.log("get chat log: ", error)
+      //   }
+      // }
+      // getChatLog()
 
 
   return (
