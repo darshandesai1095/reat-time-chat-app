@@ -6,9 +6,17 @@ import { useState, useEffect } from 'react';
 import { io } from "socket.io-client";
 import { useSelector, useDispatch } from 'react-redux'
 import { getUserByFirebaseUserId } from '../../redux/features/users/userSlice';
+import { getChatLogsByFirebaseUserId } from '../../redux/features/chatLogs/chatLogSlice';
 
-const URL = "http://localhost:8080/"
-const socket = io.connect(URL)
+
+
+const URL = "http://localhost:8080"
+const socket = io(URL, {
+        reconnection: true,       
+        reconnectionAttempts: Infinity,
+        reconnectionDelay: 1000
+    })
+
 
 const MainPage = () => {
 
@@ -16,7 +24,7 @@ const MainPage = () => {
 
     const [connected, setConnected] = useState(false)
     const [username, setUsername] = useState(`User_${Math.floor(Math.random()*1000)}`)
-    const [room, setRoom] = useState(100)
+    const [room, setRoom] = useState(99)
 
     const joinRoom = (data) => {
         socket.emit("join", data)
@@ -26,6 +34,9 @@ const MainPage = () => {
         setConnected(true)
     }, [socket])
 
+    useEffect(() => {
+        joinRoom({room: 99})
+    }, [])
 
     const firebaseUserId = useSelector(state => state.user.firebaseUserId)
     const userError = useSelector(state => state.user.userError)
@@ -43,6 +54,13 @@ const MainPage = () => {
         }
 
     }, [firebaseUserId, dispatch])
+
+    // load all chats into redux store
+    const loadChats = async () => {
+        console.log("loading chats...")
+        await Promise.resolve(dispatch(getChatLogsByFirebaseUserId(firebaseUserId)))
+    }
+    loadChats()
 
 
     return (
@@ -62,20 +80,3 @@ const MainPage = () => {
     }
 
     export default MainPage;
-
-
-          // <>
-          //   <GroupsCol 
-          //     connected={connected}
-          //     username={username}
-          //     room={room}
-          //     setRoom={setRoom}
-          //     joinRoom={joinRoom}
-          //   />
-    
-          //   <Chat
-          //     socket={socket}
-          //     room={room}
-          //     username={username}
-          //   />
-          // </>
