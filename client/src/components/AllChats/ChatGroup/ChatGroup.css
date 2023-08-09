@@ -29,8 +29,8 @@
 }
 
 .chat-group__avatar {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
 }
 
 .chat-group__message {
@@ -57,7 +57,15 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     line-height: 1.2rem;
+    /* min-height: 2.4rem;
+    max-height: 2.4rem; */
 }
+
+.message__preview > .begin-new-chat {
+    opacity: 1 !important;
+    font-weight: 700;
+}
+
 
 .meta-data__time > p {
     font-weight: 700;

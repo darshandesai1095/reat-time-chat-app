@@ -3,7 +3,6 @@ import { useState } from 'react';
 import SendIcon from '@mui/icons-material/Send';
 import SentimentSatisfiedRoundedIcon from '@mui/icons-material/SentimentSatisfiedRounded';
 import EmojiPicker from 'emoji-picker-react';
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 const MessageInput = ({setCurrentMessage, currentMessage, sendMessage}) => {
@@ -17,7 +16,6 @@ const MessageInput = ({setCurrentMessage, currentMessage, sendMessage}) => {
  
     const onEmojiClick = (event) => {
         setCurrentMessage(prev => prev + event.emoji)
-        console.log(event.emoji)
     }
 
     const [emojiKeyboardVisible, setEmojiKeyboardVisible] = useState(false)

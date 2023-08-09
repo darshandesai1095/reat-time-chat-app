@@ -1,6 +1,9 @@
 const ChatLog = require('../models/chatLogModel')
 const Room = require('../models/roomModel')
 const User = require('../models/userModel')
+const mongoose = require('mongoose')
+const { client, hgetAsync, hsetAsync, connectToRedis  } = require('../config/connectToRedis')
+
 
 const chatLogController = {
 
@@ -66,7 +69,6 @@ const chatLogController = {
                 })
             }
 
-            console.log(allChats)
             res.status(201).json(allChats)
 
         } catch (error) {
@@ -76,49 +78,85 @@ const chatLogController = {
 
     getChatLogsByFirebaseUserId: async (req, res) => {
         try {
+            console.log("trying...")
             const { firebaseUserId } = req.params
+            console.log("firebaseUserId...", firebaseUserId)
 
-            const user = await User.find({firebaseUserId})
+            const user = await User.find({firebaseUserId: firebaseUserId})
+            console.log("user", user)
             const roomIdsArray = user[0].rooms.map(roomIdObj => roomIdObj.toString())
-            console.log(user)
+            console.log("roomIdsArray", roomIdsArray)
 
-            const allChats = []
+            const allChats = [] // mongo db (persistent) + redis (cached)
 
+            console.log("starting for loop...")
             for (let roomId of roomIdsArray) {
+
                 const room = await Room.findById(roomId).populate("users")
                 if (!room) { 
+                    console.log("room", room, "does not exist")
                     continue 
                 }
+
+                // get cached messages from redis
+                const jsonMessageLog = await client.HGET('chatLogs', roomId)
+                console.log("jsonMessageLog", jsonMessageLog)
+                const cachedChats = jsonMessageLog ? JSON.parse(jsonMessageLog) : []
+                console.log("cachedChats", cachedChats)
+
+
                 const chatLog = await ChatLog.find({ roomId })
+                console.log("chatlof", chatLog)
                 allChats.push({
                     roomId: room._id,
                     roomName: room.roomName, // delete
                     roomUsers: room.users?.map(user => {
                         return ({
                             userId: user._id,
-                            firebaseUserId: user.firebaseUserId,
+                            firebaseUserId: user.firebaseUserId, // delete
                             email: user.email,
                             username: user.username,
                         })
                         }) || null, // delete
-                    messagesArray: [
-                        {messageContent: room._id},
-                        {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...", messageSender: "user1"},
-                        {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...", messageSender: "user1"},
-                        {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...", messageSender: "user2"},
-                        {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...", messageSender: "user1"},
-                        {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", messageSender: "user2"}
-                    ],
-                    messages: chatLog.messages // convert messageSender to userName/email
+                    // messagesArray: [
+                    //     // {messageContent: room._id},
+                    //     // {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...", messageSender: "user1"},
+                    //     // {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...", messageSender: "user1"},
+                    //     // {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...", messageSender: "user2"},
+                    //     // {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...", messageSender: "user1"},
+                    //     // {messageContent: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", messageSender: "user2"}
+                    // ],
+                    messagesArray: [...chatLog[0].messages, ...cachedChats] || [] // convert messageSender to userName/email
                 })
             }
+
+            console.log("all chats", allChats)
             
             res.status(201).send(allChats)
 
         } catch (error) {
+            console.log("error:", error.message)
+            res.status(500).json({error: error.message})
+        }
+    },
+
+
+    redisTest: async (req, res) => {
+        try {
+            console.log("running test...")
+            await client.HSET('userInfo', 'nombre2', 'bob')
+            console.log("part 2...")
+            const value = await client.HGET('userInfo', 'nombre2')
+            console.log("nombre1...", value)
+        
+            res.status(201).json(value)
+
+        } catch (error) {
+            console.log("redis error", error.message)
             res.status(500).json({error: error.message})
         }
     }
+
 }
 
 module.exports = chatLogController

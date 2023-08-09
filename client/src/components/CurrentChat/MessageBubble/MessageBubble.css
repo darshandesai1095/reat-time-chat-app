@@ -3,7 +3,7 @@
 
 .message-bubble {
     align-self: flex-start;
-    margin: 3px 0;
+    margin: 2px 0;
     max-width: 70%;
     border-radius: 15px;
     border-top-left-radius: 0;

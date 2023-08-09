@@ -3,49 +3,47 @@ import NavBar from '../NavBar/NavBar';
 import AllChats from '../AllChats/AllChats';
 import CurrentChat from '../CurrentChat/CurrentChat';
 import { useState, useEffect } from 'react';
-import { socket } from '../../redux/socket/socketIO';
 import { useSelector, useDispatch } from 'react-redux'
 import { getUserByFirebaseUserId } from '../../redux/features/users/userSlice';
 import { getChatLogsByFirebaseUserId } from '../../redux/features/chatLogs/chatLogSlice';
-
-
+import { socket, socketIoListenForMessage } from '../../redux/socket/socketIO';
+import { socketIoJoinRooms } from '../../redux/features/chatLogs/chatLogSlice';
 
 const MainPage = () => {
 
     const dispatch = useDispatch()
 
     const [connected, setConnected] = useState(false)
-    const [username, setUsername] = useState(`User_${Math.floor(Math.random()*1000)}`)
     const [room, setRoom] = useState(99)
 
-    const joinRoom = (data) => {
-        socket.emit("join", data)
-    }
 
     useEffect(() => {
         setConnected(true)
+        socketIoListenForMessage(dispatch)
     }, [socket])
-
-    useEffect(() => {
-        joinRoom({room: 99})
-    }, [])
 
     const firebaseUserId = useSelector(state => state.user.firebaseUserId)
     const userError = useSelector(state => state.user.userError)
+    const roomsArray = useSelector(state => state.user.rooms)
 
     useEffect(() => {
 
-        if (firebaseUserId) {
-            try {
-                dispatch(getUserByFirebaseUserId( { firebaseUserId } ))
-            } catch (error) {
-                console.log(error, userError)
+        const getUserInfo = async () => {
+            if (firebaseUserId) {
+                try {
+                    dispatch(getUserByFirebaseUserId( { firebaseUserId } ))
+                } catch (error) {
+                    console.log("Error getting user data", error, userError)
+                }
+            } else {
+                console.log("no id") // send to error / loading page
             }
-        } else {
-            console.log("no id") // send to error/loading page
         }
+        
+        Promise.resolve(getUserInfo())
 
-    }, [firebaseUserId, dispatch])
+    }, [firebaseUserId])
+
 
     // load all chats into redux store
     const loadChats = async () => {
@@ -54,19 +52,20 @@ const MainPage = () => {
     }
     loadChats()
 
+    const joinRoomsSocketIo = async () => {
+        console.log("joinRoomsSocketIo ...")
+        if (roomsArray) {
+            await Promise.resolve(dispatch(socketIoJoinRooms(roomsArray)))
+        }
+    }
+    joinRoomsSocketIo()
+
 
     return (
         <div className="main-page">
                 <NavBar/>
                 <AllChats/>
-                <CurrentChat
-                    socket={socket}
-                    connected={connected}
-                    username={username}
-                    room={room}
-                    setRoom={setRoom}
-                    joinRoom={joinRoom}
-                /> 
+                <CurrentChat/> 
         </div>
     );
     }

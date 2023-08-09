@@ -31,4 +31,8 @@ router.get('/getChatLogs', chatLogController.getChatLogsByRoomsArray)
 // route for getting chat logs by firebase user ID
 router.get('/getChatLogsByFirebaseUserId/:firebaseUserId', chatLogController.getChatLogsByFirebaseUserId)
 
+// route for getting chat logs by firebase user ID
+router.get('/redisTest', chatLogController.redisTest)
+
+
 module.exports = router

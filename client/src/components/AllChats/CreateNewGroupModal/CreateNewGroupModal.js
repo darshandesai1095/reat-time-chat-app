@@ -60,10 +60,10 @@ const CreateNewGroupModal = ({showCreateGroupPopup, setShowCreateGroupPopup}) =>
                     {
                         emails.map( (email, i) => {
                             return (
-                                <div className='email-input-field'>
+                                <div className='email-input-field' key={i}>
 
                                     <InputField
-                                        key={i}
+                                        // key={i}
                                         value={emails[i]}
                                         setValue={(newValue) => {
                                             const updatedEmails = [...emails]

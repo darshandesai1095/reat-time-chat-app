@@ -34,13 +34,27 @@ export const getChatLogsByFirebaseUserId = createAsyncThunk(
     }
 )
 
-export const sendMessageToServer = createAsyncThunk(
-    'chatLogs/sendMessageToServer', async (messageData) => {
+export const socketIoJoinRooms = createAsyncThunk(
+    'chatLogs/socketIoJoinRooms', async (roomsArray) => {
+    return new Promise((resolve, reject) => {
+        socket.emit('joinRooms', roomsArray, (response) => {
+          // Handle any response from the server if needed
+          if (response.success) {
+            resolve()
+          } else {
+            reject(response.error)
+          }
+        })
+      })
+    }
+)
+
+export const socketIoSendMessageToServer = createAsyncThunk(
+    'chatLogs/socketIoSendMessageToServer', async (messageData) => {
     return new Promise((resolve, reject) => {
         socket.emit('sendMessage', messageData, (response) => {
           // Handle any response from the server if needed
           if (response.success) {
-            console.log("response",response.data)
             resolve(response.data)
           } else {
             reject(response.error)
@@ -51,8 +65,9 @@ export const sendMessageToServer = createAsyncThunk(
 )
 
 const initialState = {
-    chatLogData: null,
+    chatLogData: null, // [ {rm1}, {rm2}, {rm3} ] -> { roomId, roomName, roomUsers, messagesArray[{},{},{}] }
     loading: false,
+    roomsJoined: false,
     error: false
 }
 
@@ -68,6 +83,17 @@ export const chatLogSlice = createSlice({
             state.loading = false
             state.error = false
             state.chatLogData = action.payload
+        },
+        // push message to chat log (optimistic updates)
+        // if error in builder.addCase(socketIoSendMessageToServer.rejected...
+        // update message status in builder
+        pushMessageToChatLog: (state, action) => {
+            // get current room id from action.payload
+            // use room id to find room index in chatLogData
+            // state.chatLogData[index].messagesArray.push({})
+            const roomId = action.payload.roomId
+            const index = state.chatLogData?.findIndex(rooms => rooms.roomId == roomId)
+            state.chatLogData[index].messagesArray = [...state.chatLogData[index]?.messagesArray, action.payload] || null
         }
     },
     extraReducers: (builder) => {
@@ -91,13 +117,11 @@ export const chatLogSlice = createSlice({
         builder.addCase(getChatLogsByFirebaseUserId.pending, (state) => {
             state.loading = true
             state.error = false
-            console.log("loading chat logs")
         })
         builder.addCase(getChatLogsByFirebaseUserId.fulfilled, (state, action) => {
             state.loading = false
             state.chatLogData = action.payload
             state.error = null
-            console.log("chat logs", action.payload)
         })
         builder.addCase(getChatLogsByFirebaseUserId.rejected, (state, action) => {
             state.loading = false
@@ -106,22 +130,38 @@ export const chatLogSlice = createSlice({
         })
 
 
-        builder.addCase(sendMessageToServer.pending, (state) => {
+        builder.addCase(socketIoSendMessageToServer.pending, (state) => {
             // state.loading = true
             // state.error = false
-            console.log("*** sending message...")
         })
-        builder.addCase(sendMessageToServer.fulfilled, (state, action) => {
+        builder.addCase(socketIoSendMessageToServer.fulfilled, (state, action) => {
             // state.loading = false
             // state.chatLogData = action.payload
             // state.error = null
-            console.log("*** message sent", action.payload)
+            // add in message id
         })
-        builder.addCase(sendMessageToServer.rejected, (state, action) => {
+        builder.addCase(socketIoSendMessageToServer.rejected, (state, action) => {
             // state.loading = false
             // state.chatLogData = null
             state.error = action.payload 
-            console.log("*** failed to send message", action.payload)
+        })
+
+
+        builder.addCase(socketIoJoinRooms.pending, (state) => {
+            state.loading = true
+            // state.error = false
+        })
+        builder.addCase(socketIoJoinRooms.fulfilled, (state, action) => {
+            // state.loading = false
+            // state.chatLogData = action.payload
+            // state.error = null
+            state.roomsJoined = true
+        })
+        builder.addCase(socketIoJoinRooms.rejected, (state, action) => {
+            // state.loading = false
+            // state.chatLogData = null
+            state.error = action.payload 
+
         })
     }
 })
@@ -130,7 +170,8 @@ export const chatLogSlice = createSlice({
 
 export const { 
    chatLogRequest,
-   loadChatLogSuccess
+   loadChatLogSuccess,
+   pushMessageToChatLog
 } = chatLogSlice.actions
 
 export default chatLogSlice.reducer

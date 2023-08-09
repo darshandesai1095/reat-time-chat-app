@@ -3,11 +3,11 @@ const User = require('../models/userModel')
 const ChatLog = require('../models/chatLogModel')
 const mongoose = require('mongoose')
 
-
 const roomController = {
 
     createNewRoom: async (req, res) => {
         try {
+            console.log("trying...")
             const userId = req.params.userId
             const user = await User.findById(userId)
             if (!user) {
@@ -73,6 +73,7 @@ const roomController = {
             // Respond with the saved user data
             res.status(201).json(newRoom)
             } catch (error) {
+                console.log("create new group error", error.message)
                 res.status(500).json({ error: 'Error creating a new room', message: error.message })
             }
     },  
@@ -210,7 +211,6 @@ const roomController = {
 
     removeUsersFromRoom: async (req, res) => { // also update user document to remove room
         try {
-            console.log("request recieved")
             const roomId = req.params.roomId
             const { emailsArray } = req.body
 
@@ -250,9 +250,7 @@ const roomController = {
     updateRoomName: async (req, res) => {
         try {
             const _id = req.params.roomId
-            console.log(_id)
             const newRoomName = req.body.newRoomName
-            console.log("new room name", newRoomName)
             const room = await Room.findById(_id)
             if (!room) {
                 res.status(404).json({ error: "Room not found" })
@@ -297,7 +295,7 @@ const roomController = {
             res.status(200).json({ message: "Room deleted successfully" })
 
         } catch (error) {
-            console.log(error)
+            console.log("delete room error", error)
             res.status(500).json({ error: "Error deleting room" })
         }
     },

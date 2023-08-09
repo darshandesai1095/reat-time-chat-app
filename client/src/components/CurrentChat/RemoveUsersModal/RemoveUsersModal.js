@@ -55,7 +55,7 @@ const RemoveUsersModal = ({removeUsersModalVisible, setRemoveUsersModalVisible, 
                     {
                         usersListArr.map( (user, i) => {
                             return (
-                                <div className='remove-user__user'>
+                                <div className='remove-user__user' key={i}>
                                     <p className={`${removedUsers.includes(user) && "strikethrough"}`}>
                                         {user}
                                     </p>

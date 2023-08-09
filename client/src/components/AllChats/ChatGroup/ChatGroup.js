@@ -10,7 +10,19 @@ const ChatGroup = ({ connected, roomName, roomId, setRoom, joinRoom, active }) =
     }
 
     const chatLog = useSelector(state => state.chatLogs?.chatLogData?.filter(chatLog => chatLog.roomId === roomId)[0])
-
+    const messagePreview = () => {
+        if (chatLog?.messagesArray) {
+            const lastMessage = chatLog.messagesArray[chatLog.messagesArray?.length - 1]
+            if (lastMessage) {
+                return ( <p> {lastMessage.username} <br/> {lastMessage.messageContent} </p> )
+            } else {
+                return ( <p className='begin-new-chat'>New group created. Click here to begin chat &nbsp;<span>💬</span></p> )
+            }
+        } else {
+            return ( <p className='begin-new-chat'>New group created. Click here to begin chat &nbsp;<span>💬</span></p> )
+        }
+    }
+    
     return (
         <div 
             className={`chat-group ${active ? "active-chat" : null}`} 
@@ -24,14 +36,7 @@ const ChatGroup = ({ connected, roomName, roomId, setRoom, joinRoom, active }) =
                         <p>{roomName}</p>
                     </div>
                     <div className='message__preview'>
-                        <p>
-                            {
-                                chatLog?.messagesArray ?
-                                chatLog.messagesArray[chatLog?.messagesArray?.length -1].messageContent
-                                :
-                                "Loading Content..."
-                            }  
-                        </p>
+                        {messagePreview()}
                     </div>
         
                 </div>
@@ -44,39 +49,7 @@ const ChatGroup = ({ connected, roomName, roomId, setRoom, joinRoom, active }) =
         
     
         </div>
-    );
+    )
 }
 
 export default ChatGroup
-
-            /* <input 
-                type="text" 
-                placeholder='room'
-                onChange={(e) => setRoom(e.target.value)}
-                value={username}
-                disabled
-            />
-
-            <button 
-                onClick={() => joinRoom({room})}>
-                Username
-            </button>
-            
-
-            <input 
-                type="text" 
-                placeholder='room'
-                onChange={(e) => setRoom(e.target.value)}
-                value={room}
-                disabled
-            />
-
-            <button 
-                onClick={() => joinRoom({room})}>
-                Join Room
-            </button> */
-
-            // Lorem ipsum dolor sit amet, 
-            //                 consectetur adipiscing elit, 
-            //                 sed do eiusmod tempor incididunt 
-            //                 ut labore et dolore magna aliqua..

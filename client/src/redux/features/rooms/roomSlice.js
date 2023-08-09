@@ -33,8 +33,8 @@ export const createNewRoom = createAsyncThunk(
     async ({userId, roomName, membersArray}, { rejectWithValue }) => {
         try {
             const response = await axios.post(`${baseURL}/rooms/create/${userId}`, {
-                roomName, 
-                membersArray
+                roomName: roomName, 
+                membersArray: membersArray
             })
             return response.data
         } catch (error) {

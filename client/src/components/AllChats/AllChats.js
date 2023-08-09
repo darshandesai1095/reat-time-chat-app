@@ -23,7 +23,7 @@ const AllChats = ({}) => {
                 console.log(error)
             }
         } else {
-            console.log("no id") // send to error/loading page
+            console.log("no id") // send to error / loading page
         }
 
     }, [])
