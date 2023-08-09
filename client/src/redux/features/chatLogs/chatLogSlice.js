@@ -87,13 +87,15 @@ export const chatLogSlice = createSlice({
         // push message to chat log (optimistic updates)
         // if error in builder.addCase(socketIoSendMessageToServer.rejected...
         // update message status in builder
-        pushMessageToChatLog: (state, action) => {
+        pushMessageToChatLog: (state, action) => { // on new message 
             // get current room id from action.payload
             // use room id to find room index in chatLogData
             // state.chatLogData[index].messagesArray.push({})
             const roomId = action.payload.roomId
             const index = state.chatLogData?.findIndex(rooms => rooms.roomId == roomId)
-            state.chatLogData[index].messagesArray = [...state.chatLogData[index]?.messagesArray, action.payload] || null
+            state.chatLogData[index].messagesArray = 
+            [...state.chatLogData[index]?.messagesArray, action.payload.message] 
+            || null
         }
     },
     extraReducers: (builder) => {
