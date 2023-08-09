@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import StartNewChat from './StartNewChat/StartNewChat';
 import { socketIoSendMessageToServer, pushMessageToChatLog } from '../../redux/features/chatLogs/chatLogSlice';
 import { format } from 'date-fns';
+import uuid from 'react-uuid';
 
 
 const CurrentChat = () => {
@@ -27,11 +28,15 @@ const CurrentChat = () => {
 
         const messageData = {
             roomId: roomId,
-            senderId: mongoDbUserId,
-            username: username,
-            messageContent: currentMessage,
-            dateCreated: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-            status: "sending" // ["sending", "sent", "failed to send"]
+            message: {
+              messageId: uuid(),
+              senderId: mongoDbUserId,
+              username: username,
+              messageContent: currentMessage,
+              dateCreated: format(new Date(), 'dd-MM-yy HH:mm'),
+              deliveryStatus: "sending" // ["sending", "sent", "failed to send"]
+            }
+          
         }
 
         dispatch(pushMessageToChatLog(messageData))
