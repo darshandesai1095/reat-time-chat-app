@@ -18,5 +18,6 @@ export const socket = io(URL, {
 export const socketIoListenForMessage = (dispatch) => {
     socket.on("message", (messageData) => {
         dispatch(pushMessageToChatLog(messageData))
+        console.log("new message", messageData)
     })
 }
