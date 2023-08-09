@@ -6,6 +6,7 @@ const { Server } = require("socket.io")
 const { connectToRedis } = require('./config/connectToRedis')
 const { socket } = require('./utils/socketIO')
 const { chatLogsController } = require('./controllers/chatLogsController')
+const { cacheSync } = require('./utils/cacheSync') 
 
 
 const app = express()
@@ -49,10 +50,9 @@ const io = new Server(server, {
     }
 })
 
-connectToRedis()
-    .then(() => {
-        socket(io)
-    })  
+connectToRedis().then(() => { socket(io) })  
+
+cacheSync()
 
 
 module.exports = { app, server, io }
