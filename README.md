@@ -12,6 +12,7 @@ Features include the ability to create multiple groups, add users to groups, rem
 
 ### Technologies Used
 Front-End: React JS, Redux-Toolkit (rtk query, redux-thunk), Firebase (authentication)
+
 Back-End: Node JS, Express JS, Mongo DB, Socket.IO, Redis
 
 ### Screenshots
