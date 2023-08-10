@@ -1,10 +1,14 @@
 const { client } = require('../config/connectToRedis')
 
-
 const socket = (IO) => {
     console.log("socket running")
     IO.on('connection', (socket) => {
         console.log(`socket.io ID: ${socket.id} connected to server...`)
+
+        setInterval(() => socket.emit('ping', {beat: 1}), 30_000)
+        socket.on('pong', (data) => {
+            console.log("Pong received from client")
+        })
 
         socket.on('joinRooms', async (roomsArray, acknowledgment) => {
             console.log("joining rooms")
@@ -16,12 +20,10 @@ const socket = (IO) => {
                 } catch (error) {
                     console.log("join rooms error", error)
                 }
-                console.log("SOCKET", socket.rooms)
             }
         })
 
         socket.on('sendMessage', async (messageData, acknowledgment) => { 
-            console.log("message recieved", messageData)
 
             // messageData = { roomId, senderId, username, messageContent, dateCreated }
 
@@ -29,16 +31,6 @@ const socket = (IO) => {
             try {
                 const jsonMessageLog = await client.hGet('chatLogs', messageData.roomId)
                 const messageLog = jsonMessageLog ? JSON.parse(jsonMessageLog) : []
-
-                // const currentMessage = {
-                //     messageId: messageId, // ✓
-                //     roomId: messageData.roomId, // ✗
-                //     senderId: messageData.senderId, // ✓
-                //     username: messageData.username, // ✓
-                //     messageContent: messageData.messageContent, // ✓
-                //     dateCreated: messageData.dateCreated, // ✓
-                //     status: "sent" // ✗
-                // }
 
                 const currentMessage = {
                     roomId: messageData.roomId,
