@@ -1,18 +1,18 @@
 const express = require("express")
 const cors = require("cors")
-const connectToDatabase = require("./config/connectToDatabse")
+const { connectToDatabase  }= require("./config/connectToDatabse")
 require('dotenv').config()
 const { Server } = require("socket.io")
 const { connectToRedis } = require('./config/connectToRedis')
 const { socket } = require('./utils/socketIO')
-const { chatLogsController } = require('./controllers/chatLogsController')
-const { cacheSync } = require('./utils/cacheSync') 
+const { syncCache } = require('./utils/syncCache')
+const { sendHeartbeat } = require('./utils/sendHeartbeat')
 
 
 const app = express()
 app.use(cors())
 app.use(express.json())
-connectToDatabase()
+connectToDatabase().then(async () => syncCache())
 
 // const allowedOrigins = ['http://example.com', 'http://localhost:3000'];
 // app.use(cors({
@@ -51,8 +51,6 @@ const io = new Server(server, {
 })
 
 connectToRedis().then(() => { socket(io) })  
-
-cacheSync()
 
 
 module.exports = { app, server, io }
