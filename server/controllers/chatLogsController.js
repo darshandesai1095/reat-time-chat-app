@@ -78,35 +78,26 @@ const chatLogController = {
 
     getChatLogsByFirebaseUserId: async (req, res) => {
         try {
-            console.log("trying...")
             const { firebaseUserId } = req.params
-            console.log("firebaseUserId...", firebaseUserId)
 
             const user = await User.find({firebaseUserId: firebaseUserId})
-            console.log("user", user)
             const roomIdsArray = user[0].rooms.map(roomIdObj => roomIdObj.toString())
-            console.log("roomIdsArray", roomIdsArray)
 
             const allChats = [] // mongo db (persistent) + redis (cached)
 
-            console.log("starting for loop...")
             for (let roomId of roomIdsArray) {
 
                 const room = await Room.findById(roomId).populate("users")
                 if (!room) { 
-                    console.log("room", room, "does not exist")
                     continue 
                 }
 
                 // get cached messages from redis
                 const jsonMessageLog = await client.HGET('chatLogs', roomId)
-                console.log("jsonMessageLog", jsonMessageLog)
                 const cachedChats = jsonMessageLog ? JSON.parse(jsonMessageLog) : []
-                console.log("cachedChats", cachedChats)
 
 
                 const chatLog = await ChatLog.find({ roomId })
-                console.log("chatlof", chatLog)
                 allChats.push({
                     roomId: room._id,
                     roomName: room.roomName, // delete
@@ -129,8 +120,6 @@ const chatLogController = {
                     messagesArray: [...chatLog[0].messages, ...cachedChats] || [] // convert messageSender to userName/email
                 })
             }
-
-            console.log("all chats", allChats)
             
             res.status(201).send(allChats)
 
