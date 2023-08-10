@@ -14,7 +14,7 @@ const ChatGroup = ({ connected, roomName, roomId, setRoom, joinRoom, active }) =
         if (chatLog?.messagesArray) {
             const lastMessage = chatLog.messagesArray[chatLog.messagesArray?.length - 1]
             if (lastMessage) {
-                return ( <p> {lastMessage.username} <br/> {lastMessage.messageContent} </p> )
+                return ( <p> {lastMessage.messageContent} </p> )
             } else {
                 return ( <p className='begin-new-chat'>New group created. Click here to begin chat &nbsp;<span>💬</span></p> )
             }
