@@ -20,4 +20,8 @@ export const socketIoListenForMessage = (dispatch) => {
         dispatch(pushMessageToChatLog(messageData))
         console.log("new message", messageData)
     })
+
+    socket.on('ping', (data) => {
+        socket.emit('pong', {beat: 1})
+    })
 }
