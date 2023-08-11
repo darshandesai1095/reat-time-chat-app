@@ -33,10 +33,9 @@ const CurrentChat = () => {
               senderId: mongoDbUserId,
               username: username,
               messageContent: currentMessage,
-              dateCreated: format(new Date(), 'dd-MM-yy HH:mm'),
+              dateCreated: Date.now(),
               deliveryStatus: "sending" // ["sending", "sent", "failed to send"]
             }
-          
         }
 
         dispatch(pushMessageToChatLog(messageData))
