@@ -1,9 +1,18 @@
 import './AllChatsBody.css';
 import ChatGroup from "../ChatGroup/ChatGroup"
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { socketIoListenForGlobalAlert } from '../../../redux/socket/socketIO';
+import { useEffect } from 'react';
 
 
 const AllChatsBody = ({connected, username, room, setRoom, joinRoom}) => {
+
+    const userId = useSelector(state => state.user.mongoDbUserId)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        socketIoListenForGlobalAlert(dispatch, userId)
+    }, [userId])
 
     const currentActiveRoomId = useSelector(state => state.rooms.currentActiveRoomId)
 
