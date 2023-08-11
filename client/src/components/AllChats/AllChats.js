@@ -6,6 +6,7 @@ import CreateNewGroupModal from './CreateNewGroupModal/CreateNewGroupModal';
 import { useSelector, useDispatch } from 'react-redux'
 import { getRoomsByFirebaseUserId } from '../../redux/features/rooms/roomSlice';
 import LoadingModal from './LoadingModal/LoadingModal';
+import { socketIoListenForGlobalAlert } from '../../redux/socket/socketIO';
 
 
 const AllChats = ({}) => {
@@ -15,17 +16,15 @@ const AllChats = ({}) => {
     const isLoading = useSelector(state => state.rooms.loading)
 
     useEffect(() => {
-
         if (firebaseUserId) {
             try {
-                dispatch(getRoomsByFirebaseUserId( firebaseUserId ))
+                dispatch(getRoomsByFirebaseUserId(firebaseUserId))
             } catch (error) {
                 console.log(error)
             }
         } else {
             console.log("no id") // send to error / loading page
         }
-
     }, [])
 
     const [showCreateGroupPopup, setShowCreateGroupPopup] = useState(false)
