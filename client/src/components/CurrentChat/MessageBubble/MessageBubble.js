@@ -4,11 +4,12 @@ import './MessageBubble.css';
 
 const MessageBubble = ({prevMessageSender, messageObj}) => {
 
-    const { username, messageContent, dateCreated } = messageObj
-    const user = useSelector(state => state.user.username)
+    const { username, senderId, messageContent, dateCreated } = messageObj
+    const clientUsername = useSelector(state => state.user.username)
+    const clientsenderId = useSelector(state => state.user.senderId)
 
     return (
-        <div className={`message-bubble ${username === user ? "align-right" : null}`}>
+        <div className={`message-bubble ${ username === clientUsername ? "align-right" : null}`}>
 
             <p className={`message-bubble__username ${prevMessageSender === username ? "hidden" : "visible"}` }>
                 {username || "unidentified user"}
