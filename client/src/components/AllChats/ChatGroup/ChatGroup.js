@@ -18,9 +18,9 @@ const ChatGroup = ({ connected, roomName, roomId, setRoom, joinRoom, active }) =
             } else {
                 return ( <p className='begin-new-chat'>New group created. Click here to begin chat &nbsp;<span>💬</span></p> )
             }
-        } else {
-            return ( <p className='begin-new-chat'>New group created. Click here to begin chat &nbsp;<span>💬</span></p> )
         }
+            
+        return ( <p className='begin-new-chat'>New group created. Click here to begin chat &nbsp;<span>💬</span></p> )
     }
     
     return (
