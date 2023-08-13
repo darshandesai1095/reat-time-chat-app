@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
+import { socket } from '../../socket/socketIO'
+
 
 const baseURL = 'http://localhost:8080/api'
 
@@ -59,6 +61,18 @@ export const addUsersToRoom = createAsyncThunk(
     }
 )
 
+export const getNewRoomData = createAsyncThunk(
+    'rooms/getNewRoomData',
+    async (roomId, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`${baseURL}/rooms/${roomId}`)
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
 export const removeUsersFromRoom = createAsyncThunk(
     'rooms/removeUsersFromRoom',
     async ({roomId, emailsArray}, { rejectWithValue }) => {
@@ -100,7 +114,6 @@ export const deleteRoom = createAsyncThunk(
 )
 
 
-
 const initialState = {
     roomsData: null, // [ { roomId, roomName, chatLog[chatLog.length-1].message, users } ]   
     loading: false,
@@ -119,8 +132,12 @@ export const roomSlice = createSlice({
         setLoading: (state) => {
             state.loading = true
             // state.activeRoomIndex = state.roomsData.findIndex(roomObj => roomObj.roomId === state.currentActiveRoomId)
+        },
+        removeRoomFromRoomSlice: (state, action) => {
+            state.roomsData = state.roomsData.filter(roomObj => roomObj.roomId !== action.payload)
         }
     },
+
     extraReducers: (builder) => {
 
         // getRoomsByFirebaseUserId
@@ -129,7 +146,6 @@ export const roomSlice = createSlice({
             state.loading = true
             state.error = false
         })
-
         builder.addCase(getRoomsByFirebaseUserId.fulfilled, (state, action) => {
             state.loading = false
             state.roomsData = action.payload
@@ -137,7 +153,6 @@ export const roomSlice = createSlice({
             // state.activeRoomIndex = state.roomsData.findIndex(roomObj => roomObj.roomId === state.currentActiveRoomId) || null
             state.error = null
         })
-
         builder.addCase(getRoomsByFirebaseUserId.rejected, (state, action) => {
             state.loading = false
             state.roomsData = null
@@ -145,17 +160,16 @@ export const roomSlice = createSlice({
         })
 
         // getRoomsByMongoDbUserId
-
         builder.addCase(getRoomsByMongoDbUserId.pending, (state, action) => {
             state.loading = true
             state.error = false
         })
-
         builder.addCase(getRoomsByMongoDbUserId.fulfilled, (state, action) => {
             state.loading = false
             state.roomsData = action.payload
-
-            state.currentActiveRoomId =  action.payload[action.payload.length-1]?.roomId ? action.payload[action.payload.length-1].roomId : null
+            if (!state.activeRoom) {
+                state.currentActiveRoomId = action.payload[action.payload.length-1]?.roomId ? action.payload[action.payload.length-1].roomId : null
+            }
             // state.activeRoomIndex = state.roomsData.findIndex(roomObj => roomObj.roomId === state.currentActiveRoomId) || null
             state.error = null
         })
@@ -193,6 +207,20 @@ export const roomSlice = createSlice({
         })
         builder.addCase(addUsersToRoom.pending, (state, action) => {
             state.loading = true
+        })
+
+        // add room to rooms list
+        builder.addCase(getNewRoomData.rejected, (state, action) => {
+            // state.loading = false
+            state.error = action.payload 
+        })
+        builder.addCase(getNewRoomData.fulfilled, (state, action) => {
+            // state.loading = false
+            // append new room to rooms array
+            state.roomsData = [...state.roomsData, action.payload]
+        })
+        builder.addCase(getNewRoomData.pending, (state, action) => {
+            // state.loading = true
         })
 
         builder.addCase(removeUsersFromRoom.rejected, (state, action) => {
@@ -234,6 +262,6 @@ export const roomSlice = createSlice({
     }
 })
 
-export const { changeCurrentActiveRoom, setLoading } = roomSlice.actions
+export const { changeCurrentActiveRoom, setLoading, removeRoomFromRoomSlice } = roomSlice.actions
 
 export default roomSlice.reducer
