@@ -19,10 +19,9 @@ const ChatGroup = ({ connected, roomName, roomId, setRoom, joinRoom, active }) =
                 return ( <p className='begin-new-chat'>New group created. Click here to begin chat &nbsp;<span>💬</span></p> )
             }
         }
-            
         return ( <p className='begin-new-chat'>New group created. Click here to begin chat &nbsp;<span>💬</span></p> )
     }
-    
+
     return (
         <div 
             className={`chat-group ${active ? "active-chat" : null}`} 
@@ -33,7 +32,9 @@ const ChatGroup = ({ connected, roomName, roomId, setRoom, joinRoom, active }) =
 
                 <div className='chat-group__message'>
                     <div className='message__sender'>
-                        <p>{roomName}</p>
+                        <p>
+                            {roomName}
+                        </p>
                     </div>
                     <div className='message__preview'>
                         {messagePreview()}
