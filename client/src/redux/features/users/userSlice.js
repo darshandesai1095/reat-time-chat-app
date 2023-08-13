@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
+import { socket } from '../../socket/socketIO'
+
 
 const baseURL = 'http://localhost:8080/api'
 
@@ -68,6 +70,21 @@ export const deleteUser = createAsyncThunk(
     }
 )
 
+export const socketIoLeaveRoom = createAsyncThunk(
+    'users/socketIoLeaveRoom', async (roomId) => {
+    return new Promise((resolve, reject) => {
+        socket.emit('leaveRoom', roomId, (response) => {
+          // Handle any response from the server if needed
+          if (response.success) {
+            resolve(response.data)
+          } else {
+            reject(response.error)
+          }
+        })
+      })
+    }
+)
+
 
 const initialState = {
     isAuthenticated: false,
@@ -77,7 +94,7 @@ const initialState = {
     username: null,
     firebaseUserId: null,
     mongoDbUserId: null,
-    rooms: null,
+    rooms: [],
 }
 
 export const userSlice = createSlice({
@@ -127,7 +144,17 @@ export const userSlice = createSlice({
             state.username = action.payload.username
             state.email = action.payload.email
             state.rooms = action.payload.rooms
+        },
+        
+        addRoomToUserRoomsList: (state, action) => {
+            state.rooms = [...state.rooms, action.payload]
+        },
+
+        removeRoomFromUserSlice: (state, action) => {
+            const index = state.rooms?.indexOf(action.payload)
+            state.rooms = [...state.rooms.slice(0, index), ...state.rooms.slice(index + 1)]
         }
+
     },
     extraReducers: (builder) => {
 
@@ -142,11 +169,11 @@ export const userSlice = createSlice({
             state.isAuthenticated = true
             state.error = false
 
-            state.email = action.payload[0].email ? action.payload[0].email : null
-            state.username = action.payload[0].username
-            state.firebaseUserId = action.payload[0].firebaseUserId
-            state.mongoDbUserId = action.payload[0]._id
-            state.rooms = action.payload[0].rooms
+            state.email = action.payload.email ? action.payload.email : null
+            state.username = action.payload.username
+            state.firebaseUserId = action.payload.firebaseUserId
+            state.mongoDbUserId = action.payload._id
+            state.rooms = action.payload.rooms
         })
         builder.addCase(createNewUser.rejected, (state, action) => {
             state.isAuthenticated = false
@@ -227,7 +254,9 @@ export const {
     loginSuccess,
     loginFailure, 
     logout, 
-    updateUserCredentials 
+    updateUserCredentials,
+    addRoomToUserRoomsList,
+    removeRoomFromUserSlice
 } = userSlice.actions
 
 export default userSlice.reducer
