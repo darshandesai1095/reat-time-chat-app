@@ -6,20 +6,16 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { getUserByFirebaseUserId } from '../../redux/features/users/userSlice';
 import { getChatLogsByFirebaseUserId } from '../../redux/features/chatLogs/chatLogSlice';
-import { socket, socketIoListenForMessage } from '../../redux/socket/socketIO';
+import { socket, socketIoListenForMessage, socketIoHeartbeat } from '../../redux/socket/socketIO';
 import { socketIoJoinRooms } from '../../redux/features/chatLogs/chatLogSlice';
 
 const MainPage = () => {
 
     const dispatch = useDispatch()
 
-    const [connected, setConnected] = useState(false)
-    const [room, setRoom] = useState(99)
-
-
     useEffect(() => {
-        setConnected(true)
         socketIoListenForMessage(dispatch)
+        socketIoHeartbeat()
     }, [socket])
 
     const firebaseUserId = useSelector(state => state.user.firebaseUserId)
