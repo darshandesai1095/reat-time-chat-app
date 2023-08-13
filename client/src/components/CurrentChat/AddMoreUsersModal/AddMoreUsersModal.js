@@ -3,7 +3,7 @@ import './AddMoreUsersModal.css';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import InputField from '../../InputField/InputField';
 import addUsersToRoomAndSyncData from '../../../functions/rooms/addUsersToRoomAndSyncData';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const AddMoreUsersModal = ({updateAddUsersModalVisible, setUpdateAddUsersModalVisible, mongoDbUserId, activeRoomId}) => {
@@ -23,6 +23,7 @@ const AddMoreUsersModal = ({updateAddUsersModalVisible, setUpdateAddUsersModalVi
     const handleUpdateUsers = async () => {
         setUpdateAddUsersModalVisible(false)
         try {
+            // if user not in removedrooms list, do below, else
             await addUsersToRoomAndSyncData(dispatch, activeRoomId, mongoDbUserId, emails)
         } catch (error) {
             alert("Error adding users!")
