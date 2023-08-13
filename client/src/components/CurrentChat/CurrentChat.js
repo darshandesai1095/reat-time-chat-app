@@ -57,9 +57,6 @@ const CurrentChat = () => {
 
             <MessagesWindow
                 roomId={roomId}
-                username={username}
-                messageList={messageList}
-                setMessageList={setMessageList}
             />
             <MessageInput
                 currentMessage={currentMessage}
