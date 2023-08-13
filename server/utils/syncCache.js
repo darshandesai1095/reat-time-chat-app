@@ -34,7 +34,7 @@ const syncCache = async () => {
     
     // sync cache at 00:00 everyday
     // e.g. '42 * * * *' => min 42
-    schedule.scheduleJob( '0 * * *' , async () => { 
+    schedule.scheduleJob( '0 0 * * *' , async () => { 
         try {
             let cursorVal = 0
             do {

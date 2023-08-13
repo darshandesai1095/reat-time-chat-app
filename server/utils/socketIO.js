@@ -6,7 +6,7 @@ const socket = (IO) => {
         console.log(`socket.io ID: ${socket.id} connected to server...`)
 
         setInterval(() => socket.emit('ping', {beat: 1}), 30_000)
-        socket.on('pong', (data) => {
+        socket.on('pong', () => {
             console.log("Pong received from client")
         })
 
@@ -15,6 +15,7 @@ const socket = (IO) => {
             if (roomsArray) {
                 try {
                     roomsArray.forEach(roomId => socket.join(roomId))
+                    socket.join("globalChannel")
                     const response = { success: true }
                     acknowledgment(response)
                 } catch (error) {
@@ -49,7 +50,9 @@ const socket = (IO) => {
                 // callback sent to sender
                 const response = {
                     success: true, // client: if success===true -> deliveryStatus->"sent"
-                    data: currentMessage
+                    // data: currentMessage,
+                    roomId: messageData.roomId,
+                    messageId:  messageData.message.messageId
                 }
                 acknowledgment(response)
 
@@ -61,6 +64,11 @@ const socket = (IO) => {
             } catch (error) {
                 console.log("Redis error", error)
             }
+        })
+
+        socket.on('leaveRoom', (roomId) => {
+            socket.leave(roomId)
+            console.log(socket.id, "removed from", roomId)
         })
 
         socket.on('disconnect', () => {
