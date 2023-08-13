@@ -3,6 +3,7 @@ const User = require('../models/userModel')
 const ChatLog = require('../models/chatLogModel')
 const mongoose = require('mongoose')
 
+
 const roomController = {
 
     createNewRoom: async (req, res) => {
@@ -69,6 +70,19 @@ const roomController = {
         
             // Save the chat log to the database
             await chatLog.save()
+
+            const globalAlertData = {
+                eventType: 'newRoomCreated',
+                eventData: {
+                    roomId: roomId,
+                    createdBy: userId,
+                    users: newRoom.users
+                }
+            }
+
+            const io = req.io
+            io.to("globalChannel").emit('globalAlert', globalAlertData)
+            console.log("new room created")
       
             // Respond with the saved user data
             res.status(201).json(newRoom)
@@ -84,13 +98,27 @@ const roomController = {
             const _id = req.params.roomId
 
             // Query the database to find the room
-            const room = await Room.findById(_id)
+            const room = await Room.findById(_id)?.populate("users")
 
             if (!room) {
                 return res.status(404).json({ error: 'Room not found'})
             }
 
-            res.status(200).json(room)
+            const formattedRoom = ({
+                roomId: room._id,
+                roomName: room.roomName,
+                dateCreated: room.dateCreated,
+                roomUsers: room.users?.map(user => {
+                    return ({
+                        userId: user._id,
+                        firebaseUserId: user.firebaseUserId,
+                        email: user.email,
+                        username: user.username,
+                    })
+                }) || null,
+            })
+
+            res.status(200).json(formattedRoom)
 
         } catch {
             res.status(500).json({ error: 'Error fetching user room details' })
@@ -180,12 +208,14 @@ const roomController = {
                 return res.status(404).json({ error: 'Room not found' })
             }
 
+            const userIdsArr = []
             for (let email of emailsArray) {
                 const user = await User.findOne({ email: email })
                 const userId = user._id
                 if (!userId) {
                     continue
                 }
+                userIdsArr.push(userId)
     
                 if ( room.users.includes(userId) ) {
                     continue
@@ -201,6 +231,17 @@ const roomController = {
                 room.users.push(userId)
                 await room.save()
             }
+
+            const globalAlertData = {
+                eventType: 'usersAddedToRoom',
+                eventData: {
+                    roomId: room._id,
+                    addedUsers: userIdsArr
+                }
+            }
+
+            const io = req.io
+            io.to("globalChannel").emit('globalAlert', globalAlertData)
 
             res.status(201).json(room.users)
 
@@ -220,12 +261,14 @@ const roomController = {
             }
             const roomIdObj = room._id
 
+            const removedUsersArr = []
             for (let email of emailsArray) {
                 const user = await User.findOne({email})
                 if (!user) {
                     continue
                 }
                 const userIdObj = user._id
+                removedUsersArr.push(userIdObj.toString())
     
                 await Room.findOneAndUpdate( 
                     { _id: roomIdObj },  
@@ -239,6 +282,18 @@ const roomController = {
                     { new: true }
                 )
             }
+
+            const globalAlertData = {
+                eventType: 'usersRemovedFromRoom',
+                eventData: {
+                    roomId: roomId,
+                    users: removedUsersArr
+                }
+            }
+
+            const io = req.io
+            io.to("globalChannel").emit('globalAlert', globalAlertData)
+    
     
             res.status(201).json(room)
 
@@ -266,7 +321,6 @@ const roomController = {
         }
     },
     
-
     deleteRoom: async (req, res) => {
         try {
             const roomId = req.params.roomId
@@ -279,7 +333,7 @@ const roomController = {
 
             await Room.findByIdAndDelete(roomId)
             await ChatLog.findOneAndDelete({ roomId })
-            const users = room.users
+            const users = room?.users
             const userPromisesArray = users.map( async (user) => {
                 return (
                     User.findOneAndUpdate( 
@@ -291,6 +345,17 @@ const roomController = {
             })
 
             await Promise.all(userPromisesArray)
+
+
+            const globalAlertData = {
+                eventType: 'roomDeleted',
+                eventData: {
+                    roomId: roomId,
+                }
+            }
+
+            const io = req.io
+            io.to("globalChannel").emit('globalAlert', globalAlertData)
 
             res.status(200).json({ message: "Room deleted successfully" })
 
