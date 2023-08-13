@@ -6,8 +6,6 @@ const { Server } = require("socket.io")
 const { connectToRedis } = require('./config/connectToRedis')
 const { socket } = require('./utils/socketIO')
 const { syncCache } = require('./utils/syncCache')
-const { sendHeartbeat } = require('./utils/sendHeartbeat')
-
 
 const app = express()
 app.use(cors())
@@ -25,19 +23,6 @@ connectToDatabase().then(async () => syncCache())
 //     },
 // }))
 
-// Include the users, rooms routes
-
-const usersRoute = require('./routes/usersRoute')
-app.use('/api/users', usersRoute)
-
-const roomsRoute = require('./routes/roomsRoute')
-app.use('/api/rooms', roomsRoute)
-
-const chatLogsRoute = require('./routes/chatLogsRoute')
-app.use('/api/chatLogs', chatLogsRoute)
-
-
-
 const PORT = process.env.PORT || 8080
 const server = app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`)
@@ -50,7 +35,24 @@ const io = new Server(server, {
     }
 })
 
-connectToRedis().then(() => { socket(io) })  
+connectToRedis().then(() => { socket(io) }) 
+
+// Pass 'io' object to the relevant parts of application
+app.use((req, res, next) => {
+    req.io = io
+    next()
+})
+
+// Include the users, rooms routes
+
+const usersRoute = require('./routes/usersRoute')
+app.use('/api/users', usersRoute)
+
+const roomsRoute = require('./routes/roomsRoute')
+app.use('/api/rooms', roomsRoute)
+
+const chatLogsRoute = require('./routes/chatLogsRoute')
+app.use('/api/chatLogs', chatLogsRoute)
 
 
-module.exports = { app, server, io }
+module.exports = { app, server }
