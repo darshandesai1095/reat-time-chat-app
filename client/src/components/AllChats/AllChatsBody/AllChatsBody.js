@@ -5,14 +5,15 @@ import { socketIoListenForGlobalAlert } from '../../../redux/socket/socketIO';
 import { useEffect } from 'react';
 
 
-const AllChatsBody = ({connected, username, room, setRoom, joinRoom}) => {
+const AllChatsBody = ({connected, setRoom, joinRoom}) => {
 
     const userId = useSelector(state => state.user.mongoDbUserId)
+    const userRooms = useSelector(state => state.user.rooms)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        socketIoListenForGlobalAlert(dispatch, userId)
-    }, [userId])
+        socketIoListenForGlobalAlert(dispatch, userId, userRooms)
+    }, [userId, userRooms])
 
     const currentActiveRoomId = useSelector(state => state.rooms.currentActiveRoomId)
 
