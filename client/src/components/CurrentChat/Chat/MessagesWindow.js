@@ -1,10 +1,9 @@
 import MessageBubble from '../MessageBubble/MessageBubble';
-import { useEffect } from 'react';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import { useSelector } from 'react-redux';
 import './MessagesWindow.css';
 
-const MessagesWindow = ({roomId}) => {
+const MessagesWindow = ({ roomId }) => {
 
     const chatLog = useSelector(state => state.chatLogs?.chatLogData?.filter(room => room.roomId == roomId)[0])
     const messagesArray = chatLog?.messagesArray
