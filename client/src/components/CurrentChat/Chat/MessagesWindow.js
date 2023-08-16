@@ -2,6 +2,7 @@ import MessageBubble from '../MessageBubble/MessageBubble';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import { useSelector } from 'react-redux';
 import './MessagesWindow.css';
+import { useEffect } from 'react';
 
 const MessagesWindow = ({ roomId }) => {
 
@@ -13,12 +14,13 @@ const MessagesWindow = ({ roomId }) => {
             <div className='chat__messages'>
                 {    
                     messagesArray?.map((messageObj, index) => {
-                    return (
-                        <MessageBubble
-                            key={index}
-                            prevMessageSender={messagesArray[index-1]?.username || null}
-                            messageObj={messageObj}
-                        />
+                        return (
+                            <MessageBubble
+                                key={index}
+                                prevMessageSender={messagesArray[index-1]?.username || null}
+                                messageObj={messageObj}
+                                roomId={roomId}
+                            />
                         )
                     })
                 }
