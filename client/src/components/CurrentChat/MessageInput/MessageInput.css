@@ -1,61 +1,60 @@
+/* --------------------------------- */
+/* -------------- input ------------ */
+/* --------------------------------- */
+
 .message-input {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
     align-items: center;
-    border-radius: 10px;
-    background-color: white;
-    width: calc(100% - 160px);
-    padding: 15px;
+    background-color: var(--secondary-color);
+    width: calc(100% - 100px);
     position: absolute;
-    bottom: 40px;
-    border: 1.5px solid rgba(255, 255, 255, 0)
+    bottom: 35px;
+    z-index: 99999;
 }
 
 .message-input:active,
 .message-input:focus-within {
-    border: 1.5px solid var(--primary-color);
+    border: none
 }
 
 .message-input textarea {
     flex: 1;
-    background-color: white;
+    background-color: var(--secondary-color);
+    font-family: inherit;
+    padding: 5px 15px;
+    color: var(--tertiary-color);
     outline: none;
     border: none;
     resize: none;
-    font-family: 'Catamaran', sans-serif;
     font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--white);
-    border-left: 2px solid rgb(240,240,240);
-    padding-left: 15px;
-    color: rgb(33, 59, 75);
+    font-weight: 500;
 }
 
+.message-input textarea::placeholder {
+    color: var(--tertiary-color-dark)
+}
+
+/* --------------------------------- */
+/* -------------- icons ------------ */
+/* --------------------------------- */
+
 .message-input__buttons svg {
-    fill: rgb(33, 59, 75);
-    transform: scale(0.95);
+    fill: var(--tertiary-color-dark);
     cursor: pointer;
-    transition: 0.2s;
     position: relative;
-    top: 4px;
-    margin-right: 15px;
+    top: 2px;
 }
 
 .message-input__buttons svg:hover {
-    fill: var(--primary-color);
-    opacity: 1;
-}
-
-.message-input__buttons .emoji-icon:hover {
-    fill: var(--primary-color);
-    opacity: 1;
+    fill: var(--tertiary-color);
 }
 
 .emoji-keyboard {
     position: absolute;
-    bottom: 115px;
-    left: 80px;
+    bottom: 80px;
+    left: 50px;
+    z-index: 99999;
 }
 
 .emoji-keyboard.show {
@@ -70,10 +69,14 @@
     transition: 0.3s;
 }
 
-.cancel-icon {
-    transition: 0.3s;
+.message-input__buttons .cancel-icon {
+    fill: var(--tertiary-color);
 }
 
-.message-input__buttons .cancel-icon {
-    fill: var(--primary-color);
+.message-input__buttons .cancel-icon:hover {
+    fill: var(--tertiary-color);
+}
+
+.buttons__send.activate-button {
+    fill: var(--tertiary-color)
 }

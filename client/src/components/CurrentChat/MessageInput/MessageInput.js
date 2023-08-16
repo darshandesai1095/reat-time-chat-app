@@ -31,6 +31,7 @@ const MessageInput = ({setCurrentMessage, currentMessage, sendMessage}) => {
                     onEmojiClick={onEmojiClick}
                     height={450} width={340}
                     searchDisabled={true}
+                    theme="dark"
                 />
             </div>
     
@@ -65,7 +66,7 @@ const MessageInput = ({setCurrentMessage, currentMessage, sendMessage}) => {
                 
                 <div className='message-input__buttons'>
                     <SendIcon
-                        className='buttons__send'
+                        className={`buttons__send ${currentMessage.trim().length > 0 ? "activate-button" : "disable-button"}`}
                         onClick={sendMessage}
                     />   
                 </div> 
