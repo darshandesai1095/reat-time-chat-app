@@ -4,22 +4,22 @@ import userReducer from './features/users/userSlice'
 import { userApi } from './api/users/userApi'
 import roomReducer from './features/rooms/roomSlice'
 import chatLogsReducer from './features/chatLogs/chatLogSlice'
-// import socketMiddleware from './socketMiddleware'
-import { socket } from './socket/socketIO'
+import modalReducer from './features/modals/modalSlice'
+import activityLogReducer from './features/activityLogs/activityLogSlice.js'
 
 export const store = configureStore({
     reducer: {
         user: userReducer,
         [userApi.reducerPath]: userApi.reducer,
         rooms: roomReducer,
-        chatLogs: chatLogsReducer
+        chatLogs: chatLogsReducer,
+        modals: modalReducer,
+        activityLog: activityLogReducer
     },
 
     middleware: (getDefaultMiddleware) => (
         getDefaultMiddleware().concat(
-          userApi.middleware,
-        //   socketMiddleware(socket)
-          // roomApi.middleware
+          userApi.middleware
         )
     )
 })
