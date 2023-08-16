@@ -3,7 +3,6 @@ import ChatGroup from "../ChatGroup/ChatGroup"
 import { useDispatch, useSelector } from 'react-redux';
 import { socketIoListenForGlobalAlert } from '../../../redux/socket/socketIO';
 import { useEffect, useState } from 'react';
-import { getLastActiveFromLocalStorage, setLastActiveInLocalStorage } from '../../../functions/misc/localStorage';
 
 
 const AllChatsBody = () => {
