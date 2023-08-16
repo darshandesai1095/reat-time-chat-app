@@ -1,0 +1,12 @@
+.unread-message-count {
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    color: var(--tertiary-color);
+    font-size: 0.55rem;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+}
