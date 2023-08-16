@@ -2,14 +2,17 @@ import './AllChatsBody.css';
 import ChatGroup from "../ChatGroup/ChatGroup"
 import { useDispatch, useSelector } from 'react-redux';
 import { socketIoListenForGlobalAlert } from '../../../redux/socket/socketIO';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { getLastActiveFromLocalStorage, setLastActiveInLocalStorage } from '../../../functions/misc/localStorage';
 
 
-const AllChatsBody = ({connected, setRoom, joinRoom}) => {
+const AllChatsBody = () => {
 
     const userId = useSelector(state => state.user.mongoDbUserId)
     const userRooms = useSelector(state => state.user.rooms)
     const dispatch = useDispatch()
+
+    const [activityLog, setActivityLog] = useState(null)
 
     useEffect(() => {
         socketIoListenForGlobalAlert(dispatch, userId, userRooms)
@@ -19,15 +22,15 @@ const AllChatsBody = ({connected, setRoom, joinRoom}) => {
 
     const roomsData = useSelector(state => state.rooms.roomsData)
     const chatRooms = roomsData?.map(room => {
+      const roomId = room.roomId
       return (
           <ChatGroup
-            key={room.roomId}
-            connected={connected}
+            key={roomId}
             roomName={room.roomName}
-            roomId={room.roomId}
-            setRoom={setRoom}
-            joinRoom={joinRoom}
-            active={currentActiveRoomId === room.roomId ? true : false}
+            roomId={roomId}
+            active={ currentActiveRoomId === room.roomId ? true : false }
+            activityLog={ activityLog ? activityLog : {} }
+            setActivityLog = {setActivityLog}
           />
       )
     })

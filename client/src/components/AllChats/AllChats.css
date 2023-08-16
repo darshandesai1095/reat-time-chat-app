@@ -1,13 +1,16 @@
 .all-chats {
-    background-color: rgb(250,250,250);
     display: flex;
     flex-direction: column;
-    min-width: 380px;
-    max-width: 420px;
-    padding: 0 45px;
-    border-right: 2px solid rgb(240,240,240);
+    min-width: 340px;
+    max-width: 360px;
+    padding: 0 30px;
+    padding-top: 35px;
     position: relative;
     flex: 1;
     padding-bottom: 20px;
+    background-color: var(--secondary-color);
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    align-items: center;
 }
 

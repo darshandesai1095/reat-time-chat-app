@@ -1,15 +1,13 @@
 import './AllChats.css';
 import { useState, useEffect } from 'react';
 import AllChatsBody from './AllChatsBody/AllChatsBody';
-import AllChatsHeader from './AllChatsHeader/AllChatsHeader';
+import AllChatsSearchBar from './AllChatsSearchBar/AllChatsSearchBar';
 import CreateNewGroupModal from './CreateNewGroupModal/CreateNewGroupModal';
 import { useSelector, useDispatch } from 'react-redux'
 import { getRoomsByFirebaseUserId } from '../../redux/features/rooms/roomSlice';
 import LoadingModal from './LoadingModal/LoadingModal';
-import { socketIoListenForGlobalAlert } from '../../redux/socket/socketIO';
 
-
-const AllChats = ({}) => {
+const AllChats = () => {
 
     const dispatch = useDispatch()
     const firebaseUserId = useSelector(state => state.user.firebaseUserId)
@@ -31,9 +29,7 @@ const AllChats = ({}) => {
 
     return (
         <div className="all-chats" >
-            <AllChatsHeader
-                setShowCreateGroupPopup={setShowCreateGroupPopup}
-            />
+            <AllChatsSearchBar/>
             <AllChatsBody/>
 
             {

@@ -1,0 +1,43 @@
+.all-chats__search-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--secondary-color-light);
+    border-radius: 15px;
+    padding: 10px 15px;
+    width: 85%;
+
+    /* width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin: 40px 0;
+    padding-bottom: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-bottom: 2px solid rgb(240,240,240);
+    color: var(--black);
+    margin-bottom: 0px; */
+}
+
+.all-chats__search-bar svg {
+    fill: var(--tertiary-color-dark);
+}
+
+.all-chats__search-bar > input {
+    background-color: var(--secondary-color-light);
+    outline: none;
+    border: none;
+    flex: 1;
+    color: var(--tertiary-color-light);
+    font-size: 0.9rem;
+    padding: 5px 0;
+    margin-left: 10px;
+}
+
+.all-chats__search-bar > input::placeholder {
+    color: var(--tertiary-color-dark);
+  }
+
+
+

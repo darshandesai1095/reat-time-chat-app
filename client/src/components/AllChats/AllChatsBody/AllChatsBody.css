@@ -7,4 +7,5 @@
   overflow-y: scroll;
   position: relative;
   scroll-behavior: smooth;
+  width: 100%
 }

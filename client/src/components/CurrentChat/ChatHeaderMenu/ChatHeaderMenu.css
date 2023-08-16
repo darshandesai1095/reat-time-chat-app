@@ -1,54 +1,106 @@
+/* --------------------------------- */
+/* ----- toggle dropdown button ---- */
+/* --------------------------------- */
+
 .chat-header-menu {
     display: flex;
     flex-direction: row;
     gap: 10px;
     position: relative;
-    transition: 0.2s;
+    transition: 0.5s;
 }
 
-.chat-header-menu > svg {
-    fill: var(--black);
-    transform: scale(0.9);
-    transition: 0.2s;
+.icon-padding {
+    padding: 5px;
+    z-index: 999999;
+    background-color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.icon-padding .rot0deg {
+    fill: var(--tertiary-color-dark);
     cursor: pointer;
-}
-
-.chat-header-menu > svg:hover {
-    fill: var(--primary-color);
-}
-
-.chat-header-menu > .visible {
-    transition: 0.5s;
-    visibility: visible;
-}
-
-
-.chat-header-menu > .hidden {
-    transition: 0.5s;
-    visibility: hidden;
-    opacity: 0;
-}
-
-svg.rot0deg {
     transition: 0.3s;
-    transform: rotate(0deg);
 }
 
-svg.rot45deg {
-    transition: 0.3s;
+.icon-padding .rot0deg:hover {
+    fill: var(--tertiary-color);
+}
+
+.icon-padding .rot45deg {
+    fill: var(--tertiary-color);
     transform: rotate(45deg);
-}
-
-svg.rot-45deg {
+    cursor: pointer;
     transition: 0.3s;
-    transform: rotate(-45deg);
 }
 
-svg.x {
+.icon-padding .rot45deg:hover {
+    fill: var(--tertiary-color);
+}
+
+/* --------------------------------- */
+/* ------------ dropdown ----------- */
+/* --------------------------------- */
+
+.menu__dropdown {
     position: absolute;
-    right: 0px
+    right: 0px;
+    top: 15px;
+    background-color: var(--secondary-color-dark);
+    z-index: 99999;
+    padding: 25px 20px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    width: 175px;
 }
 
-.chat-header-menu > svg.close-menu {
-    fill: crimson;
+.menu__dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transition: 0.2s ease-in-out;
+}
+
+.menu__dropdown.hide {
+    opacity: 0;
+    visibility: hidden;
+    /* transform: scale(0); */
+    transform-origin: top right;
+    transition: 0.3s ease-in-out;
+}
+
+
+/* --------------------------------- */
+/* --------- dropdown items -------- */
+/* --------------------------------- */
+
+.dropdown__item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    flex-wrap: nowrap;
+    transition: 0.3s;
+}
+
+.dropdown__item > svg {
+    transform: scale(0.7);
+}
+
+.dropdown__item:hover {
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+.dropdown__item:last-of-type:hover {
+    cursor: pointer;
+    color: var(--red);
 }

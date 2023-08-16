@@ -2,46 +2,41 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    color: var(--white);
+    color: var(--tertiary-color);
     justify-content: space-around;
     align-items: center;
     font-size: 0.8rem;
-    border-radius: 15px;
+    border-radius: 22.5px;
     user-select: none;
-    background-color: rgb(250,250,250);
-    color: var(--black);
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 25px 25px;
+    background-color: var(--secondary-color);
+    padding: 15px 15px;
     gap: 15px;
     cursor: pointer;
     transition: 0.3s;
 }
 
 .chat-group:first-of-type {
-    margin-top: 35px;
+    margin-top: 30px;
 }
 
 .chat-group:hover {
-    background-color: white;
-    background-color: rgba(94, 43, 255, 0.05);
-    background-color: rgba(33, 37, 41, 0.05);
+    background-color: var(--secondary-color-light);
 }
 
-.chat-group__avatar {
-    width: 40px;
-    height: 40px;
-}
 
 .chat-group__message {
     flex: 1;
     text-align: left;
     margin-right: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 75%;
 }
 
 .message__sender > p {
-    font-weight: 800;
-    font-size: 0.8rem;
+    font-weight: 600;
+    font-size: 0.75rem;
     display: -webkit-box;
     -webkit-line-clamp: 1; /* Number of lines to display */
     -webkit-box-orient: vertical;
@@ -49,9 +44,8 @@
 }
 
 .message__preview > p {
-    font-weight: 600;
-    font-size: 0.7rem;
-    opacity: 0.7;
+    font-weight: 500;
+    font-size: 0.65rem;
     display: -webkit-box;
     -webkit-line-clamp: 1; /* Number of lines to display */
     -webkit-box-orient: vertical;
@@ -59,6 +53,8 @@
     line-height: 1.2rem;
     /* min-height: 2.4rem;
     max-height: 2.4rem; */
+    color: var(--tertiary-color-dark);
+    max-width: 18ch;
 }
 
 .message__preview > .begin-new-chat {
@@ -66,11 +62,24 @@
     font-weight: 700;
 }
 
+.message__preview.bold > p {
+    font-weight: 700;
+    color: var(--tertiary-color)
+}
+
+.chat-group__meta-data {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 75%;
+    margin-right: 5px;
+}
 
 .meta-data__time > p {
     font-weight: 700;
-    font-size: 0.7rem;
-    opacity: 0.5;
+    font-size: 0.5rem;
+    opacity: 0.7;
     display: -webkit-box;
     -webkit-line-clamp: 1; /* Number of lines to display */
     -webkit-box-orient: vertical;
@@ -78,10 +87,10 @@
 }
 
 .active-chat {
-    background-color: var(--primary-color);
+    background-color: var(--secondary-color-light);
     color: white;
 }
 
 .active-chat:hover {
-    background-color: var(--purple);
+    background-color: var(--secondary-color-light);
 }
