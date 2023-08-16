@@ -6,6 +6,7 @@ import RemoveUsersModal from '../RemoveUsersModal/RemoveUsersModal';
 import DeleteGroup from '../DeleteGroupModal/DeleteGroup';
 import ChatHeaderMenu from '../ChatHeaderMenu/ChatHeaderMenu';
 import { useSelector } from 'react-redux';
+import Avatar from '../../Avatar/Avatar';
 
 
 const ChatHeader = ({}) => {
@@ -30,13 +31,13 @@ const ChatHeader = ({}) => {
         if (numberOfMembers == 1) {
             return (
                 <p className='meta-data__members'>
-                    1 Member
+                    1 member
                 </p>
             )
         }
         return (
             <p className='meta-data__members'>
-                {numberOfMembers} Members
+                {numberOfMembers} members
             </p>
         )
     }
@@ -85,10 +86,6 @@ const ChatHeader = ({}) => {
         <div className='chat-header'>
 
             <div className='chat-header__group-info'>
-
-                <div className='chat-header__avatar'>
-                    <img src='man.png'/>
-                </div>
 
                 <div className='chat-header__meta-data'>
                     {
