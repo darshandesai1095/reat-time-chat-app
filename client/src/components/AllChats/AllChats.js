@@ -2,10 +2,10 @@ import './AllChats.css';
 import { useState, useEffect } from 'react';
 import AllChatsBody from './AllChatsBody/AllChatsBody';
 import AllChatsSearchBar from './AllChatsSearchBar/AllChatsSearchBar';
-import CreateNewGroupModal from './CreateNewGroupModal/CreateNewGroupModal';
+import CreateNewGroupModal from '../AllModals/CreateNewGroupModal/CreateNewGroupModal';
 import { useSelector, useDispatch } from 'react-redux'
 import { getRoomsByFirebaseUserId } from '../../redux/features/rooms/roomSlice';
-import LoadingModal from './LoadingModal/LoadingModal';
+import LoadingModal from '../AllModals/LoadingModal/LoadingModal';
 
 const AllChats = () => {
 
@@ -25,12 +25,18 @@ const AllChats = () => {
         }
     }, [])
 
+    const [search, setSearch] = useState("")
     const [showCreateGroupPopup, setShowCreateGroupPopup] = useState(false)
 
     return (
         <div className="all-chats" >
-            <AllChatsSearchBar/>
-            <AllChatsBody/>
+            <AllChatsSearchBar 
+                search={search}
+                setSearch={setSearch}
+            />
+            <AllChatsBody
+                search={search}
+            />
 
             {
                 isLoading ?
