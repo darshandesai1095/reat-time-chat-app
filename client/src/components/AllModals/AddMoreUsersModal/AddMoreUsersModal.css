@@ -1,0 +1,117 @@
+.modal-background {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 9999999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    visibility: visible;
+}
+
+.hide-page {
+    display: none;
+}
+
+.create-new-group {
+    background-color: var(--secondary-color);
+    color: var(--tertiary-color);
+    width: 350px;
+    padding: 45px 40px;
+    padding-bottom: 40px;
+    border-radius: 15px;
+    position: relative;
+    transition: 0.3s ease-in-out;
+    /* background-color: var(--secondary-color-dark); */
+}
+
+.close-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.close-icon > svg {
+    transform: scale(1);
+    cursor: pointer;
+    transition: 0.3s;
+    fill: var(--secondary-color-light)
+}
+
+.close-icon > svg:hover {
+    fill: var(--primary-color);
+}
+
+.create-new-group h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-top: 5px;
+    margin-bottom: 25px;
+}
+
+.create-new-group__details > p {
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--tertiary-color)
+}
+
+p.remove,
+p.add-more {
+    margin-top: -10px;
+    margin-bottom: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-bottom: 1px solid var(--secondary-color);
+    white-space: nowrap;
+    width: min-content;
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 700;
+    user-select: none;
+}
+
+p.add-more:hover {
+    border-bottom: 1px solid var(--tertiary-color)
+}
+
+.close-popup-button {
+    background-color: var(--primary-color);
+    color: var(--tertiary-color);
+    border: none;
+    outline: none;
+    margin-top: 15px;
+    border-radius: 12.5px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.1s;
+    margin-top: 5px;
+    transition: 0.3s;
+    height: 40px;
+    width: 100%;
+}
+
+.close-popup-button:hover {
+    background-color: var(--primary-color-dark)
+}
+
+.email-input-field {
+    display: flex;
+    flex-direction: column;
+}
+
+p.remove {
+    text-align: right;
+    width: 100%;
+    margin-top: -10px;
+    transition: 0.3s;
+}
+
+p.remove:hover {
+    color: var(--red);
+}
