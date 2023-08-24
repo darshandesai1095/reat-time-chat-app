@@ -8,7 +8,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 35px 0;
+    padding: 40px 0;
 }
 
 .nav-bar__primary,
@@ -32,4 +32,27 @@
     font-size: 0.55rem;
     font-weight: 600;
     transition: 0.3s;
+}
+
+.linebreak {
+    border-top: 1px solid var(--tertiary-color-dark);
+    margin: 0px 7px;
+}
+
+.global-alerts {
+    position: relative;
+}
+
+.global-alerts__message-count {
+    position: absolute;
+    bottom: 12px;
+    left: 10px;
+    background-color: var(--secondary-color-dark);
+    border-radius: 50%;
+    padding: 2px;
+    transform: scale(0.8);
+}
+
+.hide-alerts {
+    display: none;
 }
