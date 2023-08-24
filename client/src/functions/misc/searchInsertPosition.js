@@ -1,26 +1,32 @@
 import convertToUnixTimestamp from "./convertToUnixTimestamp"
 
-const searchInsertPosition = (messagesArray, lastActive) => {
+const searchInsertPosition = (messagesArray=[], lastActive=0) => {
 
-    if (!messagesArray || !lastActive) return 0
+    try {
 
-    // create array of 'dateCreated' timestamps from chatLogsArray
-    const dateCreatedTimestampsArray = messagesArray.map(messageObj => convertToUnixTimestamp(messageObj.dateCreated))
-    console.log("dateCreatedTimestampsArray", dateCreatedTimestampsArray.map(val => val/1000000000))
-    console.log("lastActive", lastActive/1000000000)
+        if (!messagesArray || !lastActive || messagesArray.length === 0) return 0
 
-    // perform search to find interst position of last active
-    const insertPosition = dateCreatedTimestampsArray.findIndex(timestamp => timestamp >= lastActive)
-    console.log("insertPosition", insertPosition)
+        // create array of 'dateCreated' timestamps from chatLogsArray
+        const dateCreatedTimestampsArray = messagesArray?.map(messageObj => convertToUnixTimestamp(messageObj.dateCreated))
+    
+        // perform search to find interst position of last active
+        const insertPosition = dateCreatedTimestampsArray.findIndex(timestamp => timestamp >= lastActive)
+    
+        if (insertPosition === -1) {
+            return 0
+        }
+    
+        // inboxCount ~= length - insert position
+        const inboxCount = dateCreatedTimestampsArray.length - insertPosition
+    
+        return inboxCount
 
-    if (insertPosition === -1) {
-        return 0
+    } catch (error) {
+        console.log("searchInsertPosition", error)
     }
 
-    // inboxCount ~= length - insert position
-    const inboxCount = dateCreatedTimestampsArray.length - insertPosition
+    return 0
 
-    return inboxCount
 }
 
 export default searchInsertPosition
