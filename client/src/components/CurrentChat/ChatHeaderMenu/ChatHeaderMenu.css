@@ -7,17 +7,21 @@
     flex-direction: row;
     gap: 10px;
     position: relative;
-    transition: 0.5s;
+    transition: 0.2s;
 }
 
 .icon-padding {
     padding: 5px;
-    z-index: 999999;
+    z-index: 99999;
     background-color: var(--secondary-color);
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
+}
+
+.icon-padding > svg {
+    transform: scale(1.1);
 }
 
 .icon-padding .rot0deg {
@@ -32,7 +36,7 @@
 
 .icon-padding .rot45deg {
     fill: var(--tertiary-color);
-    transform: rotate(45deg);
+    transform: scale(1.1) rotate(45deg);
     cursor: pointer;
     transition: 0.3s;
 }
@@ -50,16 +54,16 @@
     right: 0px;
     top: 15px;
     background-color: var(--secondary-color-dark);
-    z-index: 99999;
-    padding: 25px 20px;
+    z-index: 9999;
+    padding: 30px 25px;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
-    font-size: 0.8rem;
+    gap: 15px;
+    font-size: 0.9rem;
     font-weight: 600;
-    width: 175px;
+    width: 190px;
 }
 
 .menu__dropdown.show {
@@ -73,7 +77,7 @@
     visibility: hidden;
     /* transform: scale(0); */
     transform-origin: top right;
-    transition: 0.3s ease-in-out;
+    transition: 0s ease-in-out;
 }
 
 
@@ -97,7 +101,7 @@
 
 .dropdown__item:hover {
     cursor: pointer;
-    color: var(--primary-color);
+    color: var(--primary-color-light);
 }
 
 .dropdown__item:last-of-type:hover {
