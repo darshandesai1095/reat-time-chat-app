@@ -15,9 +15,11 @@ const CurrentChat = () => {
 
     const dispatch = useDispatch()
 
-    const totalGroups = useSelector(state => state.rooms.roomsData?.length)
+    const roomsData = useSelector(state => state.rooms.roomsData)
+    const totalGroups = roomsData?.length
     const roomId = useSelector(state => state.rooms.currentActiveRoomId)
-    const chatLogData = useSelector(state => state.chatLogs.chatLogData)
+
+    
     const {username, mongoDbUserId } = useSelector(state => state.user)
 
     const [currentMessage, setCurrentMessage] = useState("")
