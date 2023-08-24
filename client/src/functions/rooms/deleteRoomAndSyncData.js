@@ -1,5 +1,5 @@
 import { getUserByMongoDbUserId } from "../../redux/features/users/userSlice";
-import { deleteRoom, getRoomsByMongoDbUserId } from "../../redux/features/rooms/roomSlice";
+import { assignCurrentActiveRoom, deleteRoom, getRoomsByMongoDbUserId } from "../../redux/features/rooms/roomSlice";
 
 const renameRoomAndSyncData = async (dispatch, roomId, mongoDbUserId) => {
    
@@ -9,9 +9,10 @@ const renameRoomAndSyncData = async (dispatch, roomId, mongoDbUserId) => {
       dispatch(
         deleteRoom({
             roomId: roomId,
+            deletedBy: mongoDbUserId
         })
       )
-    );
+    )
 
     // update user slice
     await Promise.resolve(
@@ -20,8 +21,7 @@ const renameRoomAndSyncData = async (dispatch, roomId, mongoDbUserId) => {
             userId: mongoDbUserId,
         })
       )
-    );
-    console.log("done 1")
+    )
 
     // update room slice
     // dispatch(changeCurrentActiveRoom(0))
@@ -29,8 +29,9 @@ const renameRoomAndSyncData = async (dispatch, roomId, mongoDbUserId) => {
         dispatch(
             getRoomsByMongoDbUserId(mongoDbUserId)
         )
-    );
-    console.log("done 2")
+    )
+
+    dispatch(assignCurrentActiveRoom())
 
   } catch (error) {
         console.log("Error deleting room: ", error.message);
