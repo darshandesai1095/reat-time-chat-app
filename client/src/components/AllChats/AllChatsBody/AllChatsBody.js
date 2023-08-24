@@ -22,8 +22,6 @@ const AllChatsBody = ({ search }) => {
 
     const currentActiveRoomId = useSelector(state => state.rooms.currentActiveRoomId)
 
-    const roomsData = useSelector(state => state.rooms.roomsData)
-
     // sort roomsData by last active
     // >  get last active from local storage?
     // const roomsDataSortedByLastActive = roomsData.sort()
@@ -58,9 +56,6 @@ const AllChatsBody = ({ search }) => {
           />
       )
     })
-
-    console.log("roomsData", roomsData)
-
 
     return (
 
