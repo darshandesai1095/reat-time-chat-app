@@ -22,7 +22,7 @@ router.patch('/updateUsername/:userId', userController.updateUsername)
 // router.patch('/resetEmail/:userId', authorizationMiddleware, userController.updateUser)
 
 // // Route for updating user details; pic
-// router.patch('updateProfilePicture/:userId', authorizationMiddleware, userController.updateUser)
+router.patch('/updateUserProfilePicture/:userId', userController.updateUserProfilePicture)
 
 
 // Route for deleting a user
