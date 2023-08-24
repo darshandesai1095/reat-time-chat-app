@@ -1,5 +1,5 @@
 .start-new-chat {
-    color: var(--black);
+    color: var(--secondary-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
