@@ -1,9 +1,10 @@
 import './MessageInput.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SendIcon from '@mui/icons-material/Send';
 import SentimentSatisfiedRoundedIcon from '@mui/icons-material/SentimentSatisfiedRounded';
 import EmojiPicker from 'emoji-picker-react';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useSelector } from 'react-redux';
 
 const MessageInput = ({setCurrentMessage, currentMessage, sendMessage}) => {
 
@@ -24,13 +25,18 @@ const MessageInput = ({setCurrentMessage, currentMessage, sendMessage}) => {
         setCurrentMessage(e.target.value)
     }
 
+    const currentActiveRoomId = useSelector(state => state.rooms.currentActiveRoomId)
+    useEffect(() => {
+        setCurrentMessage("")
+    }, [currentActiveRoomId])
+
     return (
         <>
             <div className={`emoji-keyboard ${emojiKeyboardVisible ? "show" : "hide"}`}>
                 <EmojiPicker
                     onEmojiClick={onEmojiClick}
                     height={450} width={340}
-                    searchDisabled={true}
+                    // searchDisabled={true}
                     theme="dark"
                 />
             </div>
