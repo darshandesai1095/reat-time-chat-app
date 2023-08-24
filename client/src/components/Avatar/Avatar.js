@@ -1,24 +1,45 @@
 import './Avatar.css';
 import { useMemo } from 'react';
+import imagesArray from '../../imagesArray';
 
-const Avatar = ({ letter, width=55, height=55, borderRadiusPixels=15 }) => {
+
+const Avatar = ({ url, width=55, height=55, responsive=false, isSelectedPicture, setSelectedPictureUrl}) => {
 
     const style = {
         width: `${width}px`,
         height: `${height}px`,
-        borderRadius: `${borderRadiusPixels}px`
+        maxWidth: `${width}px`,
+        maxHeight: `${height}px`,
+        minWidth: `${width}px`,
+        minHeight: `${height}px`,
     }
 
     const rand1 = useMemo(() => {
-        return Math.floor(Math.random()*26)
+        return Math.floor(Math.random() * (imagesArray.length-1))
     }, [])
-
-    const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 
-    'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    
+    const handleClick = () => {
+        setSelectedPictureUrl(url)
+    }
 
     return (
-        <div className="avatar" style={style}>
-            <img src={`${letters[rand1]}.jpeg`}/>
+        <div 
+            className={`
+                avatar 
+                ${responsive ? "avatar-responsive" : null} 
+                ${isSelectedPicture ? "avater__selected-picture" : null}
+            `} 
+            style={style}
+            onClick={responsive ? handleClick : null}
+            >
+
+            {
+                url ?
+                <img src={url}/>
+                :
+                <img src={`https://i.postimg.cc/13JNx5YY/image-Ot-ILHw-Wp-NCPt.jpg`}/>
+             }
+
         </div>
     )
 }
