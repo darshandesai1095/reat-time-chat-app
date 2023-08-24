@@ -1,5 +1,5 @@
 .chat {
-    background-color: var(--gray);
+    background-color: var(--secondary-color);
     height: calc(100vh - 180px);
     width: 100%;
     position: relative;
@@ -11,10 +11,10 @@
     flex-direction: column;
 }
 
-.chat__message-input {
-    background-color: var(--dark-gray);
+/* .chat__message-input {
+    background-color: var(--secondary-color);
     padding: 1px 0;
     position: absolute;
     bottom: 0;
     width: 100%;
-}
+} */
