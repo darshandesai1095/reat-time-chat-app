@@ -12,6 +12,11 @@ const roomSchema = new mongoose.Schema({
             ref: 'User',
         },
     ],
+
+    profilePictureUrl: {
+        type: String,
+        default: "https://i.postimg.cc/R0hJv5kC/image-GESWSPGZJtkl.jpg"
+    },
     
     dateCreated: {
         type: Date,
