@@ -12,6 +12,8 @@ const UpdateGroupNameModal = ( {activeRoomId, mongoDbUserId, roomName} ) => {
     const dispatch  = useDispatch()
     const showUpdateGroupNameModal = useSelector(state => state.modals.showUpdateGroupNameModal)
     const isLoading  = useSelector(state => state.rooms.loading)
+    const username = useSelector(state => state.user.username)
+    const originalRoomName = roomName
 
     const [groupName, setGroupName] = useState('')
 
@@ -24,7 +26,7 @@ const UpdateGroupNameModal = ( {activeRoomId, mongoDbUserId, roomName} ) => {
         if (!groupName || groupName.trim() == "") return alert("Room name cannot be blank")
         
         try {
-            await renameRoomAndSyncData(dispatch, activeRoomId, mongoDbUserId, groupName)
+            await renameRoomAndSyncData(dispatch, activeRoomId, mongoDbUserId, groupName, username, originalRoomName)
         } catch (error) {
             alert("Error updating group name!")
         }
