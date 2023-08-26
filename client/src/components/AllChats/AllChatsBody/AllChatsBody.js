@@ -18,7 +18,7 @@ const AllChatsBody = ({ search }) => {
 
     useEffect(() => {
         socketIoListenForGlobalAlert(dispatch, userId, userRooms, roomsActivityLog)
-    }, [userId, userRooms])
+    }, [userRooms])
 
     const currentActiveRoomId = useSelector(state => state.rooms.currentActiveRoomId)
 
