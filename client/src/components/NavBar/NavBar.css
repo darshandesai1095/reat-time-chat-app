@@ -9,6 +9,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 40px 0;
+    position: relative;
 }
 
 .nav-bar__primary,
@@ -55,4 +56,10 @@
 
 .hide-alerts {
     display: none;
+}
+
+.nav-bar__notifications-menu {
+    position: absolute;
+    z-index: 999;
+    left: 80px;
 }
