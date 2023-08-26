@@ -2,13 +2,13 @@ const Room = require('../models/roomModel')
 const User = require('../models/userModel')
 const ChatLog = require('../models/chatLogModel')
 const mongoose = require('mongoose')
+const { assignAvatarToUser } = require('./functions/assignAvatarToUser')
 
 
 const roomController = {
 
     createNewRoom: async (req, res) => {
         try {
-            console.log("trying...")
             const userId = req.params.userId
             const user = await User.findById(userId)
             if (!user) {
@@ -39,12 +39,15 @@ const roomController = {
                 }
             }
 
-            const uniqueUserIdsArray = Array.from(new Set(uniqueUsersArray));
+            const uniqueUserIdsArray = Array.from(new Set(uniqueUsersArray))
+
+            const profilePictureUrl = assignAvatarToUser(roomName)
 
             // Create new room instance using Room model
             const newRoom = new Room({
                 roomName: roomName,
                 users: [...uniqueUserIdsArray],
+                profilePictureUrl: profilePictureUrl
             })
     
 
@@ -76,13 +79,14 @@ const roomController = {
                 eventData: {
                     roomId: roomId,
                     createdBy: userId,
-                    users: newRoom.users
+                    users: newRoom.users,
+                    roomName: roomName,
+                    createdByUsername: user.username
                 }
             }
 
             const io = req.io
             io.to("globalChannel").emit('globalAlert', globalAlertData)
-            console.log("new room created")
       
             // Respond with the saved user data
             res.status(201).json(newRoom)
@@ -108,12 +112,14 @@ const roomController = {
                 roomId: room._id,
                 roomName: room.roomName,
                 dateCreated: room.dateCreated,
+                profilePictureUrl: room.profilePictureUrl ? room.profilePictureUrl : "https://i.postimg.cc/4dKcQkP2/image-ZNbbd-DZmd-PCt.jpg",
                 roomUsers: room.users?.map(user => {
                     return ({
                         userId: user._id,
                         firebaseUserId: user.firebaseUserId,
                         email: user.email,
                         username: user.username,
+                        profilePictureUrl: user.profilePictureUrl ? user.profilePictureUrl : null
                     })
                 }) || null,
             })
@@ -143,12 +149,14 @@ const roomController = {
                     roomId: room._id,
                     roomName: room.roomName,
                     dateCreated: room.dateCreated,
+                    profilePictureUrl: room.profilePictureUrl ? room.profilePictureUrl : "https://i.postimg.cc/4dKcQkP2/image-ZNbbd-DZmd-PCt.jpg",
                     roomUsers: room.users?.map(user => {
                         return ({
                             userId: user._id,
                             firebaseUserId: user.firebaseUserId,
                             email: user.email,
                             username: user.username,
+                            profilePictureUrl: user.profilePictureUrl ? user.profilePictureUrl : null                            
                         })
                     }) || null,
                 })
@@ -179,12 +187,14 @@ const roomController = {
                     roomId: room._id,
                     roomName: room.roomName,
                     dateCreated: room.dateCreated,
+                    profilePictureUrl: room.profilePictureUrl ? room.profilePictureUrl : "https://i.postimg.cc/4dKcQkP2/image-ZNbbd-DZmd-PCt.jpg",
                     roomUsers: room.users?.map(user => {
                         return ({
                             userId: user._id,
                             firebaseUserId: user.firebaseUserId,
                             email: user.email,
                             username: user.username,
+                            profilePictureUrl: user.profilePictureUrl ? user.profilePictureUrl : null
                         })
                     }) || null,
                 })
@@ -200,8 +210,9 @@ const roomController = {
     addUsersToRoom: async (req, res) => { // also update user document to include room
         try {
 
+            console.log("adding user to room")
             const _id = req.params.roomId
-            const { emailsArray } = req.body
+            const { emailsArray, updatedById, updatedByUsername } = req.body
 
             const room = await Room.findById(_id)
             if (!room) {
@@ -236,7 +247,10 @@ const roomController = {
                 eventType: 'usersAddedToRoom',
                 eventData: {
                     roomId: room._id,
-                    addedUsers: userIdsArr
+                    addedUsers: userIdsArr,
+                    roomName: room.roomName,
+                    updatedById: updatedById,
+                    updatedByUsername: updatedByUsername
                 }
             }
 
@@ -245,7 +259,7 @@ const roomController = {
 
             res.status(201).json(room.users)
 
-        } catch {
+        } catch (error) {
             res.status(500).json({ error: 'Error adding user to room' })
         }
     },
@@ -253,7 +267,7 @@ const roomController = {
     removeUsersFromRoom: async (req, res) => { // also update user document to remove room
         try {
             const roomId = req.params.roomId
-            const { emailsArray } = req.body
+            const { emailsArray, updatedById, updatedByUsername } = req.body
 
             const room = await Room.findById(roomId)
             if (!room) {
@@ -286,8 +300,11 @@ const roomController = {
             const globalAlertData = {
                 eventType: 'usersRemovedFromRoom',
                 eventData: {
-                    roomId: roomId,
-                    users: removedUsersArr
+                    roomId: room._id,
+                    addedUsers: removedUsersArr,
+                    roomName: room.roomName,
+                    updatedById: updatedById,
+                    updatedByUsername: updatedByUsername
                 }
             }
 
@@ -305,7 +322,7 @@ const roomController = {
     updateRoomName: async (req, res) => {
         try {
             const _id = req.params.roomId
-            const newRoomName = req.body.newRoomName
+            const { originalRoomName, newRoomName, updatedById, updatedByUsername } = req.body
             const room = await Room.findById(_id)
             if (!room) {
                 res.status(404).json({ error: "Room not found" })
@@ -313,6 +330,22 @@ const roomController = {
 
             room.roomName = newRoomName
             await room.save()
+            
+            const globalAlertData = {
+                eventType: 'roomNameUpdated',
+                eventData: {
+                    roomId: room._id,
+                    users: room.users,
+                    originalRoomName: originalRoomName,
+                    roomName: newRoomName,
+                    updatedById: updatedById,
+                    updatedByUsername: updatedByUsername
+                }
+            }
+
+            const io = req.io
+            io.to("globalChannel").emit('globalAlert', globalAlertData)
+
 
             res.status(201).json(room.roomName)
 
@@ -320,9 +353,32 @@ const roomController = {
             res.status(500).json({ error: 'Error updating room name' })
         }
     },
+
+    updateRoomIcon: async (req, res) => {
+        try {
+            const _id = req.params.roomId
+            const newRoomIconUrl = req.body.newRoomIconUrl
+            console.log("newRoomIconUrl...", newRoomIconUrl, _id)
+            const room = await Room.findById(_id)
+            if (!room) {
+                res.status(404).json({ error: "Room not found" })
+            }
+
+            room.profilePictureUrl = newRoomIconUrl
+            await room.save()
+
+            res.status(201).json(room.profilePictureUrl)
+
+        } catch {
+            res.status(500).json({ error: 'Error updating room icon' })
+        }
+    },
     
     deleteRoom: async (req, res) => {
         try {
+
+            console.log("deleting room...")
+            console.log("deletedBy...", req.body)
             const roomId = req.params.roomId
             const roomIdObj = new mongoose.Types.ObjectId(roomId)
 
@@ -347,10 +403,14 @@ const roomController = {
             await Promise.all(userPromisesArray)
 
 
+            const {username, deletedBy} = req.body
             const globalAlertData = {
                 eventType: 'roomDeleted',
                 eventData: {
                     roomId: roomId,
+                    roomName: room.roomName,
+                    deletedBy: deletedBy,
+                    deletedByUsername: username
                 }
             }
 
