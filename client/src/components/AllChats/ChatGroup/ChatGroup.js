@@ -68,7 +68,7 @@ const ChatGroup = ({ roomName, roomId, active, search }) => {
     useEffect(() => {
         const lastActive = activityLog ? activityLog[roomId] : null
         if (chatLog?.messagesArray) {
-            setInboxCount(searchInsertPosition(chatLog?.messagesArray, lastActive) || 0)
+            setInboxCount(searchInsertPosition(chatLog?.messagesArray || [], lastActive))
         }
 
     }, [chatLog, active, activityLog])
