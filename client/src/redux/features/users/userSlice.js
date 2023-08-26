@@ -7,13 +7,12 @@ const baseURL = 'http://localhost:8080/api'
 
 export const createNewUser = createAsyncThunk(
     'rooms/createNewUser',
-    async ({ firebaseUserId, email, username, profilePictureUrl } , { rejectWithValue }) => {
+    async ({ firebaseUserId, email, username } , { rejectWithValue }) => {
         try {
             const response = await axios.post(`${baseURL}/users/create`, { 
                 firebaseUserId, 
                 email, 
-                username, 
-                profilePictureUrl 
+                username
             })
             return response.data
         } catch (error) {
@@ -48,9 +47,25 @@ export const getUserByFirebaseUserId = createAsyncThunk(
 
 export const updateUsername = createAsyncThunk(
     'users/updateUsername',
-    async ({ userId } , { rejectWithValue }) => {
+    async ({ userId, newUsername } , { rejectWithValue }) => {
         try {
-            const response = await axios.post(`${baseURL}/users/updateUsername/${userId}`)
+            const response = await axios.patch(`${baseURL}/users/updateUsername/${userId}`, {
+                newUsername: newUsername
+            })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+export const updateUserProfilePicture = createAsyncThunk(
+    'users/updateUserProfilePicture',
+    async ({ userId, updatedUserProfilePictureUrl } , { rejectWithValue }) => {
+        try {
+            const response = await axios.patch(`${baseURL}/users/updateUserProfilePicture/${userId}`, {
+                updatedUserProfilePictureUrl: updatedUserProfilePictureUrl
+            })
             return response.data
         } catch (error) {
             return rejectWithValue(error.message)
@@ -95,6 +110,7 @@ const initialState = {
     firebaseUserId: null,
     mongoDbUserId: null,
     rooms: [],
+    profilePictureUrl: "https://i.postimg.cc/13JNx5YY/image-Ot-ILHw-Wp-NCPt.jpg"
 }
 
 export const userSlice = createSlice({
@@ -140,6 +156,16 @@ export const userSlice = createSlice({
             state.email = action.payload.email
         },
 
+        updateUserCredentials: (state, action) => {
+            state.username = action.payload.username
+            state.mongoDbUserId = action.payload.mongoDbUserId
+            state.email = action.payload.email
+        },
+
+        updateUserCredentialsUsername: (state, action) => {
+            state.username = action.payload
+        },
+
         syncUserData: (state, action) => {
             state.username = action.payload.username
             state.email = action.payload.email
@@ -174,6 +200,8 @@ export const userSlice = createSlice({
             state.firebaseUserId = action.payload.firebaseUserId
             state.mongoDbUserId = action.payload._id
             state.rooms = action.payload.rooms
+            state.profilePictureUrl = action.payload.profilePictureUrl
+            
         })
         builder.addCase(createNewUser.rejected, (state, action) => {
             state.isAuthenticated = false
@@ -202,7 +230,8 @@ export const userSlice = createSlice({
             // state.firebaseUserId = action.payload.firebaseUserId
             // state.mongoDbUserId = action.payload._id
             state.rooms = action.payload.rooms
-            console.log("slice:", action.payload)
+            state.profilePictureUrl = action.payload.profilePictureUrl
+
         })
 
 
@@ -213,23 +242,42 @@ export const userSlice = createSlice({
         builder.addCase(getUserByFirebaseUserId.fulfilled, (state, action) => {
             state.loading = false
             state.error = null
-            state.email = action.payload[0].email
-            state.username = action.payload[0].username
-            state.firebaseUserId = action.payload[0].firebaseUserId
-            state.mongoDbUserId = action.payload[0]._id
-            state.rooms = action.payload[0].rooms
+            state.email = action.payload[0]?.email
+            state.username = action.payload[0]?.username
+            state.firebaseUserId = action.payload[0]?.firebaseUserId
+            state.mongoDbUserId = action.payload[0]?._id
+            state.rooms = action.payload[0]?.rooms
+            state.profilePictureUrl = action.payload[0]?.profilePictureUrl
         })
 
 
         builder.addCase(updateUsername.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload 
+            console.log("user slice, update username error", action.payload )
         })
         builder.addCase(updateUsername.fulfilled, (state, action) => {
             state.loading = false
             state.error = null
-            state.username = action.payload[0].username
+            state.username = action.payload.username
         })
+
+
+        builder.addCase(updateUserProfilePicture.pending, (state, action) => {
+            state.loading = true
+        })
+        builder.addCase(updateUserProfilePicture.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload 
+
+        })
+        builder.addCase(updateUserProfilePicture.fulfilled, (state, action) => {
+            state.loading = false
+            state.error = null
+            state.profilePictureUrl = action.payload.profilePictureUrl
+        })
+        
+
 
 
         builder.addCase(deleteUser.rejected, (state, action) => {
@@ -256,7 +304,8 @@ export const {
     logout, 
     updateUserCredentials,
     addRoomToUserRoomsList,
-    removeRoomFromUserSlice
+    removeRoomFromUserSlice,
+    updateUserCredentialsUsername
 } = userSlice.actions
 
 export default userSlice.reducer
