@@ -1,7 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { socket } from '../../socket/socketIO'
 
 
 const baseURL = 'http://localhost:8080/api'
@@ -49,10 +47,12 @@ export const createNewRoom = createAsyncThunk(
 
 export const addUsersToRoom = createAsyncThunk(
     'rooms/addUsersToRoom',
-    async ({roomId, emailsArray}, { rejectWithValue }) => {
+    async ({roomId, emailsArray, updatedById, updatedByUsername}, { rejectWithValue }) => {
         try {
             const response = await axios.patch(`${baseURL}/rooms/addUsers/${roomId}`, {
-                emailsArray
+                emailsArray,
+                updatedById: updatedById,
+                updatedByUsername: updatedByUsername
             })
             return response.data
         } catch (error) {
@@ -75,10 +75,12 @@ export const getNewRoomData = createAsyncThunk(
 
 export const removeUsersFromRoom = createAsyncThunk(
     'rooms/removeUsersFromRoom',
-    async ({roomId, emailsArray}, { rejectWithValue }) => {
+    async ({roomId, emailsArray, updatedById, updatedByUsername}, { rejectWithValue }) => {
         try {
             const response = await axios.patch(`${baseURL}/rooms/removeUsers/${roomId}`, {
-                emailsArray: emailsArray
+                emailsArray: emailsArray,
+                updatedById: updatedById,
+                updatedByUsername: updatedByUsername
             })
             return response.data
         } catch (error) {
@@ -89,10 +91,28 @@ export const removeUsersFromRoom = createAsyncThunk(
 
 export const updateRoomName = createAsyncThunk(
     'rooms/updateRoomName',
-    async ({roomId, newRoomName}, { rejectWithValue }) => {
+    async ({roomId, originalRoomName, newRoomName, updatedById, updatedByUsername}, { rejectWithValue }) => {
         try {
             const response = await axios.patch(`${baseURL}/rooms/${roomId}`, {
-                newRoomName: newRoomName
+                newRoomName: newRoomName,
+                originalRoomName: originalRoomName,
+                newRoomName: newRoomName,
+                updatedById: updatedById,
+                updatedByUsername: updatedByUsername
+            })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+export const updateRoomIcon = createAsyncThunk(
+    'rooms/updateRoomIcon',
+    async ({roomId, newRoomIconUrl}, { rejectWithValue }) => {
+        try {
+            const response = await axios.patch(`${baseURL}/rooms/updateIcon/${roomId}`, {
+                newRoomIconUrl: newRoomIconUrl
             })
             return response.data
         } catch (error) {
@@ -103,9 +123,14 @@ export const updateRoomName = createAsyncThunk(
 
 export const deleteRoom = createAsyncThunk(
     'rooms/deleteRoom',
-    async ({roomId}, { rejectWithValue }) => {
+    async ({roomId, deletedBy, username}, { rejectWithValue }) => {
         try {
-            const response = await axios.delete(`${baseURL}/rooms/${roomId}`)
+            const response = await axios.delete(`${baseURL}/rooms/${roomId}`, {
+                data: {
+                    deletedBy: deletedBy,
+                    username: username
+                }
+            })
             return response.data
         } catch (error) {
             return rejectWithValue(error.message)
@@ -115,7 +140,7 @@ export const deleteRoom = createAsyncThunk(
 
 
 const initialState = {
-    roomsData: null, // [ { roomId, roomName, chatLog[chatLog.length-1].message, users } ]   
+    roomsData: [], // [ { roomId, roomName, dateCreated, profilePictureUrl, chatLog[chatLog.length-1].message, users } ]   
     loading: false,
     currentActiveRoomId: null,
     error: null,
@@ -129,13 +154,18 @@ export const roomSlice = createSlice({
             state.currentActiveRoomId = action.payload
             // state.activeRoomIndex = state.roomsData.findIndex(roomObj => roomObj.roomId === state.currentActiveRoomId)
         },
-        setLoading: (state) => {
-            state.loading = true
+        assignCurrentActiveRoom: (state) => {
+            const length = state.roomsData.length
+            state.currentActiveRoomId = state.roomsData[length-1].roomId || null
+        },
+        setLoading: (state, action) => {
+            state.loading = action.payload
             // state.activeRoomIndex = state.roomsData.findIndex(roomObj => roomObj.roomId === state.currentActiveRoomId)
         },
         removeRoomFromRoomSlice: (state, action) => {
             state.roomsData = state.roomsData.filter(roomObj => roomObj.roomId !== action.payload)
         }
+
     },
 
     extraReducers: (builder) => {
@@ -167,7 +197,7 @@ export const roomSlice = createSlice({
         builder.addCase(getRoomsByMongoDbUserId.fulfilled, (state, action) => {
             state.loading = false
             state.roomsData = action.payload
-            if (!state.activeRoom) {
+            if (state.activeRoom === null) {
                 state.currentActiveRoomId = action.payload[action.payload.length-1]?.roomId ? action.payload[action.payload.length-1].roomId : null
             }
             // state.activeRoomIndex = state.roomsData.findIndex(roomObj => roomObj.roomId === state.currentActiveRoomId) || null
@@ -175,7 +205,7 @@ export const roomSlice = createSlice({
         })
         builder.addCase(getRoomsByMongoDbUserId.rejected, (state, action) => {
             state.loading = false
-            state.roomsData = null
+            state.roomsData = action.payload
             state.error = action.payload // The error message from rejectWithValue is set in the state
         })
 
@@ -194,6 +224,8 @@ export const roomSlice = createSlice({
             // so updating the loading state to true will cause a 
             // momentary flash on the screen
             // state.loading = false 
+            console.log("createNewRoom", action.payload)
+            state.currentActiveRoomId = action.payload._id
             state.error = null
         })
 
@@ -240,7 +272,19 @@ export const roomSlice = createSlice({
             state.error = action.payload 
         })
         builder.addCase(updateRoomName.fulfilled, (state, action) => {
+            // state.loading = false
+            state.error = null
+        })
+
+        builder.addCase(updateRoomIcon.pending, (state) => {
+            // state.loading = true
+        })
+        builder.addCase(updateRoomIcon.rejected, (state, action) => {
             state.loading = false
+            state.error = action.payload 
+        })
+        builder.addCase(updateRoomIcon.fulfilled, (state, action) => {
+            // state.loading = false
             state.error = null
         })
 
@@ -248,20 +292,38 @@ export const roomSlice = createSlice({
             // during operation this is followed by another promise
             // so updating the loading state to true will cause a 
             // momentary flash on the screen
-            // state.loading = true
+            state.loading = true
         })
         builder.addCase(deleteRoom.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload 
         })
         builder.addCase(deleteRoom.fulfilled, (state, action) => {
-            state.loading = false
+            // state.loading = false
             state.error = null
         })
 
     }
 })
 
-export const { changeCurrentActiveRoom, setLoading, removeRoomFromRoomSlice } = roomSlice.actions
+
+const allRoomsData = (state) => state.rooms?.roomsData || []
+export const selectRoomById = createSelector(
+    [allRoomsData],
+    (allRoomsData) => (roomId) => {
+        if (allRoomsData, state => state.user) {
+            return ( allRoomsData?.filter(room => room.roomId === roomId) )
+        }
+        return false
+    }
+)
+
+
+export const { 
+        changeCurrentActiveRoom,
+        assignCurrentActiveRoom,
+        setLoading, 
+        removeRoomFromRoomSlice,
+    } = roomSlice.actions
 
 export default roomSlice.reducer
