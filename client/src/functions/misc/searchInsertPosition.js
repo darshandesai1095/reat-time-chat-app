@@ -2,9 +2,9 @@ import convertToUnixTimestamp from "./convertToUnixTimestamp"
 
 const searchInsertPosition = (messagesArray=[], lastActive=0) => {
 
-    try {
+    if (!messagesArray || !lastActive || messagesArray.length == 0) return 0
 
-        if (!messagesArray || !lastActive || messagesArray.length === 0) return 0
+    try {
 
         // create array of 'dateCreated' timestamps from chatLogsArray
         const dateCreatedTimestampsArray = messagesArray?.map(messageObj => convertToUnixTimestamp(messageObj.dateCreated))
@@ -22,7 +22,7 @@ const searchInsertPosition = (messagesArray=[], lastActive=0) => {
         return inboxCount
 
     } catch (error) {
-        console.log("searchInsertPosition", error)
+        console.log("searchInsertPosition", error, error.message)
     }
 
     return 0
