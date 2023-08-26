@@ -53,7 +53,11 @@ const MainPage = () => {
             await Promise.resolve(dispatch(socketIoJoinRooms(roomsArray)))
         }
     }
-    joinRoomsSocketIo()
+
+    useEffect(() => {
+        joinRoomsSocketIo()
+    }, [roomsArray])
+
 
     // get activity log from local storage and save to redux store
     useEffect(() => {
