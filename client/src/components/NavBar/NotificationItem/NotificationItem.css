@@ -1,0 +1,40 @@
+.notification-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 1px solid var(--secondary-color-light);
+    padding: 15px 20px;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.notification-item:last-of-type {
+    border-bottom: none
+}
+
+.notification-item__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification-item__body {
+    text-align: left;
+}
+
+.notification-item__header h4 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+.notification-item__header p {
+    font-size: 0.7rem;
+}
+
+.notification-item__body p {
+    font-size: 0.75rem;
+    line-height: 1.2rem;
+}

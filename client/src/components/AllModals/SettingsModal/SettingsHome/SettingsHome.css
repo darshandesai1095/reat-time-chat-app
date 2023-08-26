@@ -1,0 +1,53 @@
+.settings-items {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 15px;
+    color: var(--tertiary-color)
+}
+
+.settings-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.settings-icon:hover {
+    position: relative;
+    animation: moveAnimation 0.5s linear 2;
+}
+
+@keyframes moveAnimation {
+    0% {
+      left: 0px;
+    }
+    25% {
+        left: 3px;
+    }
+    75% {
+        left: -3px;
+    }
+    100% {
+      left: 0px;
+    }
+}
+
+.settings-item > svg:hover {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.settings-item > svg:hover {
+    color: var(--primary-color);
+}
+
+.link-unstyled {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.link-unstyled:hover {
+    color: var(--primary-color)
+}

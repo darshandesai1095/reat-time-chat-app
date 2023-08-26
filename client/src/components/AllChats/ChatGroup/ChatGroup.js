@@ -1,6 +1,6 @@
 import './ChatGroup.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeCurrentActiveRoom } from '../../../redux/features/rooms/roomSlice';
+import { changeCurrentActiveRoom, selectRoomById } from '../../../redux/features/rooms/roomSlice';
 import Avatar from '../../Avatar/Avatar';
 import UnreadMessageCount from '../UnreadMessageCount/UnreadMessageCount';
 import { useEffect, useState } from 'react';
@@ -8,13 +8,27 @@ import { updateActivityLog } from '../../../redux/features/activityLogs/activity
 import formatDate from '../../../functions/misc/formatDate';
 import { setLastActiveInLocalStorage } from '../../../functions/misc/localStorage';
 import searchInsertPosition from '../../../functions/misc/searchInsertPosition';
+import { updateTotalMatches } from '../../../redux/features/search/searchRoomsSlice';
 
-const ChatGroup = ({ roomName, roomId, active }) => {
+
+const ChatGroup = ({ roomName, roomId, active, search }) => {
 
     const dispatch = useDispatch()
-    const previousActiveRoomId = useSelector(state => state.rooms.currentActiveRoomId)
-    const activityLog = useSelector(state => state.activityLog.lastActive)
-    const userId = useSelector(state => state.user.mongoDbUserId)
+    const previousActiveRoomId = useSelector(state => state.rooms?.currentActiveRoomId)
+    const activityLog = useSelector(state => state.activityLog?.lastActive)
+    const userId = useSelector(state => state.user?.mongoDbUserId)
+
+    // const roomData = useSelector(state => state.rooms.roomsData?.filter(room => room.roomId === roomId))
+    // const profilePictureUrl = roomData?.profilePictureUrl
+
+    
+    // const filteredRoomData = useSelector(state => selectRoomById(state)(roomId)) // get room object
+    // OR
+    const allRoomsData = useSelector(state => state.rooms.roomsData)
+    const room = allRoomsData?.filter(room => room.roomId == roomId)
+
+
+    const profilePictureUrl = room[0]?.profilePictureUrl
 
 
     const updateActivityLogAndActivateRoom = () => {
@@ -33,7 +47,6 @@ const ChatGroup = ({ roomName, roomId, active }) => {
         })
         // update current activate room
         dispatch(changeCurrentActiveRoom(roomId))
-        console.log("activity log", activityLog)
     }
 
     const chatLog = useSelector(state => state.chatLogs?.chatLogData?.filter(chatLog => chatLog.roomId === roomId)[0])
@@ -43,23 +56,56 @@ const ChatGroup = ({ roomName, roomId, active }) => {
             if (lastMessage) {
                 return ( <p> {lastMessage.messageContent} </p> )
             } else {
-                return ( <p className='begin-new-chat'>New group created. Click here to begin chat &nbsp;<span>💬</span></p> )
+                return ( <p className='begin-new-chat'>New group created &nbsp;&nbsp;<span>💬</span></p> )
             }
         }
-        return ( <p className='begin-new-chat'>New group created. Click here to begin chat &nbsp;<span>💬</span></p> )
+        return ( <p className='begin-new-chat'>New group created &nbsp;&nbsp;<span>💬</span></p> )
     }
 
     const messagesArrayLength = chatLog?.messagesArray?.length
     const [inboxCount, setInboxCount] = useState(0)
     
     useEffect(() => {
-        const lastActive = activityLog[roomId]
-
-        setInboxCount(searchInsertPosition(chatLog?.messagesArray, lastActive))
+        const lastActive = activityLog ? activityLog[roomId] : null
+        if (chatLog?.messagesArray) {
+            setInboxCount(searchInsertPosition(chatLog?.messagesArray || [], lastActive))
+        }
 
     }, [chatLog, active, activityLog])
 
+    const [timeSinceLastMessage, setTimeSinceLastMessage] = useState(null)
+    useEffect(() => {
+        const calculateTimeSinceLastMessage = () => {
+            const timeSince = formatDate(chatLog?.messagesArray[messagesArrayLength-1]?.dateCreated, "difference") 
+            setTimeSinceLastMessage(timeSince)
+        }
+        calculateTimeSinceLastMessage()
 
+        const intervalId = setInterval(calculateTimeSinceLastMessage, 60_000)
+
+        return ( () => {
+            clearInterval(intervalId)
+        })
+    }, [activityLog])
+
+    const [isMatch, setIsMatch] = useState(false)
+    useEffect(() => {
+        const checkIsMatch = (searchTerm) => {
+            if (!searchTerm) {
+                setIsMatch(false)
+                return
+            }
+            const match = roomName.toLowerCase().match(`${searchTerm.toLowerCase()}`)
+            if (match) {
+                setIsMatch(true)
+                dispatch(updateTotalMatches())
+            } else {
+                setIsMatch(false)
+            }
+        }
+        checkIsMatch(search)
+    }, [search])
+   
 
     return (
         <div 
@@ -68,13 +114,20 @@ const ChatGroup = ({ roomName, roomId, active }) => {
         >
 
                <Avatar
-                    borderRadiusPixels={55}
+                    width={55}
+                    height={55}
+                    responsive={false}
+                    url={profilePictureUrl}
                />
 
                 <div className='chat-group__message'>
                     <div className='message__sender'>
                         <p>
-                            {roomName}
+                            <span
+                                className={`${isMatch ? "highlight" : null}`}
+                            > 
+                                { roomName } 
+                            </span>
                         </p>
                     </div>
                     <div className={`message__preview ${inboxCount >= 1 ? "bold" : null}`}>
@@ -84,9 +137,13 @@ const ChatGroup = ({ roomName, roomId, active }) => {
                 </div>
 
                 <div className='chat-group__meta-data'>
-                    <div className='meta-data__time'>
+                    <div className={`meta-data__time ${inboxCount >= 1 ? "bold" : null}`}>
                         <p>
-                            { formatDate(chatLog?.messagesArray[messagesArrayLength-1]?.dateCreated, true) }
+                            {   chatLog?.messagesArray?.length === 0 ?
+                                "New"
+                                :
+                                timeSinceLastMessage
+                            }
                         </p>
                     </div>
                     {   

@@ -1,11 +1,11 @@
 .create-account {
-    background-color: rgb(250,250,250);
-    color: var(--black);
+    background-color: var(--secondary-color);
+    color: var(--tertiary-color);
     width: 400px;
     height: 490px;
-    padding: 40px 40px;
-    border-radius: 10px;
-    border: 2px solid rgb(240,240,240);
+    padding: 45px 50px;
+    padding-bottom: 15px;
+    border-radius: 20px;
 }
 
 .create-account > h3 {
@@ -24,7 +24,7 @@
 
 .form__details > input,
 .form__details select {
-    background-color: white;
+    background-color: var(--secondary-color-light);
     border: none;
     outline: none;
     margin-bottom: 20px;
@@ -32,8 +32,7 @@
     width: 100%;
     border-radius: 10px;
     padding: 0 20px;
-    color: var(--black);
-    border: 2px solid rgb(240,240,240);
+    color: var(--tertiary-color);
 }
 
 .form__details > input,
@@ -60,19 +59,19 @@
     color: var(--primary-color);
     cursor: pointer;
     transition: 0.1s;
-    border-bottom: 1px solid rgb(250,250,250);
+    border-bottom: 1px solid var(--secondary-color);
     white-space: nowrap;
     width: min-content;
     transition: 0.3s;
 }
 
 .already-have-an-account:hover {
-    border-bottom: 1px solid var(--black);
+  border-bottom: 1px solid var(--tertiary-color)
 }
 
 .form__continue-button {
     background-color: var(--primary-color);
-    color: var(--white);
+    color: var(--tertiary-color);
     border: none;
     outline: none;
     margin-bottom: 10px;
@@ -87,8 +86,8 @@
     transition: 0.3s;
 }
 
-.form__login-button:hover {
-    background-color: rgba(94, 43, 255, 0.8);
+.form__continue-button:hover {
+    background-color: var(--primary-color-dark);
 }
 
 .login__register {
@@ -96,13 +95,10 @@
     text-align: left;
     font-size: 0.7rem;
     font-weight: 600;
-    color: var(--black);
-    opacity: 0.8;
 }
 
 .login__register > p > span {
-    color: var(--black);
-    border-bottom: 1px solid rgb(250,250,250);
+    border-bottom: 1px solid var(--tertiary-color);
     cursor: pointer;
 }
 

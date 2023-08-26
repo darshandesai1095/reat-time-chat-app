@@ -24,6 +24,9 @@ router.patch('/removeUsers/:roomId', roomController.removeUsersFromRoom)
 // Route for updating room name
 router.patch('/:roomId', roomController.updateRoomName)
 
+// Route for updating room icon
+router.patch('/updateIcon/:roomId', roomController.updateRoomIcon)
+
 // Route for deleting room for all users
 router.delete('/:roomId', roomController.deleteRoom)
 

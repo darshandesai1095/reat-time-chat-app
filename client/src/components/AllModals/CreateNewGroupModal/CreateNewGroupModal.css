@@ -1,9 +1,9 @@
-.modal-background {
+/* .modal-background {
     position: absolute;
     width: 100vw;
     height: 100vh;
     background-color: rgba(0,0,0,0.6);
-    z-index: 9999;
+    z-index: 9999999;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,7 +23,7 @@
     width: 400px;
     padding: 40px 40px;
     padding-bottom: 30px;
-    border-radius: 10px;
+    border-radius: 20px;
     position: relative;
 }
 
@@ -113,4 +113,4 @@ p.remove {
 
 p.remove:hover {
     color: #ef233c;
-}
+} */

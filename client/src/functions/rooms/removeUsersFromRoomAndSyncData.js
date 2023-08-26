@@ -1,7 +1,7 @@
 import { getUserByMongoDbUserId } from "../../redux/features/users/userSlice";
 import { removeUsersFromRoom, getRoomsByMongoDbUserId } from "../../redux/features/rooms/roomSlice";
 
-const removeUsersFromRoomAndSyncData = async (dispatch, mongoDbUserId, roomId, emailsArray) => {
+const removeUsersFromRoomAndSyncData = async (dispatch, mongoDbUserId, roomId, emailsArray, updatedById, updatedByUsername) => {
    
   try {
     // create new room and sync data
@@ -10,6 +10,8 @@ const removeUsersFromRoomAndSyncData = async (dispatch, mongoDbUserId, roomId, e
             removeUsersFromRoom({
                 roomId: roomId,
                 emailsArray: emailsArray,
+                updatedById: updatedById,
+                updatedByUsername: updatedByUsername
             })
       )
     );

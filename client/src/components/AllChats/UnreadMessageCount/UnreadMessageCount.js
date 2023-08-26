@@ -2,9 +2,11 @@ import './UnreadMessageCount.css';
 
 const UnreadMessageCount = ({ count }) => {
 
+    const displayCount = count > 99 ? "99+" : count
+
     return (
         <div className="unread-message-count">
-            <p>{count}</p>
+            <p>{displayCount}</p>
         </div>
     )
 }

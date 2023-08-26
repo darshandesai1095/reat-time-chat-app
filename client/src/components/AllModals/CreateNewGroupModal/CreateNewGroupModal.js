@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react';
-import './CreateNewGroupModal.css';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { useState } from 'react';
+import '../AddMoreUsersModal/AddMoreUsersModal.css'
 import InputField from '../../InputField/InputField';
 import { useSelector, useDispatch } from 'react-redux';
 import createNewRoomAndSyncData from '../../../functions/rooms/createNewRoomAndSyncData';
+import { toggleCreateNewGroupModal } from '../../../redux/features/modals/modalSlice';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 
 
-const CreateNewGroupModal = ({showCreateGroupPopup, setShowCreateGroupPopup}) => {
+const CreateNewGroupModal = () => {
 
     const roomError = useSelector(state => state.rooms.error)
     const mongoDbUserId = useSelector(state => state.user.mongoDbUserId)
+    const showCreateNewGroupModal = useSelector(state => state.modals.showCreateNewGroupModal)
     const dispatch = useDispatch()
 
     const [groupName, setGroupName] = useState('')
@@ -19,13 +21,13 @@ const CreateNewGroupModal = ({showCreateGroupPopup, setShowCreateGroupPopup}) =>
     }
 
     const closePopup = () => {
-        setShowCreateGroupPopup(false)
+        dispatch(toggleCreateNewGroupModal())
         setGroupName('')
         setEmails([''])
     }
 
     const createGroup = async () => {
-        setShowCreateGroupPopup(false)
+        dispatch(toggleCreateNewGroupModal())
         await createNewRoomAndSyncData(dispatch, mongoDbUserId, groupName, emails)
         if (roomError !== null) {
             alert('Error creating group')
@@ -35,11 +37,11 @@ const CreateNewGroupModal = ({showCreateGroupPopup, setShowCreateGroupPopup}) =>
     }
 
     return (
-        <div className={`modal-background ${showCreateGroupPopup ? null : "hide-page"}`}>
+        <div className={`modal-background ${showCreateNewGroupModal ? null : "hide-page"}`}>
             <div className="create-new-group">
                 <h3>Create New Group</h3>
                 <div className='close-icon'>
-                    <CloseRoundedIcon
+                    <CancelRoundedIcon
                         onClick={closePopup}
                     />
                 </div>

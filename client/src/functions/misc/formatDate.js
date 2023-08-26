@@ -1,6 +1,7 @@
-import { format, parseISO, isValid } from 'date-fns';
+import { format, parseISO, isValid, differenceInMinutes, 
+    differenceInHours, differenceInDays, differenceInMonths, differenceInYears, differenceInWeeks, isToday, isYesterday } from 'date-fns';
 
-const formatDate = ( inputDate, onlyTime=false ) => {
+const formatDate = ( inputDate, returnFormat ) => {
 
     let parsedDate
 
@@ -10,13 +11,63 @@ const formatDate = ( inputDate, onlyTime=false ) => {
         parsedDate = new Date(inputDate)
     }
 
-    if (isValid(parsedDate) && onlyTime) {
-        return format(parsedDate, 'HH:mm')
-    } else if (isValid(parsedDate)) {
-        return format(parsedDate, 'dd MMM yy · HH:mm')
-    } else {
-        return 'HH:mm'
+    if ( (isValid(parsedDate) && returnFormat === "checkIsToday") ) {
+        return ( isToday(parsedDate) )
     }
+
+    if ( (isValid(parsedDate) && returnFormat === "checkIsYesterday") ) {
+        return ( isYesterday(parsedDate) )
+    }
+
+    if (isValid(parsedDate) && returnFormat === "time") {
+        return format(parsedDate, 'h:mm a').toLocaleLowerCase()
+    }
+
+    if (isValid(parsedDate) && returnFormat === "date") {
+        return format(parsedDate, 'dd MMM yy')
+    }
+    
+    if (isValid(parsedDate) && returnFormat === "date-time") {
+        return format(parsedDate, 'dd MMM yy · HH:mm')
+    }
+
+    if (isValid(parsedDate) && returnFormat === "difference") {
+        return calculateTimeDifference(parsedDate)
+    }
+    
+    return 'HH:mm'
 }
+
+const calculateTimeDifference = (parsedDate) => {
+
+    const now = Date.now()
+    const mins = differenceInMinutes(now, parsedDate)
+    const hours = differenceInHours(now, parsedDate)
+    const days = differenceInDays(now, parsedDate)
+    const weeks = differenceInWeeks(now, parsedDate)
+    const months = differenceInMonths(now, parsedDate)
+    const years = differenceInYears(now, parsedDate)
+
+    if (mins == 0) {
+        return (`Now`)
+    }
+    if (mins == 1) {
+        return (`${mins} min`)
+    }
+    if (hours < 1) {
+        return (`${mins} mins`)
+    }
+    if (isYesterday(parsedDate)) {
+        return ('Yesterday')
+    }
+    if (hours < 24) {
+        return (format(parsedDate, 'h:mm a')).toLocaleLowerCase()
+    }
+    if (hours >= 24) {
+        return (format(parsedDate, 'dd·MM·yy'))
+    }
+
+}
+
 
 export default formatDate

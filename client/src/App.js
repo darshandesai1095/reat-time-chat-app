@@ -9,8 +9,8 @@ const App = () => {
 
   return (
       <div className="App">
-
-          { isAuthenticated ? <MainPage/> : <AuthenticationPage/> }
+        
+        { isAuthenticated ? <MainPage/> : <AuthenticationPage/> }
 
       </div>
   );

@@ -2,7 +2,6 @@ import './InputField.css';
 
 const InputField = ({value, setValue, required, placeholder}) => {
 
-
     return (
         <div className="input-field">
                 <input

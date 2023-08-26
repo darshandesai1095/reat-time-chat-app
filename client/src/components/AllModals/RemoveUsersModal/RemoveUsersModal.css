@@ -1,0 +1,64 @@
+.remove-user__users-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: center;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.remove-user__user {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+}
+
+.remove-user__user > p {
+    font-weight: 500;
+    flex: 1;
+    padding: 10px 0px;
+    border-radius: 12.5px;
+    background-color: var(--secondary-color-light);
+    font-size: 0.9rem;
+    max-width: 25ch;
+}
+
+.remove-user__icon {
+    border-radius: 12.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 7px;
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: var(--secondary-color-light);
+}
+
+.remove-user__icon.bin:hover {
+    background-color: var(--red);
+    transition: 0.3s;
+}
+
+.remove-user__icon.undo:hover {
+    background-color: #02c39a;
+    transition: 0.3s;
+}
+
+.remove-user__user svg {
+    transform: scale(0.8);
+}
+
+.remove-users-button {
+    margin-top: 20px;
+}
+
+.remove-user__user > p.strikethrough {
+    /* text-decoration: line-through; */
+    color: var(--tertiary-color-dark);
+}

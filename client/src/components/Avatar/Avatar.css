@@ -9,11 +9,13 @@ font-family: 'Cherry Bomb One', cursive;
 font-family: 'Shadows Into Light', cursive; */
 
 .avatar {
-    width: 50px;
+    /* width: 50px;
     height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    top: 0 */
 }
 
 .avatar > p {
@@ -24,7 +26,25 @@ font-family: 'Shadows Into Light', cursive; */
 .avatar > img {
     object-fit: contain;
     width: 100%;
-    border-radius: 15px;
+    border-radius: 30%;
 }
 
+.avatar-responsive img {
+    border: 1px solid var(--secondary-color-dark);
+    transition: 0.2s;
+    cursor: pointer
+}
+
+.avatar-responsive img:hover {
+    border: 4px solid var(--primary-color)
+}
+
+.avater__selected-picture img {
+    border: 4px solid #02c39a;
+    transition: 0.2s;
+}
+
+.avater__selected-picture img:hover {
+    border: 4px solid #02c39a;
+}
 

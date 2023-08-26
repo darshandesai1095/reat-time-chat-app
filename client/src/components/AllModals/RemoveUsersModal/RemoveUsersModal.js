@@ -4,23 +4,29 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import UndoRoundedIcon from '@mui/icons-material/UndoRounded';
 import removeUsersFromRoomAndSyncData from '../../../functions/rooms/removeUsersFromRoomAndSyncData';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleShowRemoveUsersModal } from '../../../redux/features/modals/modalSlice';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 
 
-const RemoveUsersModal = ({removeUsersModalVisible, setRemoveUsersModalVisible, mongoDbUserId, activeRoomId, usersList}) => {
+const RemoveUsersModal = ({mongoDbUserId, activeRoomId, usersList}) => {
 
     const dispatch = useDispatch()
+    const showRemoveUsersModal = useSelector(state => state.modals.showRemoveUsersModal)
+    const userId = useSelector(state => state.user.mongoDbUserId)
+    const username = useSelector(state => state.user.username)
+
 
     const closePopup = () => {
-        setRemoveUsersModalVisible(false)
+        dispatch(toggleShowRemoveUsersModal())
         setRemovedUsers([])
     }
 
     const handleUpdateUsers = async () => {
-        setRemoveUsersModalVisible(false)
+        dispatch(toggleShowRemoveUsersModal())
         setRemovedUsers([])
         try {
-            await removeUsersFromRoomAndSyncData(dispatch, mongoDbUserId, activeRoomId, removedUsers)
+            await removeUsersFromRoomAndSyncData(dispatch, mongoDbUserId, activeRoomId, removedUsers, userId, username)
         } catch (error) {
             alert("Error updating group name!")
         }
@@ -42,11 +48,11 @@ const RemoveUsersModal = ({removeUsersModalVisible, setRemoveUsersModalVisible, 
     const usersListArr = usersList ? usersList.map(user => user.email) : []
 
     return (
-        <div className={`modal-background ${removeUsersModalVisible ? null : "hide-page"}`}>
+        <div className={`modal-background ${showRemoveUsersModal ? null : "hide-page"}`}>
             <div className="create-new-group">
                 <h3>Remove Users</h3>
                 <div className='close-icon'>
-                    <CloseRoundedIcon
+                    <CancelRoundedIcon
                         onClick={closePopup}
                     />
                 </div>
@@ -59,15 +65,20 @@ const RemoveUsersModal = ({removeUsersModalVisible, setRemoveUsersModalVisible, 
                                     <p className={`${removedUsers.includes(user) && "strikethrough"}`}>
                                         {user}
                                     </p>
-                                    {   removedUsers.includes(user) ?
-                                        <UndoRoundedIcon
-                                            onClick={() => undoRemoveUser(user)}
-                                        />
-                                        :
-                                        <DeleteRoundedIcon
-                                            onClick={() => addToRemovedUsersList(user)}
-                                        />
-                                    }
+         
+                                        {   removedUsers.includes(user) ?
+                                            <div className='remove-user__icon undo'
+                                                onClick={() => undoRemoveUser(user)}
+                                            >
+                                                <UndoRoundedIcon/>
+                                            </div>
+                                            :
+                                            <div className='remove-user__icon bin'  
+                                                onClick={() => addToRemovedUsersList(user)}>
+                                                <DeleteRoundedIcon/>
+                                            </div>
+                                        }
+                        
             
                                 </div>
       
@@ -76,7 +87,7 @@ const RemoveUsersModal = ({removeUsersModalVisible, setRemoveUsersModalVisible, 
                     }
                 </div>
 
-                <button className='close-popup-button remove-users-button' onClick={handleUpdateUsers}>Update Users List</button>
+                <button className='close-popup-button remove-users-button' onClick={handleUpdateUsers}>Update List</button>
             </div>
         </div>
     );

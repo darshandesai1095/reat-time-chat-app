@@ -12,11 +12,11 @@ body {
   padding: 0;
 
   font-family: 'Raleway', sans-serif;
-  font-family: 'Josefin Sans', sans-serif;
-  font-family: 'Archivo', sans-serif;
-  font-family: 'Lato', sans-serif;
-  font-family: 'Catamaran', sans-serif;
-  font-family: 'Archivo', sans-serif;
+  /* font-family: 'Josefin Sans', sans-serif; */
+  /* font-family: 'Archivo', sans-serif; */
+  /* font-family: 'Lato', sans-serif; */
+  /* font-family: 'Catamaran', sans-serif; */
+  /* font-family: 'Archivo', sans-serif; */
   font-family: 'Plus Jakarta Sans', sans-serif;
 
   -webkit-font-smoothing: antialiased;
@@ -34,23 +34,6 @@ body {
 }
 
 :root {
-  --purple: rgb(115,78,250);
-  --grey:  rgb(240,240,240);
-  --light-grey: rgb(250,250,250);
-  --black: rgb(42,42,42);
-  --white:  rgb(250,250,250);
-
-  /* --black: rgb(19,19,19); */
-  --white:  rgb(253,253,253);
-  --blue: rgb(107,138,253);
-  --dark-gray: rgb(32,35,40);
-  --light-gray:  rgb(45,50,60);
-
-  --primary-color: #5e2bff;
-  --black: #2F2F2F;
-
-  /* --primary-color: rgb(107, 138, 253);
-  --primary-color: rgb(94, 43, 255); */
   --primary-color: rgb(107,138,253);
   --primary-color-dark: #607ce3;
   --primary-color-light: #7995fd;
@@ -60,7 +43,12 @@ body {
   --tertiary-color: rgb(255, 255, 255);
   --tertiary-color-dark: rgb(128, 130, 150);
   --red: #ff0a54;
-  --red: #ff4d6d;
+
+  --primary-color: #5e2bff;
+  --primary-color-dark: #4b22cc;
+  --primary-color-light: #7e55ff;
+  /* --red: #ff4d6d; */
+  /* --secondary-color-dark: rgb(10, 10, 10); */
 }
 
 body {

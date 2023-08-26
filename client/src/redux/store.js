@@ -6,6 +6,9 @@ import roomReducer from './features/rooms/roomSlice'
 import chatLogsReducer from './features/chatLogs/chatLogSlice'
 import modalReducer from './features/modals/modalSlice'
 import activityLogReducer from './features/activityLogs/activityLogSlice.js'
+import searchRoomsReducer from './features/search/searchRoomsSlice.js'
+import globalAlertReducer from './features/globalAlerts/globalAlertSlice'
+
 
 export const store = configureStore({
     reducer: {
@@ -14,7 +17,9 @@ export const store = configureStore({
         rooms: roomReducer,
         chatLogs: chatLogsReducer,
         modals: modalReducer,
-        activityLog: activityLogReducer
+        activityLog: activityLogReducer,
+        searchRooms: searchRoomsReducer,
+        globalAlerts: globalAlertReducer
     },
 
     middleware: (getDefaultMiddleware) => (

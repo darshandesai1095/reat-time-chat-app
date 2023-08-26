@@ -1,3 +1,13 @@
+.all-chats-header {
+    padding: 0;
+    padding-bottom: 20px;
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: rgba(255, 0, 0, 0);
+}
+
 .all-chats__search-bar {
     display: flex;
     flex-direction: row;
@@ -5,23 +15,20 @@
     align-items: center;
     background-color: var(--secondary-color-light);
     border-radius: 15px;
-    padding: 10px 15px;
-    width: 85%;
-
-    /* width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    margin: 40px 0;
-    padding-bottom: 40px;
-    padding-left: 20px;
-    padding-right: 20px;
-    border-bottom: 2px solid rgb(240,240,240);
-    color: var(--black);
-    margin-bottom: 0px; */
+    /* border: 1px solid red; */
+    padding: 10px 30px !important;
+    gap: 10px;
 }
 
 .all-chats__search-bar svg {
     fill: var(--tertiary-color-dark);
+    cursor: pointer;
+    transition: 0.3s;
+    /* background-color: blue; */
+}
+
+.all-chats__search-bar svg:hover {
+    fill: var(--tertiary-color);
 }
 
 .all-chats__search-bar > input {
@@ -32,12 +39,46 @@
     color: var(--tertiary-color-light);
     font-size: 0.9rem;
     padding: 5px 0;
-    margin-left: 10px;
+    margin-left: 0px;
+    font-weight: 500;
+    /* background-color: red; */
+    max-width: 80%;
 }
 
 .all-chats__search-bar > input::placeholder {
     color: var(--tertiary-color-dark);
-  }
+    font-weight: 500;
+}
 
+.all-chats-header__match-count {
+    color: var(--tertiary-color-dark);
+    font-size: 0.7rem;
+    margin-top: 7px;
+    margin-bottom: 2px;
+    font-weight: 500;
+    background-color: var(--secondary-color-light);
+    padding: 4px 10px;
+    align-self: center;
+    justify-self: center;
+    border-radius: 10px;
+    position: absolute;
+    bottom: -17px;
+    z-index: 9;
+    border: 2px solid var(--secondary-color);
+}
 
+.show-count {
+    visibility: visible;
+}
 
+.hide-count {
+    visibility: hidden;
+}
+
+.show-clear-search {
+    visibility: visible
+}
+
+.hide-clear-search {
+    visibility: hidden;
+}

@@ -1,16 +1,60 @@
 /* --------------------------------- */
+/* -------------- date ------------- */
+/* --------------------------------- */
+
+.hide-date {
+    visibility: hidden;
+    height: 0px;
+}
+
+.show-date {
+    display: block;
+    color: var(--secondary-color-light);
+    font-size: 0.75rem;
+    margin: 32.5px 60px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--secondary-color-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+} 
+
+.show-date > p {
+    color: var(--secondary-color-light);
+    background-color: var(--secondary-color);
+    position: relative;
+    top: 7.5px;
+    padding: 0 20px;
+} 
+
+
+/* --------------------------------- */
 /* ------ left message bubble ------ */
 /* --------------------------------- */
 
+.message-bubble:first-of-type {
+    margin-top: 30px;
+}
+
+.message-bubble:last-of-type {
+    margin-bottom: 60px;
+}
+
+
 .message-bubble {
+    display: flex;
+    flex-direction: row;
     align-self: flex-start;
     max-width: 70%;
     color: var(--tertiary-color);
     margin-top: 0px;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: row;
+    margin-bottom: 7px;
     position: relative;
+    transition: 0.3s ease-in-out;
 }
 
 .message-bubble__avatar  {
@@ -25,7 +69,7 @@
 .message_bubble__info {
     display: flex;
     flex-direction: row;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     align-items: center;
     gap: 10px;
     -webkit-user-select: none; /* Safari */
@@ -35,25 +79,66 @@
     margin-left: 5px;
 }
 
+.main .info__show {
+    visibility: hidden;
+    transform: scale(0);
+    transition: 0.3s ease-in-out;
+    text-align: left;
+    height: min-content;
+    width: 100%;
+    margin: 0;
+    margin-bottom: 0px;
+    font-size: 0rem;
+    font-weight: 0;
+    transform-origin: left;
+}
+
+.main:hover .info__show {
+    height: min-content;
+    width: 100%;
+    margin: 5px 5px;
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--tertiary-color-dark);
+    transition: 0.3s ease-in-out;
+    transform: scale(1);
+    visibility: visible;
+    transform-origin: left;
+}
+
+.main .info__hide {
+    display: none;
+}
+
 .message-bubble .visible {
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 .info__username {
-    width: min-content;
+    /* width: min-content; */
     height: min-content;
     text-align: left;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: 700;
     color: var(--tertiary-color);
+    max-width: 12ch;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* Number of lines to display */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .info__time {
     height: min-content;
     text-align: left;
-    font-size: 0.6rem;
+    font-size: 0.7rem;
     font-weight: 400;
     color: var(--tertiary-color-dark);
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* Number of lines to display */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .message-bubble__main {
@@ -62,13 +147,14 @@
     text-align: left;
     background-color: var(--secondary-color-light);
     color: var(--tertiary-color);
-    padding: 10px 15px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: 400;
-    min-width: 75px;
+    padding: 15px 20px;
+    border-radius: 12.5px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    min-width: 30px;
     line-height: 2ch;
     width: fit-content;
+    
 
     /* padding-bottom: 0; */
 }
@@ -104,6 +190,20 @@
     top: 2px;
 }
 
+.align-right .main .info__show {
+    text-align: right;
+    transform-origin: right;
+    position: relative;
+    right: 10px
+}
+
+.align-right .main:hover .info__show {
+    text-align: right;
+    transform-origin: right;
+    position: relative;
+    right: 10px
+}
+
 
 /* --------------------------------- */
 /* ----------- meta data ----------- */
@@ -119,11 +219,24 @@
     justify-content: flex-end;
     position: absolute;
     bottom: 0px;
-    right: 32px
+    right: 34px
 }
 
 .message-bubble__meta-data svg {
-    transform: scale(0.45);
+    transform: scale(0.6);
+}
+
+.message-bubble__meta-data .sending {
+    fill: var(--tertiary-color-dark)
+}
+
+.message-bubble__meta-data .sent {
+    fill: var(--primary-color-light)
+    /* fill: #02c39a */
+}
+
+.message-bubble__meta-data .failed {
+    fill: var(--red)
 }
 
 /* --------------------------------- */

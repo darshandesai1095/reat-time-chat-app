@@ -4,11 +4,18 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import InputField from '../../InputField/InputField';
 import addUsersToRoomAndSyncData from '../../../functions/rooms/addUsersToRoomAndSyncData';
 import { useDispatch, useSelector } from 'react-redux';
+import { toggleShowAddMoreUsersModal } from '../../../redux/features/modals/modalSlice';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 
 
-const AddMoreUsersModal = ({updateAddUsersModalVisible, setUpdateAddUsersModalVisible, mongoDbUserId, activeRoomId}) => {
+
+const AddMoreUsersModal = ({mongoDbUserId, activeRoomId}) => {
 
     const dispatch = useDispatch()
+    const showAddMoreUsersModal = useSelector(state => state.modals.showAddMoreUsersModal)
+    const username = useSelector(state => state.user.username)
+    const userId = useSelector(state => state.user.mongoDbUserId)
+
 
     const [emails, setEmails] = useState([''])
     const handleAddMore = () => {
@@ -16,15 +23,16 @@ const AddMoreUsersModal = ({updateAddUsersModalVisible, setUpdateAddUsersModalVi
     }
 
     const closePopup = () => {
-        setUpdateAddUsersModalVisible(false)
+        dispatch(toggleShowAddMoreUsersModal())
         setEmails([''])
     }
 
     const handleUpdateUsers = async () => {
-        setUpdateAddUsersModalVisible(false)
+        dispatch(toggleShowAddMoreUsersModal())
         try {
             // if user not in removedrooms list, do below, else
-            await addUsersToRoomAndSyncData(dispatch, activeRoomId, mongoDbUserId, emails)
+            await addUsersToRoomAndSyncData(dispatch, activeRoomId, mongoDbUserId, 
+                                                            emails, userId, username)
         } catch (error) {
             alert("Error adding users!")
         }
@@ -32,17 +40,17 @@ const AddMoreUsersModal = ({updateAddUsersModalVisible, setUpdateAddUsersModalVi
     }
 
     return (
-        <div className={`modal-background ${updateAddUsersModalVisible ? null : "hide-page"}`}>
+        <div className={`modal-background ${showAddMoreUsersModal ? null : "hide-page"}`}>
             <div className="create-new-group">
                 <h3>Add Users</h3>
                 <div className='close-icon'>
-                    <CloseRoundedIcon
+                    <CancelRoundedIcon
                         onClick={closePopup}
                     />
                 </div>
 
                 <div className='create-new-group__details'>
-                    <p>USER EMAIL</p>
+                    {/* <p>USER EMAIL</p> */}
                     {emails.map( (email, i) => {
                         return (
                             <div className='email-input-field' key={i}>
@@ -56,6 +64,7 @@ const AddMoreUsersModal = ({updateAddUsersModalVisible, setUpdateAddUsersModalVi
                                         setEmails(updatedEmails)
                                     }}
                                     required={false}
+                                    placeholder={"Enter user email"}
                                 />
 
                             </div>

@@ -1,20 +1,24 @@
 import { useState } from 'react';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import InputField from '../../InputField/InputField';
 import renameRoomAndSyncData from '../../../functions/rooms/renameRoomAndSyncData';
 import { useDispatch , useSelector} from 'react-redux';
-import LoadingModal from '../../AllChats/LoadingModal/LoadingModal';
+import LoadingModal from '../../AllModals/LoadingModal/LoadingModal';
+import '../AddMoreUsersModal/AddMoreUsersModal.css'
+import { toggleShowUpdateGroupNameModal } from '../../../redux/features/modals/modalSlice';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 
-
-const UpdateGroupNameModal = ({updateGroupNamePopupVisible, setUpdateGroupNamePopupVisible, activeRoomId, mongoDbUserId, roomName}) => {
+const UpdateGroupNameModal = ( {activeRoomId, mongoDbUserId, roomName} ) => {
 
     const dispatch  = useDispatch()
+    const showUpdateGroupNameModal = useSelector(state => state.modals.showUpdateGroupNameModal)
     const isLoading  = useSelector(state => state.rooms.loading)
+    const username = useSelector(state => state.user.username)
+    const originalRoomName = roomName
 
     const [groupName, setGroupName] = useState('')
 
     const closePopup = () => {
-        setUpdateGroupNamePopupVisible(false)
+        dispatch(toggleShowUpdateGroupNameModal())
         setGroupName('')
     }
 
@@ -22,11 +26,11 @@ const UpdateGroupNameModal = ({updateGroupNamePopupVisible, setUpdateGroupNamePo
         if (!groupName || groupName.trim() == "") return alert("Room name cannot be blank")
         
         try {
-            await renameRoomAndSyncData(dispatch, activeRoomId, mongoDbUserId, groupName)
+            await renameRoomAndSyncData(dispatch, activeRoomId, mongoDbUserId, groupName, username, originalRoomName)
         } catch (error) {
             alert("Error updating group name!")
         }
-        setUpdateGroupNamePopupVisible(false)
+        dispatch(toggleShowUpdateGroupNameModal())
         setGroupName('')
     }
 
@@ -39,11 +43,11 @@ const UpdateGroupNameModal = ({updateGroupNamePopupVisible, setUpdateGroupNamePo
 
             :
 
-            <div className={`modal-background ${updateGroupNamePopupVisible ? null : "hide-page"}`}>
+            <div className={`modal-background ${showUpdateGroupNameModal ? null : "hide-page"}`}>
                 <div className="create-new-group">
                     <h3>Update Group Name</h3>
                     <div className='close-icon'>
-                        <CloseRoundedIcon
+                        <CancelRoundedIcon
                             onClick={closePopup}
                         />
                     </div>
@@ -53,7 +57,7 @@ const UpdateGroupNameModal = ({updateGroupNamePopupVisible, setUpdateGroupNamePo
                             value={groupName}
                             setValue={setGroupName}
                             required={true}
-                            placeholder={roomName}
+                            placeholder="Enter new name"
                         />
                     </div>
 

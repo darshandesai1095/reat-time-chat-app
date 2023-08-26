@@ -2,101 +2,102 @@
     position: fixed;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0,0,0,0.6);
-    z-index: 9999;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 9999999;
     display: flex;
     justify-content: center;
     align-items: center;
     top: 0;
     left: 0;
+    visibility: visible;
 }
 
 .hide-page {
     display: none;
-    transition: 0.3s;
 }
 
 .create-new-group {
-    background-color: rgba(250,250,250,1);
-    border: 2px solid rgba(240,240,240,1);
-    color: black;
-    width: 400px;
-    padding: 40px 40px;
+    background-color: var(--secondary-color);
+    color: var(--tertiary-color);
+    width: 350px;
+    padding: 45px 40px;
     padding-bottom: 40px;
-    border-radius: 10px;
+    border-radius: 15px;
     position: relative;
+    transition: 0.3s ease-in-out;
+    /* background-color: var(--secondary-color-dark); */
 }
 
 .close-icon {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
 }
 
 .close-icon > svg {
-    transform: scale(0.8);
+    transform: scale(1);
     cursor: pointer;
     transition: 0.3s;
-    fill: #495057
+    fill: var(--secondary-color-light)
 }
 
 .close-icon > svg:hover {
     fill: var(--primary-color);
 }
 
-.create-new-group > h3 {
-    font-size: 1.2rem;
+.create-new-group h3 {
+    font-size: 1.1rem;
     font-weight: 800;
-    margin-bottom: 20px;
+    margin-top: 5px;
+    margin-bottom: 25px;
 }
 
 .create-new-group__details > p {
     text-align: left;
     font-size: 0.7rem;
     font-weight: 700;
-    opacity: 0.9;
     margin-bottom: 10px;
+    color: var(--tertiary-color)
 }
 
 p.remove,
 p.add-more {
     margin-top: -10px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     cursor: pointer;
     transition: 0.3s;
-    border-bottom: 1px solid rgb(250,250,250);
+    border-bottom: 1px solid var(--secondary-color);
     white-space: nowrap;
     width: min-content;
     text-align: left;
     font-size: 0.7rem;
     font-weight: 700;
-    opacity: 0.9;
     user-select: none;
 }
 
 p.add-more:hover {
-    border-bottom: 1px solid black
+    border-bottom: 1px solid var(--tertiary-color)
 }
 
 .close-popup-button {
     background-color: var(--primary-color);
-    color: var(--white);
+    color: var(--tertiary-color);
     border: none;
     outline: none;
-    margin-bottom: 10px;
-    height: 40px;
-    width: 100%;
-    border-radius: 10px;
+    margin-top: 15px;
+    border-radius: 12.5px;
     font-size: 0.9rem;
     font-weight: 700;
     cursor: pointer;
     transition: 0.1s;
     margin-top: 5px;
     transition: 0.3s;
+    height: 40px;
+    width: 100%;
 }
 
 .close-popup-button:hover {
-    background-color: rgba(94, 43, 255, 0.8);
+    background-color: var(--primary-color-dark)
 }
 
 .email-input-field {
@@ -112,5 +113,5 @@ p.remove {
 }
 
 p.remove:hover {
-    color: #ef233c;
+    color: var(--red);
 }

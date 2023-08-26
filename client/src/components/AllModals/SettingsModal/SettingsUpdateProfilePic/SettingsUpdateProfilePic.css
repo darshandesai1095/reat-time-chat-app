@@ -1,0 +1,19 @@
+h3 {
+    color: white
+}
+
+.update-profile-picture__avatars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: space-around;
+    justify-content: center;
+    margin-bottom: 25px;
+    overflow-y: auto;
+    max-width: 100%;
+    max-height: 270px;
+    border: 1px solid var(--secondary-color-light);
+    background-color: var(--secondary-color-dark);
+    border-radius: 15px;
+    padding: 20px 5px;
+}

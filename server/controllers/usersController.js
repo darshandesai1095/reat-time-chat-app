@@ -2,6 +2,9 @@ const User = require('../models/userModel')
 const firebaseAdmin = require('firebase-admin');
 const admin = require("firebase-admin");
 const serviceAccount = require("../serviceAccount.json");
+const { assignAvatarToUser } = require('./functions/assignAvatarToUser')
+
+
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -15,7 +18,9 @@ const userController = {
         try {
             // res.status(200).json("*** it works ***")
             // Get user data from the request body
-            const { firebaseUserId, email, username, profilePictureUrl } = req.body
+            const { firebaseUserId, email, username } = req.body
+
+            const profilePictureUrl = assignAvatarToUser(username)
 
             // Create a new user instance using the User model
             const newUser = new User({
@@ -81,9 +86,10 @@ const userController = {
     // Controller for updating user details; username
     updateUsername: async (req,res) => {
         try {
+            console.log("updating username...")
             // Get the MongoDB _id from the request parameters
             const _id = req.params.userId
-
+            console.log("body...", req.body)
             // Query the database to find the user by MongoDB _id
             const user = await User.findById(_id)
 
@@ -98,11 +104,42 @@ const userController = {
             const updatedUserDetails = await User.findByIdAndUpdate(
               _id, { username: newUsername }, {new: true}
             )
+
+            res.status(200).json(updatedUserDetails)
+
+        } catch (error) {
+            // If there is an error, return a 500 status with a generic error message
+            res.status(500).json({ error: `Error updating username (server), ${error.message}` })
+        }
+
+    },
+
+    // Controller for updating user details; user profile picture
+    updateUserProfilePicture: async (req,res) => {
+        try {
+            // Get the MongoDB _id from the request parameters
+            const _id = req.params.userId
+
+            // Query the database to find the user by MongoDB _id
+            const user = await User.findById(_id)
+
+            if (!user) {
+                // If the user is not found, return a 404 status with a custom message
+                return res.status(404).json({ error: 'User not found' })
+            }
+
+            // Get the new username the request body
+            const  { updatedUserProfilePictureUrl } = req.body
+
+            const updatedUserDetails = await User.findOneAndUpdate(
+              {_id}, { profilePictureUrl: updatedUserProfilePictureUrl }, {new: true}
+            )
             res.status(201).json(updatedUserDetails)
 
-        } catch {
+        } catch (error){
             // If there is an error, return a 500 status with a generic error message
-            res.status(500).json({ error: 'Error updating username' })
+            console.log(error)
+            res.status(500).json({ error: 'Error updating profile picture' })
         }
 
     },

@@ -1,8 +1,8 @@
 import MessageBubble from '../MessageBubble/MessageBubble';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import { useSelector } from 'react-redux';
+import formatDate from '../../../functions/misc/formatDate';
 import './MessagesWindow.css';
-import { useEffect } from 'react';
 
 const MessagesWindow = ({ roomId }) => {
 
@@ -12,17 +12,20 @@ const MessagesWindow = ({ roomId }) => {
     return (
         <ScrollToBottom className="chat">
             <div className='chat__messages'>
-                {    
-                    messagesArray?.map((messageObj, index) => {
+                {   messagesArray ?
+                    messagesArray?.map((messageObj, index) => { // messagesArray = [{ messageId, senderId, username, messageContent, dateCreated},{},{}]
                         return (
                             <MessageBubble
                                 key={index}
                                 prevMessageSender={messagesArray[index-1]?.username || null}
-                                messageObj={messageObj}
+                                sameAsPrevMessageDate={ 
+                                    formatDate( messagesArray[index-1]?.dateCreated, "date" ) === formatDate( messagesArray[index]?.dateCreated, "date" ) ? true : false 
+                                }
+                                messageObj={messageObj} // -> get senderId from here
                                 roomId={roomId}
                             />
                         )
-                    })
+                    }) : []
                 }
             </div>
      </ScrollToBottom>

@@ -1,0 +1,24 @@
+.settings {
+    padding-bottom: 50px;
+}
+
+.back-icon {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+.back-icon > svg {
+    transform: rotate(-135deg);
+    cursor: pointer;
+    transition: 0.3s;
+    fill: var(--secondary-color-light)
+}
+
+.back-icon > svg:hover {
+    fill: var(--primary-color);
+}
+
+.settings__body {
+    transition: 0.3s;
+}

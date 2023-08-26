@@ -8,16 +8,33 @@ import { useEffect } from 'react';
 import { updateActivityLog } from '../../../redux/features/activityLogs/activityLogSlice';
 import { setLastActiveInLocalStorage } from '../../../functions/misc/localStorage';
 
-const MessageBubble = ({ prevMessageSender, messageObj, roomId }) => {
 
-    const { username, senderId, messageContent, dateCreated, messageId, deliveryStatus } = messageObj
+const MessageBubble = ({ prevMessageSender, sameAsPrevMessageDate, messageObj, roomId }) => {
+
+    const { username, messageContent, dateCreated, deliveryStatus } = messageObj
     const clientUsername = useSelector(state => state.user.username)
-    const clientsenderId = useSelector(state => state.user.senderId)
 
     const dispatch = useDispatch()
-    const activityLog = useSelector(state => state.activityLog.lastActive)
+    const activityLog = useSelector(state => state.activityLog?.lastActive)
     const currentActiveRoomId = useSelector(state => state.rooms.currentActiveRoomId)
     const userId = useSelector(state => state.user.mongoDbUserId)
+
+    // const roomData = useSelector(state => state.rooms?.roomsData?.filter(room => room.roomId === roomId))
+    // const roomByIdSelector = selectRoomById(roomId)
+
+    // const filteredRoomData = useSelector(state => selectRoomById(state)(roomId)) // get room object
+    // OR
+    const allRoomsData = useSelector(state => state.rooms.roomsData)
+    const filteredRoomData = allRoomsData?.filter(room => room.roomId == roomId)
+
+
+    const roomUsersArr = filteredRoomData[0]?.roomUsers
+    const senderProfile = roomUsersArr?.filter(roomMember => roomMember.userId === messageObj.senderId) ? roomUsersArr?.filter(roomMember => roomMember.userId === messageObj.senderId) : null
+    const senderProfilePictureUrl = senderProfile[0] ? senderProfile[0]?.profilePictureUrl : null
+
+
+    // const profilePictureUrl = filteredRoomData?.profilePictureUrl
+
 
     useEffect(() => {
         const date = Date.now()
@@ -35,37 +52,63 @@ const MessageBubble = ({ prevMessageSender, messageObj, roomId }) => {
 
     const deliveryStatusIcon = () => {
         if (deliveryStatus === ' failed to send') {
-            return (  <ErrorOutlineRoundedIcon className='send-status' style={{fill: "#ff4d6d"}}/> )
+            return (  <ErrorOutlineRoundedIcon className='send-status error'/> )
         }
         if (deliveryStatus === 'sending') {
-            return (  <CheckCircleOutlineRoundedIcon className='send-status' style={{fill: "rgb(128, 130, 150)"}}/> )
+            return (  <CheckCircleOutlineRoundedIcon className='send-status sending'/> )
         }
-        return ( <CheckCircleOutlineRoundedIcon className='send-status' style={{fill: "rgb(107,138,253)"}}/> )
+        return ( <CheckCircleOutlineRoundedIcon className='send-status sent'/> )
     }
 
     return (
-        <div className={`message-bubble ${ username === clientUsername ? "align-right" : null}`}>
+        <>
+  
+        <div className={`${ sameAsPrevMessageDate ? "hide-date" : "show-date"}`} >
+            { 
+                formatDate(dateCreated, "checkIsToday") ? 
+                <p>Today</p> 
+                :
+                <p>   { formatDate(dateCreated, "checkIsYesterday") ? "Yesterday" : formatDate(dateCreated, "date") } </p>
+            }
 
-            <div className={`message-bubble__avatar ${prevMessageSender === username ? "invisible" : "visible"}`}>
+        </div>
+
+
+        <div className={`message-bubble ${ messageObj.senderId === userId ? "align-right" : null}`}>
+
+            <div className={`message-bubble__avatar ${prevMessageSender === username && sameAsPrevMessageDate ? "invisible" : "visible"}`}>
                 <Avatar 
-                    width={prevMessageSender === username ? 40 : 40} 
-                    height={prevMessageSender === username ? 0 : 40}
+                    width={prevMessageSender === username ? 45 : 45} 
+                    height={prevMessageSender === username ? 0 : 45}
                     borderRadiusPixels={25}
+                    url={senderProfilePictureUrl}
                 />
             </div>
 
+
             <div className='message_bubble__content'>
-                <div className={`message_bubble__info ${prevMessageSender === username ? "hidden" : "visible"}`}>
+
+                <div className={`message_bubble__info ${prevMessageSender === username && sameAsPrevMessageDate ? "hidden" : "visible"}`}>
                     <p className={ `info__username`}>
-                        {username || "unidentified user"}
+                        { messageObj.senderId === userId ? clientUsername : username || "unidentified user" }
                     </p>
                     <p className={ `info__time` }>
-                        {formatDate(dateCreated, true)}
+                        { formatDate(dateCreated, "time") }
                     </p>
                 </div>
-                <div className="message-bubble__main">
-                    <p className='main__message'>{messageContent}</p>
-    
+
+                <div className='main'>
+
+                    <div className={`${prevMessageSender === username ? "info__show" : "info__hide"}`}>
+                        <p>
+                            { formatDate(dateCreated, "time") }
+                        </p>
+                    </div>
+
+                    <div className="message-bubble__main">
+                        <p className='main__message'>{messageContent}</p>
+                    </div>
+
                 </div>
             </div>
 
@@ -74,6 +117,8 @@ const MessageBubble = ({ prevMessageSender, messageObj, roomId }) => {
             </div>
 
         </div>
+
+        </>
     )
 }
 

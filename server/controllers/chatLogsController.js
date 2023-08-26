@@ -53,7 +53,7 @@ const chatLogController = {
                 if (!room) { 
                     continue 
                 }
-                const chatLog = await ChatLog.find({ roomId })
+                // const chatLog = await ChatLog.find({ roomId })
                 allChats.push({
                     roomId: room._id,
                     roomName: room.roomName,
