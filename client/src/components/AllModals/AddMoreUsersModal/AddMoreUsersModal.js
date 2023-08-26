@@ -13,6 +13,9 @@ const AddMoreUsersModal = ({mongoDbUserId, activeRoomId}) => {
 
     const dispatch = useDispatch()
     const showAddMoreUsersModal = useSelector(state => state.modals.showAddMoreUsersModal)
+    const username = useSelector(state => state.user.username)
+    const userId = useSelector(state => state.user.mongoDbUserId)
+
 
     const [emails, setEmails] = useState([''])
     const handleAddMore = () => {
@@ -28,7 +31,8 @@ const AddMoreUsersModal = ({mongoDbUserId, activeRoomId}) => {
         dispatch(toggleShowAddMoreUsersModal())
         try {
             // if user not in removedrooms list, do below, else
-            await addUsersToRoomAndSyncData(dispatch, activeRoomId, mongoDbUserId, emails)
+            await addUsersToRoomAndSyncData(dispatch, activeRoomId, mongoDbUserId, 
+                                                            emails, userId, username)
         } catch (error) {
             alert("Error adding users!")
         }
