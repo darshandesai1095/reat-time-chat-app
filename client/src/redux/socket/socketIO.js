@@ -8,7 +8,6 @@ import { setLastActiveInLocalStorage } from "../../functions/misc/localStorage";
 import { updateAlertLog } from "../features/globalAlerts/globalAlertSlice";
 
 
-
 // connect to socket.io
 const URL = "http://localhost:8080"
 export const socket = io(URL, {
