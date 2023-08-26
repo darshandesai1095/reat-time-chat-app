@@ -12,6 +12,7 @@ const DeleteGroup = ({activeRoomId, mongoDbUserId}) => {
 
     const isLoading  = useSelector(state => state.rooms.loading)
     const showDeleteGroupModal = useSelector(state => state.modals.showDeleteGroupModal)
+    const username = useSelector(state => state.user.username)
     const dispatch = useDispatch()
 
     const closePopup = () => {
@@ -22,7 +23,7 @@ const DeleteGroup = ({activeRoomId, mongoDbUserId}) => {
         dispatch(toggleShowDeleteGroupModal())
         dispatch(setLoading())
         try {
-            await deleteRoomAndSyncData(dispatch, activeRoomId, mongoDbUserId)
+            await deleteRoomAndSyncData(dispatch, activeRoomId, mongoDbUserId, username)
         } catch (error) {
             alert("Error deleting group!")
         }
