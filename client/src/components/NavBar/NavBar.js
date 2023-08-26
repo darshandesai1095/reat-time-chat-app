@@ -12,6 +12,8 @@ import { logout } from '../../redux/features/users/userSlice';
 import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import UnreadMessageCount from '../AllChats/UnreadMessageCount/UnreadMessageCount';
+import NotificationsMenu from './NotificationsMenu/NotificationsMenu';
+import { useState } from 'react';
 
 
 const NavBar = () => {
@@ -27,6 +29,8 @@ const NavBar = () => {
         dispatch(logout())
     }
 
+    const [notificationsMenuVisible, setNotificationsMenuVisible] = useState(false)
+
     return (
         <div className="nav-bar">
             <div className='nav-bar__primary'>
@@ -37,11 +41,13 @@ const NavBar = () => {
                 </div>
 
                 <div className='icons global-alerts'>
-                    <NotificationsRoundedIcon style={style}/>
+                    <NotificationsRoundedIcon 
+                        style={style} 
+                        onClick={() => setNotificationsMenuVisible(prev => !prev)}
+                    />
                     <div className={`global-alerts__message-count ${globalAlertsCount !== 0 ? "show-alerts" : "hide-alerts"}`}>
                         <UnreadMessageCount count={globalAlertsCount} />
                     </div>
-             
                 </div>
 
                 {/* <div className='icons'>
@@ -82,6 +88,19 @@ const NavBar = () => {
                 </div>    
 
             </div>
+
+            {
+                notificationsMenuVisible ?
+                <div className='nav-bar__notifications-menu'>
+                    <NotificationsMenu
+                        setNotificationsMenuVisible={setNotificationsMenuVisible}
+                    />
+                </div>
+                :
+                null
+          
+            }
+    
 
         </div>
     )
