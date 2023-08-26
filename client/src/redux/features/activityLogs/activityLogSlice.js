@@ -17,7 +17,11 @@ export const activityLogSlice = createSlice({
         },
         updateActivityLog: (state, action) => {
             const { roomId, timestamp } = action.payload
-            state.lastActive[`${roomId}`] = timestamp
+            if (roomId) {
+                // state.lastActive[`${roomId}`] = timestamp
+                state.lastActive[roomId] = timestamp || 0
+            }
+
         }
     },
 })
