@@ -13,6 +13,9 @@ const RemoveUsersModal = ({mongoDbUserId, activeRoomId, usersList}) => {
 
     const dispatch = useDispatch()
     const showRemoveUsersModal = useSelector(state => state.modals.showRemoveUsersModal)
+    const userId = useSelector(state => state.user.mongoDbUserId)
+    const username = useSelector(state => state.user.username)
+
 
     const closePopup = () => {
         dispatch(toggleShowRemoveUsersModal())
@@ -23,7 +26,7 @@ const RemoveUsersModal = ({mongoDbUserId, activeRoomId, usersList}) => {
         dispatch(toggleShowRemoveUsersModal())
         setRemovedUsers([])
         try {
-            await removeUsersFromRoomAndSyncData(dispatch, mongoDbUserId, activeRoomId, removedUsers)
+            await removeUsersFromRoomAndSyncData(dispatch, mongoDbUserId, activeRoomId, removedUsers, userId, username)
         } catch (error) {
             alert("Error updating group name!")
         }
