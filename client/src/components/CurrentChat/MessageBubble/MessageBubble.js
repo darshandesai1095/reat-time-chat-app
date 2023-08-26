@@ -25,12 +25,12 @@ const MessageBubble = ({ prevMessageSender, sameAsPrevMessageDate, messageObj, r
     // const filteredRoomData = useSelector(state => selectRoomById(state)(roomId)) // get room object
     // OR
     const allRoomsData = useSelector(state => state.rooms.roomsData)
-    const filteredRoomData = allRoomsData.filter(room => room.roomId == roomId)
+    const filteredRoomData = allRoomsData?.filter(room => room.roomId == roomId)
 
 
     const roomUsersArr = filteredRoomData[0]?.roomUsers
-    const senderProfile = roomUsersArr?.filter(roomMember => roomMember.userId === messageObj.senderId)
-    const senderProfilePictureUrl = senderProfile[0]?.profilePictureUrl
+    const senderProfile = roomUsersArr?.filter(roomMember => roomMember.userId === messageObj.senderId) ? roomUsersArr?.filter(roomMember => roomMember.userId === messageObj.senderId) : null
+    const senderProfilePictureUrl = senderProfile[0] ? senderProfile[0]?.profilePictureUrl : null
 
 
     // const profilePictureUrl = filteredRoomData?.profilePictureUrl
