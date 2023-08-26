@@ -1,8 +1,9 @@
 import { getUserByMongoDbUserId } from "../../redux/features/users/userSlice";
-import { deleteRoom, getRoomsByMongoDbUserId } from "../../redux/features/rooms/roomSlice";
+import { getRoomsByMongoDbUserId } from "../../redux/features/rooms/roomSlice";
 import { addUsersToRoom } from "../../redux/features/rooms/roomSlice";
 
-const renameRoomAndSyncData = async (dispatch, roomId, mongoDbUserId, emailsArray) => {
+const renameRoomAndSyncData = async (dispatch, roomId, mongoDbUserId, 
+                    emailsArray, updatedById, updatedByUsername) => {
    
   try {
     // create new room and sync data
@@ -10,7 +11,9 @@ const renameRoomAndSyncData = async (dispatch, roomId, mongoDbUserId, emailsArra
       dispatch(
         addUsersToRoom({
             roomId: roomId,
-            emailsArray: emailsArray
+            emailsArray: emailsArray,
+            updatedById: updatedById,
+            updatedByUsername: updatedByUsername
         })
       )
     );

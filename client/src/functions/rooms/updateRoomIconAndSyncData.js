@@ -1,16 +1,18 @@
 import { getUserByMongoDbUserId } from "../../redux/features/users/userSlice";
-import { assignCurrentActiveRoom, deleteRoom, getRoomsByMongoDbUserId } from "../../redux/features/rooms/roomSlice";
+import { getRoomsByMongoDbUserId, setLoading, updateRoomIcon } from "../../redux/features/rooms/roomSlice";
 
-const deleteRoomAndSyncData = async (dispatch, roomId, mongoDbUserId, username) => {
+const updateRoomIconAndSyncData = async (dispatch, roomId, mongoDbUserId, newRoomIconUrl) => {
    
   try {
+    
+    dispatch(setLoading(true))
+
     // create new room and sync data
     await Promise.resolve(
       dispatch(
-        deleteRoom({
+        updateRoomIcon({
             roomId: roomId,
-            deletedBy: mongoDbUserId,
-            username: username
+            newRoomIconUrl: newRoomIconUrl,
         })
       )
     )
@@ -23,21 +25,20 @@ const deleteRoomAndSyncData = async (dispatch, roomId, mongoDbUserId, username) 
         })
       )
     )
-
+          
     // update room slice
-    // dispatch(changeCurrentActiveRoom(0))
     await Promise.resolve(
         dispatch(
             getRoomsByMongoDbUserId(mongoDbUserId)
         )
     )
 
-    dispatch(assignCurrentActiveRoom())
+    dispatch(setLoading(false))
 
   } catch (error) {
-        console.log("Error deleting room: ", error.message);
+        console.log("Create updating room name: ", error.message);
   }
 
-};
+}
 
-export default deleteRoomAndSyncData
+export default updateRoomIconAndSyncData
