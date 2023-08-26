@@ -1,13 +1,11 @@
 import './CurrentChat.css';
-import { useState, useEffect } from 'react';
-import padNumberWithZeros from '../../functions/misc/padNumbersWithZeros';
+import { useState } from 'react';
 import MessagesWindow from './Chat/MessagesWindow';
 import MessageInput from './MessageInput/MessageInput';
 import ChatHeader from './ChatHeader/ChatHeader';
 import { useSelector, useDispatch } from 'react-redux';
 import StartNewChat from './StartNewChat/StartNewChat';
 import { socketIoSendMessageToServer, pushMessageToChatLog } from '../../redux/features/chatLogs/chatLogSlice';
-import { format } from 'date-fns';
 import uuid from 'react-uuid';
 
 
@@ -23,7 +21,6 @@ const CurrentChat = () => {
     const {username, mongoDbUserId } = useSelector(state => state.user)
 
     const [currentMessage, setCurrentMessage] = useState("")
-    const [messageList, setMessageList] = useState([])
 
     const sendMessage = async () => {
         if (currentMessage.trim() === "") { return }
