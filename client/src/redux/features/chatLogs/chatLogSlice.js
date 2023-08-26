@@ -203,7 +203,7 @@ export const chatLogSlice = createSlice({
         })
         builder.addCase(getNewChatLogData.fulfilled, (state, action) => {
             console.log("current state.chatLogData", state.chatLogData.length)
-            console.log("incoming log", action.payload)
+            console.log("incoming log", action.payload, "current", state.chatLogData)
             state.chatLogData = [ ...state.chatLogData, action.payload[0] ]
         })
         builder.addCase(getNewChatLogData.rejected, (state, action) => {
