@@ -49,6 +49,16 @@ body {
   --primary-color-light: #7e55ff;
   /* --red: #ff4d6d; */
   /* --secondary-color-dark: rgb(10, 10, 10); */
+
+  --pink: #ff4d6d;
+  /* --cerise: #F0386B; */
+  --amaranth: #CE4257;
+  --coral: #FF7F51;
+  --earth-yellow: #EAB464;
+  --viridian: #2A7F62;
+  /* --blue: #4361ee; */
+  --blue: rgb(107,138,253);
+
 }
 
 body {
