@@ -2,7 +2,7 @@
 
 ### Project Description
 The Real-time Chat Application - a modern web-based communication platform that allows users to engage in real-time conversations with each other. 
-Features include the ability to create multiple groups, add users to groups, remove users from groups, save chats to persistant storage, etc.
+Features include the ability to create multiple groups, add users to groups, remove users from groups, save chats to persistant storage, view user status (online/offline)
 
 ### Demo
 ---
