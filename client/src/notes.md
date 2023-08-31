@@ -8,3 +8,5 @@ Normalizing Data: Normalize your data on the client-side using utility libraries
 ChatHeader.js -> convert array of objects into object of nested objects for faster lookup time
 
 Rename room -> dont change the current active group
+
+Online users slice -> change from object to array for quicker lookup
