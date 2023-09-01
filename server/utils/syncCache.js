@@ -44,15 +44,11 @@ const syncCache = async () => {
 
                 for (let fieldValueTuple of fieldValueTuples) {
 
-                    console.log("main bit")
-
                     const roomId = fieldValueTuple.field
                     let cachedMessagesArray = JSON.parse(fieldValueTuple.value)
 
                     const roomIdObj = new mongoose.Types.ObjectId(roomId)
                     const chatLog = await ChatLog.findOne({ roomId: roomIdObj })
-                    console.log("chatlog", chatLog)
-
                     if (!chatLog) {
                         console.log(`chat log ${roomId} not found`)
                         continue
@@ -64,12 +60,7 @@ const syncCache = async () => {
                 }
 
             } while (cursorVal !== 0)
-
-            console.log("flushing cache...")
             await client.FLUSHALL()
-
-            console.log("done syncing data")
-
         } catch (error) {
             console.log(error)
         }
