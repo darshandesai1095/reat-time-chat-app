@@ -23,21 +23,23 @@
     font-weight: 500;
     flex: 1;
     padding: 10px 0px;
-    border-radius: 12.5px;
-    background-color: var(--secondary-color-light);
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+    border: 1px solid var(--secondary-color-light);
     font-size: 0.9rem;
     max-width: 25ch;
 }
 
 .remove-user__icon {
-    border-radius: 12.5px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 7px 7px;
     cursor: pointer;
     transition: 0.3s;
-    background-color: var(--secondary-color-light);
+    background-color: var(--secondary-color);
+    border: 1px solid var(--secondary-color-light);
 }
 
 .remove-user__icon.bin:hover {
