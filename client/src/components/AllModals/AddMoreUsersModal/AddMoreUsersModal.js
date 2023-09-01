@@ -44,7 +44,7 @@ const AddMoreUsersModal = ({mongoDbUserId, activeRoomId}) => {
             <div className="create-new-group">
                 <h3>Add Users</h3>
                 <div className='close-icon'>
-                    <CancelRoundedIcon
+                    <CloseRoundedIcon
                         onClick={closePopup}
                     />
                 </div>
