@@ -16,7 +16,85 @@ font-family: 'Shadows Into Light', cursive; */
     justify-content: center;
     position: relative;
     top: 0 */
+    position: relative;
+    border-radius: 30%;
+    display: block;
+    min-width: fit-content;
+    min-height: fit-content;
 }
+
+.avatar.online {
+    padding: 1.5px;
+    /* background: linear-gradient(to bottom right, #02c39a, #6BFFB8); */
+    animation: animate-background 1s infinite;
+}
+
+@keyframes animate-background {
+    0% {
+        background: linear-gradient(0deg, #02c39a, #6BFFB8);
+    }
+    5% {
+        background: linear-gradient(18deg, #02c39a, #6BFFB8);
+    }
+    10% {
+        background: linear-gradient(36deg, #02c39a, #6BFFB8);
+    }
+    15% {
+        background: linear-gradient(54deg, #02c39a, #6BFFB8);
+    }
+    20% {
+        background: linear-gradient(72deg, #02c39a, #6BFFB8);
+    }
+    25% {
+        background: linear-gradient(90deg, #02c39a, #6BFFB8);
+    }
+    30% {
+        background: linear-gradient(108deg, #02c39a, #6BFFB8);
+    }
+    35% {
+        background: linear-gradient(126deg, #02c39a, #6BFFB8);
+    }
+    40% {
+        background: linear-gradient(144deg, #02c39a, #6BFFB8);
+    }
+    45% {
+        background: linear-gradient(162deg, #02c39a, #6BFFB8);
+    }
+    50% {
+        background: linear-gradient(180deg, #02c39a, #6BFFB8);
+    }
+    55% {
+        background: linear-gradient(198deg, #02c39a, #6BFFB8);
+    }
+    60% {
+        background: linear-gradient(216deg, #02c39a, #6BFFB8);
+    }
+    65% {
+        background: linear-gradient(234deg, #02c39a, #6BFFB8);
+    }
+    70% {
+        background: linear-gradient(252deg, #02c39a, #6BFFB8);
+    }
+    75% {
+        background: linear-gradient(270deg, #02c39a, #6BFFB8);
+    }
+    80% {
+        background: linear-gradient(288deg, #02c39a, #6BFFB8);
+    }
+    85% {
+        background: linear-gradient(306deg, #02c39a, #6BFFB8);
+    }
+    90% {
+        background: linear-gradient(324deg, #02c39a, #6BFFB8);
+    }
+    95% {
+        background: linear-gradient(342deg, #02c39a, #6BFFB8);
+    }
+    100% {
+        background: linear-gradient(360deg, #02c39a, #6BFFB8);
+    }
+}
+
 
 .avatar > p {
     font-size: 1.5rem;
@@ -27,12 +105,19 @@ font-family: 'Shadows Into Light', cursive; */
     object-fit: contain;
     width: 100%;
     border-radius: 30%;
+    user-select: none;
+    /* border: 2px solid #02c39a; */
+    /* animation: morphing 15s infinite; */
+}
+
+img.online {
+    border: 2px solid var(--secondary-color);
 }
 
 .avatar-responsive img {
     border: 1px solid var(--secondary-color-dark);
     transition: 0.2s;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .avatar-responsive img:hover {
@@ -48,3 +133,18 @@ font-family: 'Shadows Into Light', cursive; */
     border: 4px solid #02c39a;
 }
 
+/*   
+@keyframes morphing {
+    0%, 100% {
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    }
+    25% { 
+        border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%;
+    }
+    50% {
+        border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%;
+    }
+    75% {
+        border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%;	
+    }
+} */
