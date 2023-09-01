@@ -1,9 +1,6 @@
 import './Avatar.css';
-import { useMemo } from 'react';
-import imagesArray from '../../imagesArray';
 
-
-const Avatar = ({ url, width=55, height=55, responsive=false, isSelectedPicture, setSelectedPictureUrl}) => {
+const Avatar = ({ url, width=55, height=55, responsive=false, isOnline=false, isSelectedPicture, setSelectedPictureUrl}) => {
 
     const style = {
         width: `${width}px`,
@@ -12,11 +9,8 @@ const Avatar = ({ url, width=55, height=55, responsive=false, isSelectedPicture,
         maxHeight: `${height}px`,
         minWidth: `${width}px`,
         minHeight: `${height}px`,
+        borderRadius: "30%"
     }
-
-    const rand1 = useMemo(() => {
-        return Math.floor(Math.random() * (imagesArray.length-1))
-    }, [])
     
     const handleClick = () => {
         setSelectedPictureUrl(url)
@@ -25,9 +19,10 @@ const Avatar = ({ url, width=55, height=55, responsive=false, isSelectedPicture,
     return (
         <div 
             className={`
-                avatar 
+                avatar
                 ${responsive ? "avatar-responsive" : null} 
                 ${isSelectedPicture ? "avater__selected-picture" : null}
+                ${isOnline ? "online" : null}
             `} 
             style={style}
             onClick={responsive ? handleClick : null}
@@ -35,9 +30,11 @@ const Avatar = ({ url, width=55, height=55, responsive=false, isSelectedPicture,
 
             {
                 url ?
-                <img src={url}/>
+                <img  className={`${ isOnline && url ? "online" : null }`} src={url}/>
                 :
-                <img src={`https://i.postimg.cc/13JNx5YY/image-Ot-ILHw-Wp-NCPt.jpg`}/>
+                <img
+                    src={`https://i.postimg.cc/13JNx5YY/image-Ot-ILHw-Wp-NCPt.jpg`}
+                />
              }
 
         </div>
