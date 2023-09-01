@@ -40,7 +40,7 @@
     overflow: hidden;
     margin-bottom: 5px;
     position: relative;
-    top: -3px;
+    top: 1px;
     transition: 0.3s;
 }
 
@@ -48,7 +48,7 @@
     cursor: pointer;
 } */
 
-.chat-header__meta-data > p {
+.chat-header__meta-data p {
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--tertiary-color-dark);
@@ -61,4 +61,29 @@
 .chat-header__avatar:hover {
     cursor: pointer;
     opacity: 0.7;
+}
+
+
+.chat-header__meta-data > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.chat-header__meta-data > div svg{
+    position: relative;
+    top: 1.5px;
+    fill: var(--tertiary-color-dark);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.chat-header__meta-data > div svg:hover{
+    fill: var(--tertiary-color);
+}
+
+
+.chat-header__meta-data > div .hidden{
+    visibility: hidden;
+    transition: 0s;
 }
