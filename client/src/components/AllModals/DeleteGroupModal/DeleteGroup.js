@@ -44,7 +44,7 @@ const DeleteGroup = ({activeRoomId, mongoDbUserId}) => {
                 <div className="create-new-group">
                     <h3>Delete Group</h3>
                     <div className='close-icon'>
-                        <CancelRoundedIcon
+                        <CloseRoundedIcon
                             onClick={closePopup}
                         />
                     </div>
