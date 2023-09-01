@@ -6,6 +6,7 @@
     padding: 45px 50px;
     padding-bottom: 15px;
     border-radius: 20px;
+    border: 2px solid var(--secondary-color-light)
 }
 
 .create-account > h3 {
@@ -87,7 +88,7 @@
 }
 
 .form__continue-button:hover {
-    background-color: var(--primary-color-dark);
+    background-color: var(--secondary-color-light);
 }
 
 .login__register {
@@ -114,7 +115,6 @@
 
 
 select {
-
     /* styling */
     background-color: white;
     border-radius: 4px;
