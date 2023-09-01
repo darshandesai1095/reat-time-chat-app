@@ -26,7 +26,7 @@ const RemoveUsersModal = ({mongoDbUserId, activeRoomId, usersList}) => {
         dispatch(toggleShowRemoveUsersModal())
         setRemovedUsers([])
         try {
-            await removeUsersFromRoomAndSyncData(dispatch, mongoDbUserId, activeRoomId, removedUsers, userId, username)
+            await removeUsersFromRoomAndSyncData(dispatch, mongoDbUserId, activeRoomId, removedUsers, username)
         } catch (error) {
             alert("Error updating group name!")
         }
