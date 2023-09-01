@@ -16,7 +16,7 @@
 }
 
 .back-icon > svg:hover {
-    fill: var(--primary-color);
+    fill: var(--tertiary-color);
 }
 
 .settings__body {
