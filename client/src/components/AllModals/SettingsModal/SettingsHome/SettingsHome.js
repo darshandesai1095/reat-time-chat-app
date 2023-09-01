@@ -1,7 +1,5 @@
 import './SettingsHome.css';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
-import { BrowserRouter as Router, Route, Routes, Link, Outlet } from 'react-router-dom';
-
 
 const SettingsHome = ({handleNavigation}) => {
 
@@ -18,15 +16,6 @@ const SettingsHome = ({handleNavigation}) => {
                         onClick={() => handleNavigation('/settings/update-username')}
                     />
                 </div>
-                {/* <div className='settings-item'>
-                    <h4>
-                        Update Email
-                    </h4>
-                    <ArrowForwardRoundedIcon
-                        className='settings-icon'
-                        onClick={() => handleNavigation('/settings/update-email')}
-                    />
-                </div> */}
                 <div className='settings-item'>
                     <h4>
                         Change Profile Picture
@@ -42,7 +31,7 @@ const SettingsHome = ({handleNavigation}) => {
                     </h4>
                     <ArrowForwardRoundedIcon
                         className='settings-icon'
-                        onClick={() => handleNavigation('/settings/update-delete-account')}
+                        onClick={() => handleNavigation('/settings/delete-account')}
                     />
                 </div>
             </div>
