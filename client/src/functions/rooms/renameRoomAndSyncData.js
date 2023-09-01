@@ -1,10 +1,18 @@
 import { getUserByMongoDbUserId } from "../../redux/features/users/userSlice";
-import { updateRoomName, getRoomsByMongoDbUserId, setLoading } from "../../redux/features/rooms/roomSlice";
+import { updateRoomName, getRoomsByMongoDbUserId, setLoading, updateRoomNameReducer } from "../../redux/features/rooms/roomSlice";
+import { updateRoomNameInChatLogReducer } from "../../redux/features/chatLogs/chatLogSlice";
 
 
 const renameRoomAndSyncData = async (dispatch, roomId, mongoDbUserId, groupName, username, originalRoomName) => {
    
   try {
+    dispatch(
+      updateRoomNameReducer({
+        roomId: roomId,
+        roomName: groupName,
+      })
+    )
+
     // create new room and sync data
     await Promise.resolve(
       dispatch(
@@ -18,26 +26,34 @@ const renameRoomAndSyncData = async (dispatch, roomId, mongoDbUserId, groupName,
       )
     );
 
+    dispatch(
+      updateRoomNameInChatLogReducer({
+        roomId: roomId,
+        newRoomName: groupName
+      })
+    )
+
+
     // update user slice
-    await Promise.resolve(
-      dispatch(
-        getUserByMongoDbUserId({
-            userId: mongoDbUserId,
-        })
-      )
-    );
+    // await Promise.resolve(
+    //   dispatch(
+    //     getUserByMongoDbUserId({
+    //         userId: mongoDbUserId,
+    //     })
+    //   )
+    // );
           
     // update room slice
-    await Promise.resolve(
-        dispatch(
-            getRoomsByMongoDbUserId(mongoDbUserId)
-        )
-    );
+    // await Promise.resolve(
+    //     dispatch(
+    //         getRoomsByMongoDbUserId(mongoDbUserId)
+    //     )
+    // );
 
     dispatch(setLoading(false))
 
   } catch (error) {
-        console.log("Create updating room name: ", error.message);
+        console.log("Error updating room name: ", error.message);
   }
 
 };
