@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '../../Avatar/Avatar';
 import imagesArray from '../../../imagesArray';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { toggleShowChangeGroupIconModal } from '../../../redux/features/modals/modalSlice';
 import updateRoomIconAndSyncData from '../../../functions/rooms/updateRoomIconAndSyncData';
 
@@ -56,7 +57,7 @@ const ChangeGroupChatIconModal = ({modalTitle, buttonDescription, activeRoomId})
                 <div className='settings-header'>
 
                     <div className='close-icon'>
-                        <CancelRoundedIcon
+                        <CloseRoundedIcon
                             onClick={ handleCloseModal }
                         />
                     </div>
