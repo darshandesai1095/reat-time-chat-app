@@ -1,11 +1,7 @@
 import './NavBar.css';
-import ForumRoundedIcon from '@mui/icons-material/ForumRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import CropSquareRoundedIcon from '@mui/icons-material/CropSquareRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
-import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleCreateNewGroupModal, toggleShowSettingsModal } from '../../redux/features/modals/modalSlice';
 import { logout } from '../../redux/features/users/userSlice';
@@ -13,13 +9,20 @@ import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import UnreadMessageCount from '../AllChats/UnreadMessageCount/UnreadMessageCount';
 import NotificationsMenu from './NotificationsMenu/NotificationsMenu';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getNotifications } from '../../redux/features/globalAlerts/globalAlertSlice';
 
 
 const NavBar = () => {
 
     const dispatch = useDispatch()
     const globalAlertsCount = useSelector(state => state.globalAlerts.totalAlerts)
+    const userId = useSelector(state => state.user.mongoDbUserId)
+    console.log("userId", userId)
+    useEffect(() => {
+        dispatch(getNotifications(userId))
+    }, [userId])
+
     
     const style = {
         transform: "scale(1.1)"
@@ -30,6 +33,11 @@ const NavBar = () => {
     }
 
     const [notificationsMenuVisible, setNotificationsMenuVisible] = useState(false)
+
+    const alertLog = useSelector(state => state.globalAlerts.alertLog)
+    const userErrorLog = useSelector(state => state.user.userErrorLog)
+    console.log("alertLog", alertLog, globalAlertsCount)
+    const totalNotifications = alertLog?.length + userErrorLog?.length
 
     return (
         <div className="nav-bar">
@@ -45,26 +53,9 @@ const NavBar = () => {
                         style={style} 
                         onClick={() => setNotificationsMenuVisible(prev => !prev)}
                     />
-                    <div className={`global-alerts__message-count ${globalAlertsCount !== 0 ? "show-alerts" : "hide-alerts"}`}>
-                        <UnreadMessageCount count={globalAlertsCount} />
+                    <div className={`global-alerts__message-count ${totalNotifications !== 0 ? "show-alerts" : "hide-alerts"}`}>
+                        <UnreadMessageCount count={totalNotifications} />
                     </div>
-                </div>
-
-                {/* <div className='icons'>
-                    <GroupsRoundedIcon style={style}/>
-                        <p>New Chat</p>
-                </div> */}
-
-                {/* <div className='icons'>
-                    <ForumRoundedIcon style={style}/>
-                        <p>Chats</p>
-                </div> */}
-
-                {/* <div className='linebreak'> </div> */}
-
-                <div className='icons'>
-                    <CropSquareRoundedIcon style={style}/>
-                    {/* <p>Sandbox</p> */}
                 </div>
                 
                 <div className='icons'>
@@ -80,11 +71,11 @@ const NavBar = () => {
                     <SettingsRoundedIcon style={style}/>
                     {/* <p>Settings</p> */}
                 </div>
+
                 <div className='icons'
                     onClick={handleLogout}
                 >
                     <LogoutRoundedIcon style={style}/>
-                    {/* <p>Logout</p> */}
                 </div>    
 
             </div>
