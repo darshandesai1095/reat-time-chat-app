@@ -5,7 +5,7 @@ import { useDispatch , useSelector} from 'react-redux';
 import LoadingModal from '../../AllModals/LoadingModal/LoadingModal';
 import '../AddMoreUsersModal/AddMoreUsersModal.css'
 import { toggleShowUpdateGroupNameModal } from '../../../redux/features/modals/modalSlice';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 const UpdateGroupNameModal = ( {activeRoomId, mongoDbUserId, roomName} ) => {
 
@@ -47,7 +47,7 @@ const UpdateGroupNameModal = ( {activeRoomId, mongoDbUserId, roomName} ) => {
                 <div className="create-new-group">
                     <h3>Update Group Name</h3>
                     <div className='close-icon'>
-                        <CancelRoundedIcon
+                        <CloseRoundedIcon
                             onClick={closePopup}
                         />
                     </div>
