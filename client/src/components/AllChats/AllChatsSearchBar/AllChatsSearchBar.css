@@ -13,9 +13,9 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: var(--secondary-color-light);
+    background-color: var(--secondary-color-dark);
     border-radius: 15px;
-    /* border: 1px solid red; */
+    border: 2px solid var(--secondary-color-light);
     padding: 10px 30px !important;
     gap: 10px;
 }
@@ -32,7 +32,7 @@
 }
 
 .all-chats__search-bar > input {
-    background-color: var(--secondary-color-light);
+    background-color: var(--secondary-color-dark);
     outline: none;
     border: none;
     flex: 1;
@@ -56,7 +56,7 @@
     margin-top: 7px;
     margin-bottom: 2px;
     font-weight: 500;
-    background-color: var(--secondary-color-light);
+    background-color: var(--secondary-color-dark);
     padding: 4px 10px;
     align-self: center;
     justify-self: center;
@@ -64,7 +64,7 @@
     position: absolute;
     bottom: -17px;
     z-index: 9;
-    border: 2px solid var(--secondary-color);
+    border: 2px solid var(--secondary-color-light);
 }
 
 .show-count {
