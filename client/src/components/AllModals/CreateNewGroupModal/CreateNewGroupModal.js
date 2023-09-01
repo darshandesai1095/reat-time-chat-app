@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import createNewRoomAndSyncData from '../../../functions/rooms/createNewRoomAndSyncData';
 import { toggleCreateNewGroupModal } from '../../../redux/features/modals/modalSlice';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import DisabledByDefaultRoundedIcon from '@mui/icons-material/DisabledByDefaultRounded';
 
 
 const CreateNewGroupModal = () => {
@@ -41,7 +43,7 @@ const CreateNewGroupModal = () => {
             <div className="create-new-group">
                 <h3>Create New Group</h3>
                 <div className='close-icon'>
-                    <CancelRoundedIcon
+                    <CloseRoundedIcon
                         onClick={closePopup}
                     />
                 </div>
