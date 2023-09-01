@@ -75,9 +75,9 @@ export const updateUserProfilePicture = createAsyncThunk(
 
 export const deleteUser = createAsyncThunk(
     'users/deleteUser',
-    async ({ userId } , { rejectWithValue }) => {
+    async (userId , { rejectWithValue }) => {
         try {
-            const response = await axios.delete(`${baseURL}/users/${userId}`)
+            const response = await axios.delete(`${baseURL}/users/delete/${userId}`)
             return response.data
         } catch (error) {
             return rejectWithValue(error.message)
@@ -100,7 +100,6 @@ export const socketIoLeaveRoom = createAsyncThunk(
     }
 )
 
-
 const initialState = {
     isAuthenticated: false,
     loading: false,
@@ -110,8 +109,10 @@ const initialState = {
     firebaseUserId: null,
     mongoDbUserId: null,
     rooms: [],
-    profilePictureUrl: "https://i.postimg.cc/13JNx5YY/image-Ot-ILHw-Wp-NCPt.jpg"
+    profilePictureUrl: "https://i.postimg.cc/13JNx5YY/image-Ot-ILHw-Wp-NCPt.jpg",
+    userErrorLog: []
 }
+
 
 export const userSlice = createSlice({
     name: 'user',
@@ -179,6 +180,10 @@ export const userSlice = createSlice({
         removeRoomFromUserSlice: (state, action) => {
             const index = state.rooms?.indexOf(action.payload)
             state.rooms = [...state.rooms.slice(0, index), ...state.rooms.slice(index + 1)]
+        },
+
+        clearUserErrorLog: (state) => {
+            state.userErrorLog = []
         }
 
     },
@@ -278,11 +283,17 @@ export const userSlice = createSlice({
         })
         
 
-
-
         builder.addCase(deleteUser.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload 
+            console.log("delete user error", action.payload) // delete user error Request failed with status code 500
+            state.userErrorLog = [...state.userErrorLog, {
+                alertTitle: "Error Deleting Account",
+                alertTime: Date.now(),
+                alertMessage: "An error occured whilst trying to delete your account",
+                alertMetaData: action.payload,
+                isError: true
+            }]
         })
         builder.addCase(deleteUser.fulfilled, (state) => {
             state.isAuthenticated = false
@@ -305,7 +316,8 @@ export const {
     updateUserCredentials,
     addRoomToUserRoomsList,
     removeRoomFromUserSlice,
-    updateUserCredentialsUsername
+    updateUserCredentialsUsername,
+    clearUserErrorLog
 } = userSlice.actions
 
 export default userSlice.reducer
