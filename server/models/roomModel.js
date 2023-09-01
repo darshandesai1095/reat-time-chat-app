@@ -13,6 +13,13 @@ const roomSchema = new mongoose.Schema({
         },
     ],
 
+    deletedUsers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }
+    ],
+
     profilePictureUrl: {
         type: String,
         default: "https://i.postimg.cc/R0hJv5kC/image-GESWSPGZJtkl.jpg"
