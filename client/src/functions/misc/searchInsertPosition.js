@@ -22,7 +22,7 @@ const searchInsertPosition = (messagesArray=[], lastActive=0) => {
         return inboxCount
 
     } catch (error) {
-        console.log("searchInsertPosition", error, error.message)
+        console.log("searchInsertPosition", error)
     }
 
     return 0
