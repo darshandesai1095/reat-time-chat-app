@@ -10,6 +10,7 @@
     align-items: center;
     padding: 40px 0;
     position: relative;
+    border-right: 2px solid var(--secondary-color-light);
 }
 
 .nav-bar__primary,
@@ -22,6 +23,9 @@
 .icons {
     cursor: pointer;
     color: var(--tertiary-color-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .icons:hover {
