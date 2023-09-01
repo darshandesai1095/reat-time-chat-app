@@ -6,6 +6,7 @@ import SettingsUpdateProfilePic from './SettingsUpdateProfilePic/SettingsUpdateP
 import SettingsHome from './SettingsHome/SettingsHome';
 import { useEffect, useState } from 'react';
 import SettingsUpdateUsername from './SettingsUpdateUsername/SettingsUpdateUsername';
+import SettingsDeleteAccount from './SettingsDeleteAccount/SettingsDeleteAccount';
 import './SettingsModal.css';
 
 
@@ -23,14 +24,10 @@ const SettingsModal = () => {
             setContent(<SettingsUpdateUsername
                             handleNavigation={handleNavigation}
                             modalTitle="Enter New Username"
-                            buttonDescription="Update Avatar"
+                            buttonDescription="Update Username"
                         />)
             return
         }
-        // if (virtualPathname === '/settings/update-email') {
-        //     setContent(<SettingsUpdateEmail/>)
-        //     return
-        // }
         if (virtualPathname === '/settings/update-profile-picture') {
             setContent(<SettingsUpdateProfilePic
                             handleNavigation={handleNavigation}
@@ -40,10 +37,14 @@ const SettingsModal = () => {
                         />)
             return
         }
-        // if (virtualPathname === '/settings/update-delete-account') {
-        //     setContent(<SettingsDeleteAccount/>)
-        //     return
-        // }  
+        if (virtualPathname === '/settings/delete-account') {
+            setContent(<SettingsDeleteAccount
+                handleNavigation={handleNavigation}
+                modalTitle="Delete Account"
+                buttonDescription="Delete"
+            />)
+            return 
+        }  
     }
 
     const handleNavigation = (newPathname) => {
