@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import './LeaveGroupModal.css';
 import removeUsersFromRoomAndSyncData from '../../../functions/rooms/removeUsersFromRoomAndSyncData';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleShowLeaveGroupModal } from '../../../redux/features/modals/modalSlice';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 
 const LeaveGroupModal = ({mongoDbUserId, activeRoomId}) => {
 
     const dispatch = useDispatch()
     const showLeaveGroupModal = useSelector(state => state.modals.showLeaveGroupModal)
-    const userEmail = useSelector(state => state.user.email)
+    const { email, username} = useSelector(state => state.user)
 
     const closePopup = () => {
         dispatch(toggleShowLeaveGroupModal()) 
@@ -19,7 +19,7 @@ const LeaveGroupModal = ({mongoDbUserId, activeRoomId}) => {
     const handleLeaveGroup = async () => {
         dispatch(toggleShowLeaveGroupModal())
         try {
-            await removeUsersFromRoomAndSyncData(dispatch, mongoDbUserId, activeRoomId, [userEmail])
+            await removeUsersFromRoomAndSyncData(dispatch, mongoDbUserId, activeRoomId, [email], username)
         } catch (error) {
             alert("Error updating group name!")
         }
@@ -31,7 +31,7 @@ const LeaveGroupModal = ({mongoDbUserId, activeRoomId}) => {
         <div className="create-new-group">
             <h3>Leave Group</h3>
             <div className='close-icon'>
-                <CancelRoundedIcon
+                <CloseRoundedIcon
                     onClick={closePopup}
                 />
             </div>
