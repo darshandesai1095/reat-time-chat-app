@@ -11,10 +11,10 @@
     display: block;
     color: var(--secondary-color-light);
     font-size: 0.75rem;
-    margin: 32.5px 60px;
+    margin: 33px 60px;
     margin-bottom: 20px;
     font-weight: 600;
-    border-bottom: 1px solid var(--secondary-color-light);
+    border-bottom: 2px solid var(--secondary-color-light);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,6 +29,7 @@
     position: relative;
     top: 7.5px;
     padding: 0 20px;
+    font-weight: 700;
 } 
 
 
@@ -129,6 +130,23 @@
     overflow: hidden;
 }
 
+.info__username.deleted-user {
+    color: var(--tertiary-color-dark);
+    font-style: italic;
+}
+
+.info__username.deleted-user::before {
+    content: "[";
+    color: var(--tertiary-color-dark);
+    font-style: italic;
+}
+
+.info__username.deleted-user::after {
+    content: "]";
+    color: var(--tertiary-color-dark);
+    font-style: italic;
+}
+
 .info__time {
     height: min-content;
     text-align: left;
@@ -154,9 +172,6 @@
     min-width: 30px;
     line-height: 2ch;
     width: fit-content;
-    
-
-    /* padding-bottom: 0; */
 }
 /* --------------------------------- */
 /* ------ right message bubble ----- */
@@ -209,7 +224,7 @@
 /* ----------- meta data ----------- */
 /* --------------------------------- */
 
-.message-bubble__meta-data .send-status{
+.message-bubble__meta-data .send-status {
     display: none
 }
 
