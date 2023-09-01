@@ -1,8 +1,9 @@
 import { getUserByMongoDbUserId } from "../../redux/features/users/userSlice";
-import { removeUsersFromRoom, getRoomsByMongoDbUserId } from "../../redux/features/rooms/roomSlice";
+import { removeUsersFromRoom, getRoomsByMongoDbUserId, setLoading } from "../../redux/features/rooms/roomSlice";
 
-const removeUsersFromRoomAndSyncData = async (dispatch, mongoDbUserId, roomId, emailsArray, updatedById, updatedByUsername) => {
+const removeUsersFromRoomAndSyncData = async (dispatch, mongoDbUserId, roomId, emailsArray, updatedByUsername) => {
    
+  dispatch(setLoading(true))
   try {
     // create new room and sync data
     await Promise.resolve(
@@ -10,7 +11,7 @@ const removeUsersFromRoomAndSyncData = async (dispatch, mongoDbUserId, roomId, e
             removeUsersFromRoom({
                 roomId: roomId,
                 emailsArray: emailsArray,
-                updatedById: updatedById,
+                updatedById: mongoDbUserId,
                 updatedByUsername: updatedByUsername
             })
       )
@@ -32,7 +33,10 @@ const removeUsersFromRoomAndSyncData = async (dispatch, mongoDbUserId, roomId, e
         )
     );
 
+    dispatch(setLoading(false))
+
   } catch (error) {
+        dispatch(setLoading(false))
         console.log("Remove users error: ", error.message);
   }
 
