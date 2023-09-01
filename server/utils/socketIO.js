@@ -1,20 +1,26 @@
 const { client } = require('../config/connectToRedis')
 
+const onlineUsers = {}  // userId: socketId
+
 const socket = (IO) => {
     console.log("socket running")
     IO.on('connection', (socket) => {
         console.log(`socket.io ID: ${socket.id} connected to server...`)
 
-        setInterval(() => socket.emit('ping', {beat: 1}), 30_000)
+        let userId = null
+        
+        setInterval(() => socket.emit('ping', {onlineUsers}), 3_000)
         socket.on('pong', () => {
-            console.log("Pong received from client")
+            onlineUsers[socket.id] = userId || null // true => online
         })
 
-        socket.on('joinRooms', async (roomsArray, acknowledgment) => {
-            console.log("joining rooms")
-            if (roomsArray) {
+
+
+        socket.on('joinRooms', async (data, acknowledgment) => {
+            userId = data.userId
+            if (data.roomsArray) {
                 try {
-                    roomsArray.forEach(roomId => socket.join(roomId))
+                    data.roomsArray.forEach(roomId => socket.join(roomId))
                     socket.join("globalChannel")
                     const response = { success: true }
                     acknowledgment(response)
@@ -68,10 +74,25 @@ const socket = (IO) => {
 
         socket.on('leaveRoom', (roomId) => {
             socket.leave(roomId)
-            console.log(socket.id, "removed from", roomId)
+            // console.log(socket.id, "removed from", roomId)
+        })
+
+        socket.on('leaveRooms', async (roomsArray, acknowledgment) => {
+            if (roomsArray) {
+                try {
+                    roomsArray.forEach(roomId => socket.leave(roomId))
+                    socket.leave("globalChannel")
+                    const response = { success: true }
+                    acknowledgment(response)
+                } catch (error) {
+                    console.log("leave rooms error", error)
+                }
+            }
         })
 
         socket.on('disconnect', () => {
+
+            delete onlineUsers[socket.id]
             delete socket.id
         })
     })
