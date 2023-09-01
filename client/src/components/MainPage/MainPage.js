@@ -2,15 +2,17 @@ import './MainPage.css';
 import NavBar from '../NavBar/NavBar';
 import AllChats from '../AllChats/AllChats';
 import CurrentChat from '../CurrentChat/CurrentChat';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { getUserByFirebaseUserId } from '../../redux/features/users/userSlice';
-import { getChatLogsByFirebaseUserId } from '../../redux/features/chatLogs/chatLogSlice';
-import { socket, socketIoListenForMessage, socketIoHeartbeat } from '../../redux/socket/socketIO';
+import { getChatLogsByFirebaseUserId, socketIoLeaveRooms } from '../../redux/features/chatLogs/chatLogSlice';
+import { socket, socketIoListenForMessage, socketIoHeartbeat, checkOnlineStatus } from '../../redux/socket/socketIO';
 import { socketIoJoinRooms } from '../../redux/features/chatLogs/chatLogSlice';
 import { getLastActiveFromLocalStorage } from '../../functions/misc/localStorage';
 import { syncActivityLogWithLocalStorage } from '../../redux/features/activityLogs/activityLogSlice';
 import Modal from '../Modal/Modal';
+import { socketIoListenForGlobalAlert } from '../../redux/socket/socketIO';
+
 
 const MainPage = () => {
 
@@ -18,13 +20,24 @@ const MainPage = () => {
 
     useEffect(() => {
         socketIoListenForMessage(dispatch)
-        socketIoHeartbeat()
+        // socketIoHeartbeat()
     }, [socket])
 
     const firebaseUserId = useSelector(state => state.user.firebaseUserId)
     const userId = useSelector(state => state.user.mongoDbUserId)
+    const username = useSelector(state => state.user.username)
     const userError = useSelector(state => state.user.userError)
     const roomsArray = useSelector(state => state.user.rooms)
+    const roomsActivityLog = useSelector(state => state.activityLog?.lastActive)
+    
+
+    const [transmissionIDs, setTransmissionIDs] = useState({})
+    useEffect(() => {
+        if (!userId) {return}
+        checkOnlineStatus(dispatch)
+        socketIoListenForGlobalAlert(dispatch, userId, roomsArray, roomsActivityLog, transmissionIDs, setTransmissionIDs)
+    }, [userId])
+
 
     useEffect(() => {
         const getUserInfo = async () => {
@@ -46,16 +59,28 @@ const MainPage = () => {
     const loadChats = async () => {
         await Promise.resolve(dispatch(getChatLogsByFirebaseUserId(firebaseUserId)))
     }
-    loadChats()
+    useEffect(() => {
+        loadChats()
+    }, [])
+
 
     const joinRoomsSocketIo = async () => {
         if (roomsArray) {
-            await Promise.resolve(dispatch(socketIoJoinRooms(roomsArray)))
+            console.log("joining rooms", {username:username, roomsArray:roomsArray})
+            await Promise.resolve(dispatch(socketIoJoinRooms({username:username, roomsArray:roomsArray, userId:userId})))
         }
     }
-
+    const leaveRoomsSocketIo = async () => {
+        if (roomsArray) {
+            console.log("leaving rooms", username)
+            await Promise.resolve(dispatch(socketIoLeaveRooms(roomsArray)))
+        }
+    }
     useEffect(() => {
         joinRoomsSocketIo()
+        return (() => {
+            leaveRoomsSocketIo()
+        })
     }, [roomsArray])
 
 
