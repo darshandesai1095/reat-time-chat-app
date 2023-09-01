@@ -38,7 +38,7 @@
 }
 
 .settings-item > svg:hover {
-    color: var(--primary-color);
+    color: var(--tertiary-color);
 }
 
 .link-unstyled {
