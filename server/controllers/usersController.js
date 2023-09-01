@@ -1,8 +1,10 @@
 const User = require('../models/userModel')
+const Room = require('../models/roomModel')
 const firebaseAdmin = require('firebase-admin');
 const admin = require("firebase-admin");
 const serviceAccount = require("../serviceAccount.json");
 const { assignAvatarToUser } = require('./functions/assignAvatarToUser')
+const { v4: uuidv4 } = require('uuid');
 
 
 
@@ -153,25 +155,44 @@ const userController = {
     deleteUser: async (req, res) => {
         try {
             const userId = req.params.userId
-            const userIdObj = mongoose.Types.ObjectId(userId)
       
             // Find the user by userId
-            const user = await User.findById(_id)
+            const user = await User.findById(userId)
         
             // Check if the user exists
             if (!user) {
                 return res.status(404).json({ error: 'User not found' })
             }
 
-            // // First, delete the user from Firebase authentication
-            // await firebaseAdmin.auth().deleteUser(user.firebaseUserId)
+            // 2 Go through all user rooms and remove them from user list
 
-            // Delete the user from the database
-            const deletedUser = await User.findByIdAndDelete(userIdObj)
-
-            if (!deletedUser) {
-                return res.status(404).json({ error: 'User not found' })
+            // 3 Clear user rooms array
+            for (let roomId of user.rooms) {
+                // find room, remove user
+                await Room.findOneAndUpdate( 
+                    { _id: roomId },  
+                    { $pull: { users: user._id } },
+                    { new: true }
+                )
             }
+
+            // 4 Delete user email form DB
+            // 5 Change user status from activeUser = true -> false   
+            // 6 Update profile pic to https://i.postimg.cc/63k0R0FB/image-k3qx3-O9-Dr-RZb.jpg
+            await User.findByIdAndUpdate( userId, 
+                { 
+                    email: `deletedEmail_${uuidv4()}`,
+                    profilePictureUrl: "https://i.postimg.cc/13JNx5YY/image-Ot-ILHw-Wp-NCPt.jpg", 
+                    rooms: [],
+                    activeUser: false,
+                }, 
+                { new: true } 
+            )
+
+            // CLEAR USER NOTIFICATIONS FROM REDIS
+
+            // 1 Delete the user from Firebase authentication
+            await firebaseAdmin.auth().deleteUser(user.firebaseUserId)
         
             // Return a success response
             res.status(200).json({ message: 'User deleted successfully' })
