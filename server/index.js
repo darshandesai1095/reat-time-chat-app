@@ -3,9 +3,10 @@ const cors = require("cors")
 const { connectToDatabase  }= require("./config/connectToDatabse")
 require('dotenv').config()
 const { Server } = require("socket.io")
-const { connectToRedis } = require('./config/connectToRedis')
+const { connectToRedis, client } = require('./config/connectToRedis')
 const { socket } = require('./utils/socketIO')
 const { syncCache } = require('./utils/syncCache')
+
 
 const app = express()
 app.use(cors())
@@ -40,6 +41,7 @@ connectToRedis().then(() => { socket(io) })
 // Pass 'io' object to the relevant parts of application
 app.use((req, res, next) => {
     req.io = io
+    req.redisClient = client
     next()
 })
 
@@ -54,5 +56,7 @@ app.use('/api/rooms', roomsRoute)
 const chatLogsRoute = require('./routes/chatLogsRoute')
 app.use('/api/chatLogs', chatLogsRoute)
 
+const notificationsRoute = require('./routes/notificationsRoute')
+app.use('/api/notifications', notificationsRoute)
 
 module.exports = { app, server }
