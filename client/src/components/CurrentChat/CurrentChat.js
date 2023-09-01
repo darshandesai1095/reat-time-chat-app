@@ -37,11 +37,16 @@ const CurrentChat = () => {
             }
         }
 
+        console.log("--- pushing message...")
         dispatch(pushMessageToChatLog(messageData))
         setCurrentMessage("")
-        await Promise.resolve(dispatch(socketIoSendMessageToServer(messageData)))
+        try {
+          await Promise.resolve(dispatch(socketIoSendMessageToServer(messageData)))
+        } catch (error) {
+          console.log("error sending message to server", error) // add error icon to status
+        }
+    
       }
-
 
   return (
     <>
