@@ -3,6 +3,7 @@ import ChatHeaderMenu from '../ChatHeaderMenu/ChatHeaderMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '../../Avatar/Avatar'
 import { toggleShowChangeGroupIconModal } from '../../../redux/features/modals/modalSlice';
+import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 
 
 const ChatHeader = ({}) => {
@@ -12,30 +13,48 @@ const ChatHeader = ({}) => {
     const roomId = useSelector(state => state.rooms.currentActiveRoomId)
     const roomsData = useSelector(state => state.rooms.roomsData)
     const currentActiveRoomIndex = roomsData?.findIndex(room => room.roomId == roomId)
-    const isLoading  = useSelector(state => state.rooms.loading)
-
 
     const numberOfMembers = roomsData ? roomsData[currentActiveRoomIndex]?.roomUsers?.length : null
+
+    const roomMembersList = roomsData ? roomsData[currentActiveRoomIndex]?.roomUsers?.map(userObj => userObj.userId) : null
+    const onlineUsersList = useSelector(state => state.onlineUsers.onlineUsersList)
+    let numberOfMembersOnline = 0
+    roomMembersList?.forEach(userId => {
+        if (  onlineUsersList?.includes(userId) ) {
+            numberOfMembersOnline+=1
+        }
+    })
+        
 
     const displayNumberOfMembers = (numberOfMembers = null) => {
         if (numberOfMembers === null || numberOfMembers === undefined) {
             return (
-                <p className='meta-data__members'>
-                Loading...
-                </p>
+                <div>
+                    <p className='meta-data__members'>
+                    Loading...
+                    </p>
+                    <ArrowDropDownRoundedIcon className='hidden' />
+                </div>
+
             )
         }
         if (numberOfMembers == 1) {
             return (
-                <p className='meta-data__members'>
-                    1 member
-                </p>
+                <div>
+                    <p className='meta-data__members'>
+                        1 member
+                    </p>
+                    <ArrowDropDownRoundedIcon className='hidden' />
+                </div>
             )
         }
         return (
-            <p className='meta-data__members'>
-                {numberOfMembers} members
-            </p>
+            <div>
+                <p className='meta-data__members'>
+                    {numberOfMembers} members, {numberOfMembersOnline} online
+                </p>
+                <ArrowDropDownRoundedIcon className='hidden' />
+            </div>
         )
     }
     
@@ -59,17 +78,17 @@ const ChatHeader = ({}) => {
                 </div>
        
                 <div className='chat-header__meta-data'>
-                        {
+                        {/* {
                             isLoading ?
 
                             <h3 className='meta-data__group-name'>
                                 Loading...
                             </h3>
-                            :
+                            : */}
                             <h3 className='meta-data__group-name'>
-                                {roomsData ? roomsData[currentActiveRoomIndex]?.roomName : "Loading..."}
+                                {roomsData[currentActiveRoomIndex]?.roomName ? roomsData[currentActiveRoomIndex]?.roomName : "Loading..."}
                             </h3>
-                        }
+                        {/* } */}
 
                     {displayNumberOfMembers(numberOfMembers)}
 
