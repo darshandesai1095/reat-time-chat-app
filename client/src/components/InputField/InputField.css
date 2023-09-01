@@ -1,13 +1,13 @@
 .input-field > input {
-    background-color: var(--secondary-color-light);
+    background-color: var(--secondary-color);
     border: none;
     outline: none;
     height: 40px;
     width: 100%;
-    border-radius: 12.5px;
+    border-radius: 10px;
     padding: 0 20px;
     color: var(--tertiary-color);
-    border: 2px solid var(--secondary-color-light);
+    border: 1px solid var(--secondary-color-light);
     font-size: 0.9rem;
 }
 
