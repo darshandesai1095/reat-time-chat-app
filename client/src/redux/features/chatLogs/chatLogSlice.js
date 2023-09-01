@@ -35,9 +35,24 @@ export const getChatLogsByFirebaseUserId = createAsyncThunk(
 )
 
 export const socketIoJoinRooms = createAsyncThunk(
-    'chatLogs/socketIoJoinRooms', async (roomsArray) => {
+    'chatLogs/socketIoJoinRooms', async (data) => {
     return new Promise((resolve, reject) => {
-        socket.emit('joinRooms', roomsArray, (response) => {
+        socket.emit('joinRooms', data, (response) => {
+          // Handle any response from the server if needed
+          if (response.success) {
+            resolve()
+          } else {
+            reject(response.error)
+          }
+        })
+      })
+    }
+)
+
+export const socketIoLeaveRooms = createAsyncThunk(
+    'chatLogs/socketIoLeaveRooms', async (roomsArray) => {
+    return new Promise((resolve, reject) => {
+        socket.emit('leaveRooms', roomsArray, (response) => {
           // Handle any response from the server if needed
           if (response.success) {
             resolve()
@@ -58,7 +73,7 @@ export const socketIoSendMessageToServer = createAsyncThunk(
             resolve({data: response})
           } else {
             reject({
-                Error: response.error, 
+                error: response.error, 
                 roomId: messageData.roomId, 
                 messageId: messageData.message.messageId, 
             })
@@ -86,10 +101,11 @@ export const getNewChatLogData = createAsyncThunk(
 )
 
 const initialState = {
-    chatLogData: null, // [ {rm1}, {rm2}, {rm3} ] -> { roomId, roomName, roomUsers, messagesArray[{},{},{}] }
+    chatLogData: null, // [ {rm1}, {rm2}, {rm3} ] -> { roomId, roomName, roomUsers, dateCreated, messagesArray[{},{},{}] }
     loading: false,
     roomsJoined: false,
     error: false,
+    chatLogsErrorLog: []
 }
 
 export const chatLogSlice = createSlice({
@@ -112,16 +128,35 @@ export const chatLogSlice = createSlice({
             // get current room id from action.payload
             // use room id to find room index in chatLogData
             // state.chatLogData[index].messagesArray.push({})
+            console.log("---setting message...")
             const roomId = action.payload.roomId
             const index = state.chatLogData?.findIndex(rooms => rooms.roomId == roomId)
-            state.chatLogData[index].messagesArray = 
-            [...state.chatLogData[index]?.messagesArray, action.payload.message] 
-            || null
-            console.log(action.payload)
+            const roomMessagesArray = [...state.chatLogData[index]?.messagesArray, action.payload.message]
+            const roomObj = {
+                roomId,
+                roomName: state.chatLogData[index].roomName,
+                roomUsers: state.chatLogData[index].roomUsers,
+                dateCreated: state.chatLogData[index].dateCreated,
+                messagesArray: roomMessagesArray
+            }
+            state.chatLogData = [ ...state.chatLogData.slice(0, index),
+                                  roomObj,
+                                  ...state.chatLogData.slice(index+1) ]
+
+            // state.chatLogData[index].messagesArray = [...state.chatLogData[index]?.messagesArray, action.payload.message]
+            // console.log("chatlog slice push message to chat log", action.payload.message)
         },
 
         removeRoomFromChatLogSlice: (state, action) => {
             state.chatLogData = state.chatLogData.filter(roomObj => roomObj.roomId !== action.payload)
+        },
+        updateRoomNameInChatLogReducer: (state, action) => {
+            const { roomId, roomName, transmissionID, transmissionIDs } = action.payload
+            if (transmissionIDs.includes(transmissionID)) {return}
+            // find room by id -> update name
+            const activeRoomIdx = state.chatLogData.findIndex(room => room.roomId === roomId)
+            console.log("activeRoomIdx", activeRoomIdx, roomName)
+            state.chatLogData[activeRoomIdx].roomName = roomName
         }
     },
     extraReducers: (builder) => {
@@ -203,11 +238,12 @@ export const chatLogSlice = createSlice({
         })
         builder.addCase(getNewChatLogData.fulfilled, (state, action) => {
             console.log("current state.chatLogData", state.chatLogData.length)
-            console.log("incoming log", action.payload, "current", state.chatLogData)
+            console.log("incoming log", action.payload[0], "current", state.chatLogData)
             state.chatLogData = [ ...state.chatLogData, action.payload[0] ]
         })
         builder.addCase(getNewChatLogData.rejected, (state, action) => {
             state.error = action.payload // The error message from rejectWithValue is set in the state
+            state.chatLogsErrorLog = [...state.chatLogsErrorLog, action.payload]
         })
     }
 })
@@ -219,7 +255,8 @@ export const {
    loadChatLogSuccess,
    pushMessageToChatLog,
    removeRoomFromChatLogSlice,
-   changeCurrentActiveRoom
+   changeCurrentActiveRoom,
+   updateRoomNameInChatLogReducer
 } = chatLogSlice.actions
 
 export default chatLogSlice.reducer
