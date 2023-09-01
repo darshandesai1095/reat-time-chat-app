@@ -4,13 +4,15 @@
     min-width: 340px;
     max-width: 370px;
     padding: 0 35px;
-    padding-top: 40px;
+    /* padding-top: 40px; */
     position: relative;
     flex: 1;
-    padding-bottom: 40px;
+    /* padding-bottom: 40px; */
     background-color: var(--secondary-color);
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
     align-items: center;
+    margin: 40px 0px;
+    border-right: 2px solid var(--secondary-color-light);
 }
 
