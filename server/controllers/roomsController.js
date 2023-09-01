@@ -3,12 +3,16 @@ const User = require('../models/userModel')
 const ChatLog = require('../models/chatLogModel')
 const mongoose = require('mongoose')
 const { assignAvatarToUser } = require('./functions/assignAvatarToUser')
+const { v4: uuidv4 } = require('uuid');
+const { saveGlobalAlertToRedis } = require('../utils/saveGlobalAlertToRedis')
+
 
 
 const roomController = {
 
     createNewRoom: async (req, res) => {
         try {
+
             const userId = req.params.userId
             const user = await User.findById(userId)
             if (!user) {
@@ -75,6 +79,7 @@ const roomController = {
             await chatLog.save()
 
             const globalAlertData = {
+                transmissionID: uuidv4(),
                 eventType: 'newRoomCreated',
                 eventData: {
                     roomId: roomId,
@@ -87,6 +92,20 @@ const roomController = {
 
             const io = req.io
             io.to("globalChannel").emit('globalAlert', globalAlertData)
+
+            const date = Date.now()
+            const globalAlertDataRedis = {
+                transmissionID: globalAlertData.transmissionID,
+                alertTitle: 'New Group Created',
+                alertTime: date,
+                alertInfo: {
+                    roomName: roomName,
+                    createdByUsername: user.username
+                }
+            }
+
+            await saveGlobalAlertToRedis(globalAlertDataRedis, newRoom.users, userId)
+
       
             // Respond with the saved user data
             res.status(201).json(newRoom)
@@ -156,7 +175,8 @@ const roomController = {
                             firebaseUserId: user.firebaseUserId,
                             email: user.email,
                             username: user.username,
-                            profilePictureUrl: user.profilePictureUrl ? user.profilePictureUrl : null                            
+                            profilePictureUrl: user.profilePictureUrl ? user.profilePictureUrl : null,
+                            activeUser: user.activeUser
                         })
                     }) || null,
                 })
@@ -194,7 +214,8 @@ const roomController = {
                             firebaseUserId: user.firebaseUserId,
                             email: user.email,
                             username: user.username,
-                            profilePictureUrl: user.profilePictureUrl ? user.profilePictureUrl : null
+                            profilePictureUrl: user.profilePictureUrl ? user.profilePictureUrl : null,
+                            activeUser: user.activeUser
                         })
                     }) || null,
                 })
@@ -209,8 +230,6 @@ const roomController = {
 
     addUsersToRoom: async (req, res) => { // also update user document to include room
         try {
-
-            console.log("adding user to room")
             const _id = req.params.roomId
             const { emailsArray, updatedById, updatedByUsername } = req.body
 
@@ -231,6 +250,21 @@ const roomController = {
                 if ( room.users.includes(userId) ) {
                     continue
                 }
+
+                /////////////////////////////////////////////
+                /////////////////////////////////////////////
+                /////////////////////////////////////////////
+                // if ( room.deletedUsers?.includes(userId) ) {
+                //     // remove from deleted users
+                //     await Room.findOneAndUpdate( 
+                //         { _id: _id },  
+                //         { $pull: { deletedUsers: user._id } },
+                //         { new: true }
+                //     )
+                // }
+                /////////////////////////////////////////////
+                /////////////////////////////////////////////
+                /////////////////////////////////////////////
     
                 if ( user.rooms.includes(_id) ) {
                     continue
@@ -243,7 +277,9 @@ const roomController = {
                 await room.save()
             }
 
+
             const globalAlertData = {
+                transmissionID: uuidv4(),
                 eventType: 'usersAddedToRoom',
                 eventData: {
                     roomId: room._id,
@@ -254,8 +290,23 @@ const roomController = {
                 }
             }
 
+            // send to all clients
             const io = req.io
             io.to("globalChannel").emit('globalAlert', globalAlertData)
+
+            const date = Date.now()
+            const globalAlertDataRedis = {
+                transmissionID: globalAlertData.transmissionID,
+                alertTitle: 'User Added To Group',
+                alertTime: date,
+                alertInfo: {
+                    roomName: room.roomName,
+                    updatedByUsername: updatedByUsername
+                }
+            }
+
+            await saveGlobalAlertToRedis(globalAlertDataRedis, userIdsArr, updatedById)
+
 
             res.status(201).json(room.users)
 
@@ -266,6 +317,8 @@ const roomController = {
 
     removeUsersFromRoom: async (req, res) => { // also update user document to remove room
         try {
+
+            console.log("leaving room...", req.body)
             const roomId = req.params.roomId
             const { emailsArray, updatedById, updatedByUsername } = req.body
 
@@ -289,6 +342,18 @@ const roomController = {
                     { $pull: { users: userIdObj } },
                     { new: true }
                 )
+
+                /////////////////////////////////////////////
+                /////////////////////////////////////////////
+                /////////////////////////////////////////////
+                // await Room.findOneAndUpdate(
+                //     { _id: roomId },
+                //     { $push: { deletedUsers: userIdObj } },
+                //     { new: true }
+                // )
+                /////////////////////////////////////////////
+                /////////////////////////////////////////////
+                /////////////////////////////////////////////
     
                 await User.findOneAndUpdate( 
                     { _id: userIdObj },  
@@ -298,6 +363,7 @@ const roomController = {
             }
 
             const globalAlertData = {
+                transmissionID: uuidv4(),
                 eventType: 'usersRemovedFromRoom',
                 eventData: {
                     roomId: room._id,
@@ -310,11 +376,28 @@ const roomController = {
 
             const io = req.io
             io.to("globalChannel").emit('globalAlert', globalAlertData)
-    
-    
+
+
+            const date = Date.now()
+            const globalAlertDataRedis = {
+                transmissionID: globalAlertData.transmissionID,
+                alertTitle: 'User Removed From Group',
+                alertTime: date,
+                alertInfo: {
+                    roomName: room.roomName,
+                    updatedByUsername: updatedByUsername
+                }
+            }
+
+            if (!removedUsersArr.includes(updatedById)) {
+                await saveGlobalAlertToRedis(globalAlertDataRedis, removedUsersArr, updatedById)
+            }
+
+            console.log("done")
             res.status(201).json(room)
 
         } catch (error) {
+            console.log("remove user error", error)
             res.status(500).json({ error: error.message})
         }
     },
@@ -332,6 +415,7 @@ const roomController = {
             await room.save()
             
             const globalAlertData = {
+                transmissionID: uuidv4(),
                 eventType: 'roomNameUpdated',
                 eventData: {
                     roomId: room._id,
@@ -346,11 +430,25 @@ const roomController = {
             const io = req.io
             io.to("globalChannel").emit('globalAlert', globalAlertData)
 
+            const date = Date.now()
+            const globalAlertDataRedis = {
+                transmissionID: globalAlertData.transmissionID,
+                alertTitle: 'Group Name Updated',
+                alertTime: date,
+                alertInfo: {
+                    originalRoomName: originalRoomName,
+                    roomName: newRoomName,
+                    updatedByUsername: updatedByUsername
+                }
+            }
+
+            await saveGlobalAlertToRedis(globalAlertDataRedis, room.users, updatedById)
+
 
             res.status(201).json(room.roomName)
 
-        } catch {
-            res.status(500).json({ error: 'Error updating room name' })
+        } catch (error) {
+            res.status(500).json({ error: 'Error updating room name', message: error.message })
         }
     },
 
@@ -377,8 +475,6 @@ const roomController = {
     deleteRoom: async (req, res) => {
         try {
 
-            console.log("deleting room...")
-            console.log("deletedBy...", req.body)
             const roomId = req.params.roomId
             const roomIdObj = new mongoose.Types.ObjectId(roomId)
 
@@ -386,6 +482,8 @@ const roomController = {
             if (!room) {
                 res.status(404).json({ error: "Room not found" })
             }
+
+            const usersArray = room.users.toString()
 
             await Room.findByIdAndDelete(roomId)
             await ChatLog.findOneAndDelete({ roomId })
@@ -405,6 +503,7 @@ const roomController = {
 
             const {username, deletedBy} = req.body
             const globalAlertData = {
+                transmissionID: uuidv4(),
                 eventType: 'roomDeleted',
                 eventData: {
                     roomId: roomId,
@@ -416,6 +515,19 @@ const roomController = {
 
             const io = req.io
             io.to("globalChannel").emit('globalAlert', globalAlertData)
+
+            const date = Date.now()
+            const globalAlertDataRedis = {
+                transmissionID: globalAlertData.transmissionID,
+                alertTitle: 'Group Deleted',
+                alertTime: date,
+                alertInfo: {
+                    roomName: room.roomName,
+                    deletedBy: username
+                }
+            }
+
+            await saveGlobalAlertToRedis(globalAlertDataRedis, usersArray, deletedBy)
 
             res.status(200).json({ message: "Room deleted successfully" })
 
