@@ -11,9 +11,15 @@ import searchInsertPosition from '../../../functions/misc/searchInsertPosition';
 import { updateTotalMatches } from '../../../redux/features/search/searchRoomsSlice';
 
 
-const ChatGroup = ({ roomName, roomId, active, search }) => {
+const ChatGroup = ({ roomId, active, search }) => {
 
     const dispatch = useDispatch()
+    const roomsData = useSelector(state => state.rooms.roomsData)
+    // console.log("roomsData", roomsData, useSelector(state => state.rooms))
+    const roomIndex = roomsData ? roomsData.findIndex(room => room.roomId === roomId) : 0
+    console.log("roomIndex", roomIndex)
+    const roomName = roomsData[roomIndex] ? roomsData[roomIndex]?.roomName : "Loading..."
+
     const previousActiveRoomId = useSelector(state => state.rooms?.currentActiveRoomId)
     const activityLog = useSelector(state => state.activityLog?.lastActive)
     const userId = useSelector(state => state.user?.mongoDbUserId)
@@ -95,7 +101,10 @@ const ChatGroup = ({ roomName, roomId, active, search }) => {
                 setIsMatch(false)
                 return
             }
-            const match = roomName.toLowerCase().match(`${searchTerm.toLowerCase()}`)
+
+            const escapedSearchTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+            const match = roomName.toLowerCase().match(new RegExp(escapedSearchTerm.toLowerCase(), 'i'))
+
             if (match) {
                 setIsMatch(true)
                 dispatch(updateTotalMatches())
@@ -115,7 +124,6 @@ const ChatGroup = ({ roomName, roomId, active, search }) => {
 
                <Avatar
                     width={55}
-                    height={55}
                     responsive={false}
                     url={profilePictureUrl}
                />
