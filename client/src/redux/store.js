@@ -8,6 +8,7 @@ import modalReducer from './features/modals/modalSlice'
 import activityLogReducer from './features/activityLogs/activityLogSlice.js'
 import searchRoomsReducer from './features/search/searchRoomsSlice.js'
 import globalAlertReducer from './features/globalAlerts/globalAlertSlice'
+import onlineUsersReducer from './features/users/onlineUsersSlice'
 
 
 export const store = configureStore({
@@ -19,7 +20,8 @@ export const store = configureStore({
         modals: modalReducer,
         activityLog: activityLogReducer,
         searchRooms: searchRoomsReducer,
-        globalAlerts: globalAlertReducer
+        globalAlerts: globalAlertReducer,
+        onlineUsers: onlineUsersReducer
     },
 
     middleware: (getDefaultMiddleware) => (
