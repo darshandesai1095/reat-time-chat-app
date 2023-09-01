@@ -17,7 +17,6 @@
 }
 
 .create-new-group {
-    background-color: var(--secondary-color);
     color: var(--tertiary-color);
     width: 350px;
     padding: 45px 40px;
@@ -25,7 +24,8 @@
     border-radius: 15px;
     position: relative;
     transition: 0.3s ease-in-out;
-    /* background-color: var(--secondary-color-dark); */
+    background-color: var(--secondary-color-dark);
+    border: 1px solid var(--secondary-color-light);
 }
 
 .close-icon {
@@ -42,7 +42,7 @@
 }
 
 .close-icon > svg:hover {
-    fill: var(--primary-color);
+    fill: var(--tertiary-color);
 }
 
 .create-new-group h3 {
@@ -85,7 +85,7 @@ p.add-more:hover {
     border: none;
     outline: none;
     margin-top: 15px;
-    border-radius: 12.5px;
+    border-radius: 10px;
     font-size: 0.9rem;
     font-weight: 700;
     cursor: pointer;
@@ -94,10 +94,11 @@ p.add-more:hover {
     transition: 0.3s;
     height: 40px;
     width: 100%;
+    
 }
 
 .close-popup-button:hover {
-    background-color: var(--primary-color-dark)
+    background-color: var(--secondary-color-light)
 }
 
 .email-input-field {
