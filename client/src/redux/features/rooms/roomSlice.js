@@ -94,7 +94,6 @@ export const updateRoomName = createAsyncThunk(
     async ({roomId, originalRoomName, newRoomName, updatedById, updatedByUsername}, { rejectWithValue }) => {
         try {
             const response = await axios.patch(`${baseURL}/rooms/${roomId}`, {
-                newRoomName: newRoomName,
                 originalRoomName: originalRoomName,
                 newRoomName: newRoomName,
                 updatedById: updatedById,
@@ -102,7 +101,12 @@ export const updateRoomName = createAsyncThunk(
             })
             return response.data
         } catch (error) {
-            return rejectWithValue(error.message)
+            return rejectWithValue( { 
+                error: error.message, 
+                originalRoomName: originalRoomName,
+                newRoomName: newRoomName,
+                roomId: roomId
+            })
         }
     }
 )
@@ -133,7 +137,10 @@ export const deleteRoom = createAsyncThunk(
             })
             return response.data
         } catch (error) {
-            return rejectWithValue(error.message)
+            return rejectWithValue({
+                error: error.message,
+                roomId: roomId
+            })
         }
     }
 )
@@ -144,6 +151,7 @@ const initialState = {
     loading: false,
     currentActiveRoomId: null,
     error: null,
+    roomErrorLog: []
 }
 
 export const roomSlice = createSlice({
@@ -156,7 +164,7 @@ export const roomSlice = createSlice({
         },
         assignCurrentActiveRoom: (state) => {
             const length = state.roomsData.length
-            state.currentActiveRoomId = state.roomsData[length-1].roomId || null
+            state.currentActiveRoomId = (state.roomsData[0].roomId || state.roomsData[length-1].roomId || null)
         },
         setLoading: (state, action) => {
             state.loading = action.payload
@@ -164,6 +172,22 @@ export const roomSlice = createSlice({
         },
         removeRoomFromRoomSlice: (state, action) => {
             state.roomsData = state.roomsData.filter(roomObj => roomObj.roomId !== action.payload)
+            // update current activeRoomID
+            state.currentActiveRoomId = state.roomsData[state.roomsData.length-1].roomId || state.roomsData[0].roomId
+        },
+        updateRoomNameReducer: (state, action) => {
+            const { roomId, roomName, transmissionID, transmissionIDs } = action.payload
+            console.log("updating room name...", roomName)
+            try {
+                if (transmissionIDs?.includes(transmissionID)) {return}
+            } catch (error) {console.log(error)}
+            // find room by id -> update name
+            const activeRoomIdx = state.roomsData.findIndex(room => room.roomId === roomId)
+            const room = state.roomsData[activeRoomIdx]
+            const updatedRoom = { ...room, roomName: roomName}
+            state.roomsData = [ ...state.roomsData.slice(0, activeRoomIdx), 
+                                updatedRoom, 
+                                ...state.roomsData.slice(activeRoomIdx+1) ]   
         }
 
     },
@@ -249,7 +273,8 @@ export const roomSlice = createSlice({
         builder.addCase(getNewRoomData.fulfilled, (state, action) => {
             // state.loading = false
             // append new room to rooms array
-            state.roomsData = [...state.roomsData, action.payload]
+            console.log("getting room data", action.payload)
+            state.roomsData = [...state.roomsData, action.payload] || action.payload
         })
         builder.addCase(getNewRoomData.pending, (state, action) => {
             // state.loading = true
@@ -265,11 +290,23 @@ export const roomSlice = createSlice({
         })
 
         builder.addCase(updateRoomName.pending, (state) => {
-            state.loading = true
+            // state.loading = true
         })
         builder.addCase(updateRoomName.rejected, (state, action) => {
             state.loading = false
-            state.error = action.payload 
+            // state.error = action.payload
+            console.log("builder.addCase(updateRoomName.rejected,.. error updating room name")
+            state.roomErrorLog = [ ...state.roomErrorLog,  {
+                errorTitle: "Error Updating Group Name",
+                alertTime: Date.now(),
+                originalRoomName: action.payload.originalRoomName,
+                newRoomName: action.payload.newRoomName,
+                errorMessage: action.payload.error
+            } ]
+            // revert back to original name
+            // find room by id -> update name
+            const activeRoomIdx = state.roomsData.findIndex(room => room.roomId === action.payload.roomId)
+            state.roomsData[activeRoomIdx].roomName = action.payload.originalRoomName
         })
         builder.addCase(updateRoomName.fulfilled, (state, action) => {
             // state.loading = false
@@ -296,7 +333,15 @@ export const roomSlice = createSlice({
         })
         builder.addCase(deleteRoom.rejected, (state, action) => {
             state.loading = false
-            state.error = action.payload 
+            state.error = action.payload
+            const roomId = action.payload.roomId
+            const roomName = state.roomsData?.filter(room => room.roomId === roomId)[0].roomName
+            state.roomErrorLog = {
+                alertTitle: "Error Deleting Group",
+                errorMessage: action.payload.error,
+                roomName: roomName,
+                alertTime: Date.now()
+            }
         })
         builder.addCase(deleteRoom.fulfilled, (state, action) => {
             // state.loading = false
@@ -324,6 +369,7 @@ export const {
         assignCurrentActiveRoom,
         setLoading, 
         removeRoomFromRoomSlice,
+        updateRoomNameReducer
     } = roomSlice.actions
 
 export default roomSlice.reducer
