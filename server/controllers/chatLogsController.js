@@ -53,25 +53,35 @@ const chatLogController = {
                 if (!room) { 
                     continue 
                 }
-                // const chatLog = await ChatLog.find({ roomId })
+
+                // get cached messages from redis
+                const jsonMessageLog = await client.HGET('chatLogs', roomId)
+                const cachedChats = jsonMessageLog ? JSON.parse(jsonMessageLog) : []
+                // for each message in cached chats get sender id and populate chat {}
+                // with sender username, profile pic,
+                                
+                const chatLog = await ChatLog.find({ roomId })
                 allChats.push({
                     roomId: room._id,
                     roomName: room.roomName,
+                    dateCreated: room.dateCreated ? room.dateCreated : 0,
                     roomUsers: room.users?.map(user => {
                         return ({
                             userId: user._id,
                             email: user.email,
                             username: user.username,
+                            
                         })
                         }) || null,
-                    dateCreated: room.dateCreated,
-                    messagesArray: "empty array" // chatLog.messages // convert messageSender to userName/email
+                    roomDeletedUsers: [],
+                    messagesArray: [...chatLog[0].messages, ...cachedChats] || [] // convert messageSender to userName/email
                 })
             }
 
             res.status(201).json(allChats)
 
         } catch (error) {
+            console.log(error)
             res.status(500).json({error: error.message})
         }
     },
@@ -101,10 +111,10 @@ const chatLogController = {
                 allChats.push({
                     roomId: room._id,
                     roomName: room.roomName, // delete
+                    dateCreated: room.dateCreated ? room.dateCreated : 0,
                     roomUsers: room.users?.map(user => {
                         return ({
                             userId: user._id,
-                            firebaseUserId: user.firebaseUserId, // delete
                             email: user.email,
                             username: user.username,
                         })
@@ -120,11 +130,10 @@ const chatLogController = {
                     messagesArray: [...chatLog[0].messages, ...cachedChats] || [] // convert messageSender to userName/email
                 })
             }
-            
+
             res.status(201).send(allChats)
 
         } catch (error) {
-            console.log("error:", error.message)
             res.status(500).json({error: error.message})
         }
     },
