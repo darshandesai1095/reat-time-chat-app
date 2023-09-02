@@ -1,22 +1,20 @@
 import './CreateAccount.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../../../firebase';
 import { useDispatch } from 'react-redux'
 import { loginRequest, loginSuccess, loginFailure, createNewUser } from '../../../redux/features/users/userSlice';
-import { useCreateNewUserMutation } from '../../../redux/api/users/userApi';
 
 
 const CreateAccount = ({goToLoginPage}) => {
 
 
     const dispatch = useDispatch()
-    const [createNewAccount, result] = useCreateNewUserMutation()
 
     const [error, setError] = useState(false)
-    const [email, setEmail] = useState("darshan@gmail.com")
-    const [username, setUsername] = useState("darshan")
-    const [password, setPassword] = useState("Password^123")
+    const [email, setEmail] = useState("")
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
 
     const handleCreateAccount = async (event) => {
         event.preventDefault()
