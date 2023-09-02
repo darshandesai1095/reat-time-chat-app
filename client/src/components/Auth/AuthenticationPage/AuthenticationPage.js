@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './AuthenticationPage.css';
 import Login from '../Login/Login';
 import CreateAccount from '../CreateAccount/CreateAccount';

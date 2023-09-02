@@ -1,10 +1,4 @@
 import './StartNewChat.css';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { useSelector, useDispatch } from 'react-redux';
-import createNewRoomAndSyncData from '../../../functions/rooms/createNewRoomAndSyncData';
-
-
 
 const StartNewChat = ({}) => {
 

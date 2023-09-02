@@ -15,7 +15,6 @@ const AllChatsBody = ({ search }) => {
     // sort roomsData by last active
     // >  get last active from local storage?
     // const roomsDataSortedByLastActive = roomsData.sort()
-    const date = Date.now()
     let shallowCopyChatLogsData = chatLogsData ? [...chatLogsData] : []
     shallowCopyChatLogsData?.sort((room1, room2) => {
         const room1MessagesArray = room1.messagesArray

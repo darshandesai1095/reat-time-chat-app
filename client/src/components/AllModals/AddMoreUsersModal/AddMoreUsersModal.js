@@ -5,9 +5,6 @@ import InputField from '../../InputField/InputField';
 import addUsersToRoomAndSyncData from '../../../functions/rooms/addUsersToRoomAndSyncData';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleShowAddMoreUsersModal } from '../../../redux/features/modals/modalSlice';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-
-
 
 const AddMoreUsersModal = ({mongoDbUserId, activeRoomId}) => {
 

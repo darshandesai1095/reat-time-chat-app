@@ -7,8 +7,6 @@ import SettingsModal from '../AllModals/SettingsModal/SettingsModal';
 import UpdateGroupNameModal from '../AllModals/UpdateGroupNameModal/UpdateGroupNameModal';
 import './Modal.css';
 import { useSelector } from 'react-redux';
-import { BrowserRouter as Router, Route, Routes, Link, Outlet } from 'react-router-dom';
-import ReactDOM from 'react-dom';
 import ChangeGroupChatIconModal from '../AllModals/ChangeGroupChatIconModal/ChangeGroupChatIconModal';
 
 

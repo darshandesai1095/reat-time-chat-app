@@ -23,7 +23,8 @@ const AllChats = () => {
         } else {
             console.log("no id") // send to error / loading page
         }
-    }, [])
+
+    }, [firebaseUserId])
 
     const [search, setSearch] = useState("")
     const [showCreateGroupPopup, setShowCreateGroupPopup] = useState(false)

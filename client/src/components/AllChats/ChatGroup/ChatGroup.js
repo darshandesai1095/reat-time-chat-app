@@ -1,6 +1,6 @@
 import './ChatGroup.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeCurrentActiveRoom, selectRoomById } from '../../../redux/features/rooms/roomSlice';
+import { changeCurrentActiveRoom } from '../../../redux/features/rooms/roomSlice';
 import Avatar from '../../Avatar/Avatar';
 import UnreadMessageCount from '../UnreadMessageCount/UnreadMessageCount';
 import { useEffect, useState } from 'react';
@@ -17,21 +17,15 @@ const ChatGroup = ({ roomId, active, search }) => {
     const roomsData = useSelector(state => state.rooms.roomsData)
     // console.log("roomsData", roomsData, useSelector(state => state.rooms))
     const roomIndex = roomsData ? roomsData.findIndex(room => room.roomId === roomId) : 0
-    console.log("roomIndex", roomIndex)
     const roomName = roomsData[roomIndex] ? roomsData[roomIndex]?.roomName : "Loading..."
 
     const previousActiveRoomId = useSelector(state => state.rooms?.currentActiveRoomId)
     const activityLog = useSelector(state => state.activityLog?.lastActive)
     const userId = useSelector(state => state.user?.mongoDbUserId)
 
-    // const roomData = useSelector(state => state.rooms.roomsData?.filter(room => room.roomId === roomId))
-    // const profilePictureUrl = roomData?.profilePictureUrl
 
-    
-    // const filteredRoomData = useSelector(state => selectRoomById(state)(roomId)) // get room object
-    // OR
     const allRoomsData = useSelector(state => state.rooms.roomsData)
-    const room = allRoomsData?.filter(room => room.roomId == roomId)
+    const room = allRoomsData?.filter(room => room.roomId === roomId)
 
 
     const profilePictureUrl = room[0]?.profilePictureUrl

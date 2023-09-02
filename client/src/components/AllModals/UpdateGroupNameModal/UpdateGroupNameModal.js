@@ -23,7 +23,8 @@ const UpdateGroupNameModal = ( {activeRoomId, mongoDbUserId, roomName} ) => {
     }
 
     const updateGroupName = async () => {
-        if (!groupName || groupName.trim() == "") return alert("Room name cannot be blank")
+        
+        if (!groupName || groupName.trim() === "") return alert("Room name cannot be blank")
         
         try {
             await renameRoomAndSyncData(dispatch, activeRoomId, mongoDbUserId, groupName, username, originalRoomName)
