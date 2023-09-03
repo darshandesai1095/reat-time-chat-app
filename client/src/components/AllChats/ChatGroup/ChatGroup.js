@@ -15,7 +15,6 @@ const ChatGroup = ({ roomId, active, search }) => {
 
     const dispatch = useDispatch()
     const roomsData = useSelector(state => state.rooms.roomsData)
-    // console.log("roomsData", roomsData, useSelector(state => state.rooms))
     const roomIndex = roomsData ? roomsData.findIndex(room => room.roomId === roomId) : 0
     const roomName = roomsData[roomIndex] ? roomsData[roomIndex]?.roomName : "Loading..."
 
@@ -23,13 +22,10 @@ const ChatGroup = ({ roomId, active, search }) => {
     const activityLog = useSelector(state => state.activityLog?.lastActive)
     const userId = useSelector(state => state.user?.mongoDbUserId)
 
-
     const allRoomsData = useSelector(state => state.rooms.roomsData)
     const room = allRoomsData?.filter(room => room.roomId === roomId)
 
-
     const profilePictureUrl = room[0]?.profilePictureUrl
-
 
     const updateActivityLogAndActivateRoom = () => {
         // if previous active room !== new active room -> updateActivityLog
@@ -72,7 +68,7 @@ const ChatGroup = ({ roomId, active, search }) => {
         }
 
         // eslint-disable-next-line
-    }, [chatLog, active])
+    }, [chatLog, active, roomId])
 
     const [timeSinceLastMessage, setTimeSinceLastMessage] = useState(null)
     useEffect(() => {
