@@ -25,6 +25,8 @@ const ChatGroup = ({ roomId, active, search }) => {
     const allRoomsData = useSelector(state => state.rooms.roomsData)
     const room = allRoomsData?.filter(room => room.roomId === roomId)
 
+    const activeRoomId = useSelector(state => state.rooms.activeRoomId)
+
     const profilePictureUrl = room[0]?.profilePictureUrl
 
     const updateActivityLogAndActivateRoom = () => {
@@ -148,7 +150,7 @@ const ChatGroup = ({ roomId, active, search }) => {
                         </p>
                     </div>
                     {   
-                        inboxCount !== 0 ?
+                        inboxCount !== 0 && (roomId !== activeRoomId)?
                         (
                             <UnreadMessageCount
                                 count={inboxCount}
