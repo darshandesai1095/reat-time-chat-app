@@ -1,4 +1,4 @@
-import { getUserByMongoDbUserId, updateUsername } from "../../redux/features/users/userSlice";
+import { updateUsername } from "../../redux/features/users/userSlice";
 import { setLoading } from "../../redux/features/rooms/roomSlice";
 
 const updateUsernameAndSyncData = async (dispatch, mongoDbUserId, newUsername) => {

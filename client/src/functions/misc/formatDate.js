@@ -1,5 +1,5 @@
 import { format, parseISO, isValid, differenceInMinutes, 
-    differenceInHours, differenceInDays, differenceInMonths, differenceInYears, differenceInWeeks, isToday, isYesterday } from 'date-fns';
+    differenceInHours, isToday, isYesterday } from 'date-fns';
 
 const formatDate = ( inputDate, returnFormat ) => {
 

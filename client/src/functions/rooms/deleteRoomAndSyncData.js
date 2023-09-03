@@ -1,5 +1,4 @@
-import { getUserByMongoDbUserId } from "../../redux/features/users/userSlice";
-import { assignCurrentActiveRoom, deleteRoom, getRoomsByMongoDbUserId, setLoading } from "../../redux/features/rooms/roomSlice";
+import { assignCurrentActiveRoom, deleteRoom, setLoading } from "../../redux/features/rooms/roomSlice";
 
 const deleteRoomAndSyncData = async (dispatch, roomId, mongoDbUserId, username) => {
    

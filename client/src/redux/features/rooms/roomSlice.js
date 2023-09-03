@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios';
 
 
@@ -295,7 +295,6 @@ export const roomSlice = createSlice({
         builder.addCase(updateRoomName.rejected, (state, action) => {
             state.loading = false
             // state.error = action.payload
-            console.log("builder.addCase(updateRoomName.rejected,.. error updating room name")
             state.roomErrorLog = [ ...state.roomErrorLog,  {
                 errorTitle: "Error Updating Group Name",
                 alertTime: Date.now(),
