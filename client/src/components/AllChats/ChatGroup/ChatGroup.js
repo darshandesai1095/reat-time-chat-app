@@ -150,7 +150,7 @@ const ChatGroup = ({ roomId, active, search }) => {
                         </p>
                     </div>
                     {   
-                        inboxCount !== 0 && (roomId !== activeRoomId)?
+                        inboxCount !== 0 || (roomId !== activeRoomId)?
                         (
                             <UnreadMessageCount
                                 count={inboxCount}
