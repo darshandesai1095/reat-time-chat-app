@@ -1,8 +1,6 @@
-import { useState } from 'react';
 import removeUsersFromRoomAndSyncData from '../../../functions/rooms/removeUsersFromRoomAndSyncData';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleShowLeaveGroupModal } from '../../../redux/features/modals/modalSlice';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 

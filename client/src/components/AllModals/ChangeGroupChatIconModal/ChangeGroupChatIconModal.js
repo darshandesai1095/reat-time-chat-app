@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './ChangeGroupChatIconModal.css';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '../../Avatar/Avatar';
 import imagesArray from '../../../imagesArray';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { toggleShowChangeGroupIconModal } from '../../../redux/features/modals/modalSlice';
 import updateRoomIconAndSyncData from '../../../functions/rooms/updateRoomIconAndSyncData';

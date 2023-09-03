@@ -43,15 +43,12 @@ const calculateTimeDifference = (parsedDate) => {
     const now = Date.now()
     const mins = differenceInMinutes(now, parsedDate)
     const hours = differenceInHours(now, parsedDate)
-    const days = differenceInDays(now, parsedDate)
-    const weeks = differenceInWeeks(now, parsedDate)
-    const months = differenceInMonths(now, parsedDate)
-    const years = differenceInYears(now, parsedDate)
 
-    if (mins == 0) {
+
+    if (Number(mins) === 0) {
         return (`Now`)
     }
-    if (mins == 1) {
+    if (Number(mins) === 1) {
         return (`${mins} min`)
     }
     if (hours < 1) {

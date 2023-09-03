@@ -157,12 +157,6 @@ export const userSlice = createSlice({
             state.email = action.payload.email
         },
 
-        updateUserCredentials: (state, action) => {
-            state.username = action.payload.username
-            state.mongoDbUserId = action.payload.mongoDbUserId
-            state.email = action.payload.email
-        },
-
         updateUserCredentialsUsername: (state, action) => {
             state.username = action.payload
         },

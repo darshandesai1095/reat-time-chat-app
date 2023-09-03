@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import deleteRoomAndSyncData from '../../../functions/rooms/deleteRoomAndSyncData';
 import LoadingModal from '../LoadingModal/LoadingModal';
 import { toggleShowDeleteGroupModal } from '../../../redux/features/modals/modalSlice';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { setLoading } from '../../../redux/features/rooms/roomSlice';
 
 

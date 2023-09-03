@@ -130,7 +130,7 @@ export const chatLogSlice = createSlice({
             // state.chatLogData[index].messagesArray.push({})
             console.log("---setting message...")
             const roomId = action.payload.roomId
-            const index = state.chatLogData?.findIndex(rooms => rooms.roomId == roomId)
+            const index = state.chatLogData?.findIndex(rooms => rooms.roomId === roomId)
             const roomMessagesArray = [...state.chatLogData[index]?.messagesArray, action.payload.message]
             const roomObj = {
                 roomId,

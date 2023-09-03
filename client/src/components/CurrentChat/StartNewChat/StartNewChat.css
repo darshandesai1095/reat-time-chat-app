@@ -6,8 +6,9 @@
     align-items: center;
     width: 100%;
     transition: 0.3s;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     gap: 30px;
+    line-height: 1.8rem;
 }
 
 .start-new-chat svg {
@@ -17,4 +18,16 @@
 .start-new-chat svg:hover {
     cursor: pointer;
     fill: var(--purple)
+}
+
+.start-new-chat span {
+    padding-bottom: 1px;
+    border-bottom: 1.5px solid var(--secondary-color);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.start-new-chat span:hover {
+    padding-bottom: 1px;
+    border-bottom: 1.5px solid var(--tertiary-color);
 }

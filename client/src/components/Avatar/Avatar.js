@@ -30,10 +30,11 @@ const Avatar = ({ url, width=55, height=55, responsive=false, isOnline=false, is
 
             {
                 url ?
-                <img  className={`${ isOnline && url ? "online" : null }`} src={url}/>
+                <img  className={`${ isOnline && url ? "online" : null }`} src={url} alt="avatar"/>
                 :
                 <img
                     src={`https://i.postimg.cc/13JNx5YY/image-Ot-ILHw-Wp-NCPt.jpg`}
+                    alt="avatar"
                 />
              }
 

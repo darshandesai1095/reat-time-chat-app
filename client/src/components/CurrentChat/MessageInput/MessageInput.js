@@ -28,6 +28,7 @@ const MessageInput = ({setCurrentMessage, currentMessage, sendMessage}) => {
     const currentActiveRoomId = useSelector(state => state.rooms.currentActiveRoomId)
     useEffect(() => {
         setCurrentMessage("")
+        // eslint-disable-next-line
     }, [currentActiveRoomId])
 
     return (

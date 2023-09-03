@@ -1,6 +1,4 @@
-import { getUserByMongoDbUserId } from "../../redux/features/users/userSlice";
-import { createNewRoom, getRoomsByMongoDbUserId, setLoading } from "../../redux/features/rooms/roomSlice";
-import { getNewChatLogData } from "../../redux/features/chatLogs/chatLogSlice";
+import { createNewRoom, setLoading } from "../../redux/features/rooms/roomSlice";
 
 
 const createNewRoomAndSyncData = async (dispatch, mongoDbUserId, groupName, emails) => {

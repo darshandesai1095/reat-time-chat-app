@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import './RemoveUsersModal.css';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import UndoRoundedIcon from '@mui/icons-material/UndoRounded';
 import removeUsersFromRoomAndSyncData from '../../../functions/rooms/removeUsersFromRoomAndSyncData';
@@ -13,7 +12,6 @@ const RemoveUsersModal = ({mongoDbUserId, activeRoomId, usersList}) => {
 
     const dispatch = useDispatch()
     const showRemoveUsersModal = useSelector(state => state.modals.showRemoveUsersModal)
-    const userId = useSelector(state => state.user.mongoDbUserId)
     const username = useSelector(state => state.user.username)
 
 

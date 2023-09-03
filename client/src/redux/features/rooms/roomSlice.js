@@ -352,16 +352,16 @@ export const roomSlice = createSlice({
 })
 
 
-const allRoomsData = (state) => state.rooms?.roomsData || []
-export const selectRoomById = createSelector(
-    [allRoomsData],
-    (allRoomsData) => (roomId) => {
-        if (allRoomsData, state => state.user) {
-            return ( allRoomsData?.filter(room => room.roomId === roomId) )
-        }
-        return false
-    }
-)
+// const allRoomsData = (state) => state.rooms?.roomsData || []
+// export const selectRoomById = createSelector(
+//     [allRoomsData],
+//     (allRoomsData) => (roomId) => {
+//         if (allRoomsData, state => state.user) {
+//             return ( allRoomsData?.filter(room => room.roomId === roomId) )
+//         }
+//         return false
+//     }
+// )
 
 
 export const { 

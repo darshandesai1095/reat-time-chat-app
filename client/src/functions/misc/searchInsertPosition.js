@@ -2,7 +2,7 @@ import convertToUnixTimestamp from "./convertToUnixTimestamp"
 
 const searchInsertPosition = (messagesArray=[], lastActive=0) => {
 
-    if (!messagesArray || !lastActive || messagesArray.length == 0) return 0
+    if (!messagesArray || !lastActive || messagesArray.length === 0) return 0
 
     try {
 

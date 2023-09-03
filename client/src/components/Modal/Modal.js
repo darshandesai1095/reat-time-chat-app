@@ -14,7 +14,7 @@ const Modal = () => {
 
     const activeRoomId = useSelector(state => state.rooms.currentActiveRoomId)
     const roomsData = useSelector(state => state.rooms.roomsData)
-    const currentActiveRoomIndex = roomsData?.findIndex(room => room.roomId == activeRoomId)
+    const currentActiveRoomIndex = roomsData?.findIndex(room => room.roomId === activeRoomId)
     const mongoDbUserId = useSelector(state => state.user.mongoDbUserId)
     const showChangeGroupIconModal = useSelector(state => state.modals.showChangeGroupIconModal)
 

@@ -11,7 +11,6 @@ import { setLastActiveInLocalStorage } from '../../../functions/misc/localStorag
 
 const MessageBubble = ({ prevMessageSender, sameAsPrevMessageDate, messageObj, roomId, senderData}) => {
 
-    const colorsArray = ['#ff4d6d', '#CE4257', '#FF7F51','EAB464', '#2A7F62', 'rgb(107,138,253)']
     const { username, messageContent, dateCreated, deliveryStatus } = messageObj
     const clientUsername = useSelector(state => state.user.username)
 
@@ -22,7 +21,7 @@ const MessageBubble = ({ prevMessageSender, sameAsPrevMessageDate, messageObj, r
 
     const allRoomsData = useSelector(state => state.rooms.roomsData)
 
-    const filteredRoomData = allRoomsData?.filter(room => room.roomId == roomId)
+    const filteredRoomData = allRoomsData?.filter(room => room.roomId === roomId)
 
 
     const roomUsersArr = filteredRoomData[0]?.roomUsers
@@ -47,6 +46,7 @@ const MessageBubble = ({ prevMessageSender, sameAsPrevMessageDate, messageObj, r
             [roomId]:  date
         })
         
+        // eslint-disable-next-line
     }, [currentActiveRoomId])
 
     const deliveryStatusIcon = () => {

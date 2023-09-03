@@ -2,11 +2,11 @@ import './MainPage.css';
 import NavBar from '../NavBar/NavBar';
 import AllChats from '../AllChats/AllChats';
 import CurrentChat from '../CurrentChat/CurrentChat';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { getUserByFirebaseUserId } from '../../redux/features/users/userSlice';
 import { getChatLogsByFirebaseUserId, socketIoLeaveRooms } from '../../redux/features/chatLogs/chatLogSlice';
-import { socket, socketIoListenForMessage, socketIoHeartbeat, checkOnlineStatus } from '../../redux/socket/socketIO';
+import { socketIoListenForMessage, checkOnlineStatus } from '../../redux/socket/socketIO';
 import { socketIoJoinRooms } from '../../redux/features/chatLogs/chatLogSlice';
 import { getLastActiveFromLocalStorage } from '../../functions/misc/localStorage';
 import { syncActivityLogWithLocalStorage } from '../../redux/features/activityLogs/activityLogSlice';
@@ -21,7 +21,7 @@ const MainPage = () => {
     useEffect(() => {
         socketIoListenForMessage(dispatch)
         // socketIoHeartbeat()
-    }, [socket])
+    }, [dispatch])
 
     const firebaseUserId = useSelector(state => state.user.firebaseUserId)
     const userId = useSelector(state => state.user.mongoDbUserId)
@@ -36,7 +36,8 @@ const MainPage = () => {
         if (!userId) {return}
         checkOnlineStatus(dispatch)
         socketIoListenForGlobalAlert(dispatch, userId, roomsArray, roomsActivityLog, transmissionIDs, setTransmissionIDs)
-    }, [userId])
+        // eslint-disable-next-line
+    }, [userId, dispatch])
 
 
     useEffect(() => {
@@ -52,7 +53,8 @@ const MainPage = () => {
             }
         }
         Promise.resolve(getUserInfo())
-    }, [firebaseUserId])
+        // eslint-disable-next-line
+    }, [firebaseUserId, dispatch])
 
 
     // load all chats into redux store
@@ -61,6 +63,7 @@ const MainPage = () => {
     }
     useEffect(() => {
         loadChats()
+        // eslint-disable-next-line
     }, [])
 
 
@@ -81,6 +84,7 @@ const MainPage = () => {
         return (() => {
             leaveRoomsSocketIo()
         })
+        // eslint-disable-next-line
     }, [roomsArray])
 
 
@@ -90,7 +94,7 @@ const MainPage = () => {
             const activityLog = getLastActiveFromLocalStorage(userId)
             dispatch(syncActivityLogWithLocalStorage(activityLog))
         }
-    }, [userId])
+    }, [userId, dispatch])
 
 
     return (

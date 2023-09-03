@@ -474,7 +474,6 @@ const roomController = {
     
     deleteRoom: async (req, res) => {
         try {
-
             const roomId = req.params.roomId
             const roomIdObj = new mongoose.Types.ObjectId(roomId)
 

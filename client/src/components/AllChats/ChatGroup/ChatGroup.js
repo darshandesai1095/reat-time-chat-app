@@ -71,7 +71,8 @@ const ChatGroup = ({ roomId, active, search }) => {
             setInboxCount(searchInsertPosition(chatLog?.messagesArray || [], lastActive))
         }
 
-    }, [chatLog, active, activityLog])
+        // eslint-disable-next-line
+    }, [chatLog, active])
 
     const [timeSinceLastMessage, setTimeSinceLastMessage] = useState(null)
     useEffect(() => {
@@ -86,7 +87,7 @@ const ChatGroup = ({ roomId, active, search }) => {
         return ( () => {
             clearInterval(intervalId)
         })
-    }, [activityLog])
+    }, [activityLog, chatLog?.messagesArray, messagesArrayLength])
 
     const [isMatch, setIsMatch] = useState(false)
     useEffect(() => {
@@ -107,7 +108,9 @@ const ChatGroup = ({ roomId, active, search }) => {
             }
         }
         checkIsMatch(search)
-    }, [search])
+
+        // eslint-disable-next-line
+    }, [search, dispatch])
    
 
     return (

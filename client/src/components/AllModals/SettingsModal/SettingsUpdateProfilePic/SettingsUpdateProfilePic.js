@@ -3,7 +3,6 @@ import Avatar from '../../../Avatar/Avatar'
 import './SettingsUpdateProfilePic.css';
 import imagesArray from '../../../../imagesArray';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUserProfilePicture } from '../../../../redux/features/users/userSlice';
 import updateProfilePictureAndSyncData from '../../../../functions/users/updateProfilePictureAndSyncData';
 import { toggleShowSettingsModal } from '../../../../redux/features/modals/modalSlice';
 

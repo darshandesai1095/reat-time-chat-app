@@ -21,7 +21,7 @@ const NavBar = () => {
     console.log("userId", userId)
     useEffect(() => {
         dispatch(getNotifications(userId))
-    }, [userId])
+    }, [userId, dispatch])
 
     
     const style = {

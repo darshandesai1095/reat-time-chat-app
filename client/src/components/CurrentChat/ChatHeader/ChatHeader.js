@@ -6,13 +6,13 @@ import { toggleShowChangeGroupIconModal } from '../../../redux/features/modals/m
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 
 
-const ChatHeader = ({}) => {
+const ChatHeader = () => {
 
     const dispatch = useDispatch()
 
     const roomId = useSelector(state => state.rooms.currentActiveRoomId)
     const roomsData = useSelector(state => state.rooms.roomsData)
-    const currentActiveRoomIndex = roomsData?.findIndex(room => room.roomId == roomId)
+    const currentActiveRoomIndex = roomsData?.findIndex(room => room.roomId === roomId)
 
     const numberOfMembers = roomsData ? roomsData[currentActiveRoomIndex]?.roomUsers?.length : null
 
@@ -38,7 +38,7 @@ const ChatHeader = ({}) => {
 
             )
         }
-        if (numberOfMembers == 1) {
+        if (Number(numberOfMembers) === 1) {
             return (
                 <div>
                     <p className='meta-data__members'>

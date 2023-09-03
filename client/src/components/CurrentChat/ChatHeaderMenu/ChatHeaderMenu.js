@@ -6,7 +6,6 @@ import GroupAddRoundedIcon from '@mui/icons-material/GroupAddRounded';
 import GroupRemoveRoundedIcon from '@mui/icons-material/GroupRemoveRounded';
 import DoorFrontRoundedIcon from '@mui/icons-material/DoorFrontRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import ImageIcon from '@mui/icons-material/Image';
 import { useDispatch } from 'react-redux';
 import { toggleShowAddMoreUsersModal, toggleShowDeleteGroupModal, toggleShowLeaveGroupModal, toggleShowRemoveUsersModal, toggleShowUpdateGroupNameModal } from '../../../redux/features/modals/modalSlice';
 

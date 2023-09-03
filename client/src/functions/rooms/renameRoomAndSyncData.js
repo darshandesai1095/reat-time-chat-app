@@ -1,5 +1,4 @@
-import { getUserByMongoDbUserId } from "../../redux/features/users/userSlice";
-import { updateRoomName, getRoomsByMongoDbUserId, setLoading, updateRoomNameReducer } from "../../redux/features/rooms/roomSlice";
+import { updateRoomName, setLoading, updateRoomNameReducer } from "../../redux/features/rooms/roomSlice";
 import { updateRoomNameInChatLogReducer } from "../../redux/features/chatLogs/chatLogSlice";
 
 

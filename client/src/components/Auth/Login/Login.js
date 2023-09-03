@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from '../../../firebase';
 import './Login.css';
@@ -40,8 +40,7 @@ const Login = ({goToRegistrationPage}) => {
             setShowPopup(true)
             sendPasswordResetEmail(auth, email)
             .catch((error) => {
-                const errorCode = error.code
-                const errorMessage = error.message
+                console.log(error)
             }) 
         } else {
             setIsEmailValid(false)
