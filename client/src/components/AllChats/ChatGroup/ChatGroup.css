@@ -9,7 +9,6 @@
     border-radius: 22.5px;
     user-select: none;
     background-color: var(--secondary-color);
-    background-color: var(--red);
     padding: 15px 15px;
     gap: 15px;
     cursor: pointer;
