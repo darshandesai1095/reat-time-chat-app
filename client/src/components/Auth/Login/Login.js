@@ -12,9 +12,9 @@ const Login = ({goToRegistrationPage}) => {
 
     const dispatch = useDispatch()
 
-    const [email, setEmail] = useState("darshan1@gmail.com")
+    const [email, setEmail] = useState("")
     const [isEmailValid, setIsEmailValid] = useState(true)
-    const [password, setPassword] = useState("Password^123")
+    const [password, setPassword] = useState("")
     const [error, setError] = useState(false)
     const [showPopup, setShowPopup] = useState(false)
 
