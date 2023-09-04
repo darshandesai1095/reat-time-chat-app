@@ -25,6 +25,8 @@ export const getChatLogsByRoomsArray = createAsyncThunk(
 export const getChatLogsByFirebaseUserId = createAsyncThunk(
     'chatLogs/getChatLogsByFirebaseUserId',
     async (firebaseUserId, { rejectWithValue }) => {
+        console.log("getting logs...")
+        console.log("URL", `${baseURL}/chatLogs/getChatLogsByFirebaseUserId/${firebaseUserId}`)
         try {
             const response = await axios
                 .get(`${baseURL}/chatLogs/getChatLogsByFirebaseUserId/${firebaseUserId}`)
