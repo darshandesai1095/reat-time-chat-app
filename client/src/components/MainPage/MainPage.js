@@ -94,7 +94,9 @@ const MainPage = () => {
             const activityLog = getLastActiveFromLocalStorage(userId)
             dispatch(syncActivityLogWithLocalStorage(activityLog))
         }
-    }, [userId, dispatch])
+
+        // eslint-disable-next-line
+    }, [userId])
 
 
     return (
