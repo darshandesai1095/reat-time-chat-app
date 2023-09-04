@@ -3,7 +3,8 @@ import axios from 'axios';
 
 
 // const baseURL = 'https://server-boisterous-sunburst-f3d32f.onrender.com/api'
-const baseURL = process.env.PRODUCTION_BASE_URL
+const PRODUCTION_BASE_URL = "https://server-boisterous-sunburst-f3d32f.onrender.com/api"
+const baseURL = PRODUCTION_BASE_URL
 
 export const getRoomsByFirebaseUserId = createAsyncThunk(
     'rooms/getRoomsByFirebaseUserId',
