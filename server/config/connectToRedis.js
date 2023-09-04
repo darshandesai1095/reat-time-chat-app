@@ -1,7 +1,8 @@
 const redis = require("redis")
-const { promisify } = require('util');
+// const { promisify } = require('util');
 
-const redisURL = 'redis://127.0.0.1:6379'
+// const redisURL = 'redis://127.0.0.1:6379' // local env
+const redisURL = 'redis://red-cjqu2c61208c73fcnbd0:6379'
 const client = redis.createClient(redisURL)
 
 client.on('error', err => console.log('Redis Client Error', err))
@@ -16,7 +17,7 @@ const connectToRedis = async () => {
     }
 }
 
-const hgetAsync = promisify(client.hGet).bind(client)
-const hsetAsync = promisify(client.hSet).bind(client)
+// const hgetAsync = promisify(client.hGet).bind(client)
+// const hsetAsync = promisify(client.hSet).bind(client)
 
-module.exports = { client, connectToRedis, hgetAsync, hsetAsync }
+module.exports = { client, connectToRedis }
