@@ -7,7 +7,7 @@ const testController = {
     },
 
     healthChech: async (req, res) => {
-        res.status(200)
+        res.sendStatus(200)
     }
 
 }
