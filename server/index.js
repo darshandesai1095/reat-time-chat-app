@@ -24,14 +24,15 @@ connectToDatabase().then(async () => syncCache())
 //     },
 // }))
 
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 8080 // https://boisterous-sunburst-f3d32f.netlify.app/
 const server = app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`)
 })
 
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000",
+        // origin: "http://localhost:3000",
+        origin: "https://boisterous-sunburst-f3d32f.netlify.app/",
         methods: ["GET", "POST", "PUT", "DELETE"]
     }
 })
@@ -47,6 +48,7 @@ app.use((req, res, next) => {
 
 // Include the users, rooms routes
 
+
 const usersRoute = require('./routes/usersRoute')
 app.use('/api/users', usersRoute)
 
@@ -58,5 +60,8 @@ app.use('/api/chatLogs', chatLogsRoute)
 
 const notificationsRoute = require('./routes/notificationsRoute')
 app.use('/api/notifications', notificationsRoute)
+
+const testRoute = require('./routes/testRoute')
+app.use('/api/tests', testRoute)
 
 module.exports = { app, server }

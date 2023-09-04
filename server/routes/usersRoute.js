@@ -24,8 +24,9 @@ router.patch('/updateUsername/:userId', userController.updateUsername)
 // // Route for updating user details; pic
 router.patch('/updateUserProfilePicture/:userId', userController.updateUserProfilePicture)
 
-
 // Route for deleting a user
 router.delete('/delete/:userId', userController.deleteUser)
+
+router.get('/test/124', userController.test)
 
 module.exports = router

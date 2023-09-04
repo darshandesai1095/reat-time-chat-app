@@ -15,6 +15,12 @@ admin.initializeApp({
 })
 
 const userController = {
+
+    test: async (req,res) => {
+        console.log("running test func...")
+        res.status(400).send("it works")
+    },
+
     // Controller for creating a new user
     createNewUser: async (req, res) => {
         try {
