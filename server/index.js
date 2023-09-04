@@ -24,7 +24,7 @@ connectToDatabase().then(async () => syncCache())
 //     },
 // }))
 
-const PORT = process.env.PORT || 10000// https://boisterous-sunburst-f3d32f.netlify.app/
+const PORT = process.env.PORT || 10000 // https://boisterous-sunburst-f3d32f.netlify.app/
 const server = app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`)
 })
@@ -38,6 +38,14 @@ const io = new Server(server, {
 })
 
 connectToRedis().then(() => { socket(io) }) 
+
+// Enable CORS for all routes (you can also configure it for specific routes)
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://boisterous-sunburst-f3d32f.netlify.app')
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+    next()
+})
 
 // Pass 'io' object to the relevant parts of application
 app.use((req, res, next) => {
