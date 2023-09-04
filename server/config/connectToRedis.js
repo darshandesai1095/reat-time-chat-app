@@ -3,7 +3,7 @@ const redis = require("redis")
 
 // const redisURL = 'redis://127.0.0.1:6379' // local env
 const redisURL = 'redis://red-cjqu2c61208c73fcnbd0:6379'
-const hostname = 'red-cjqu2c61208c73fcnbd0'
+const hostname = 'redis://red-cjqu2c61208c73fcnbd0'
 const client = redis.createClient({
   socket: {
       host: hostname,
