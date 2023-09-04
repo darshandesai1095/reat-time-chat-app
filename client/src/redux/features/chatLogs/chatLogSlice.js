@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { socket } from '../../socket/socketIO'
 
-const baseURL = 'http://localhost:8080/api'
+// const baseURL = 'https://server-boisterous-sunburst-f3d32f.onrender.com/api'
+const baseURL = process.env.PRODUCTION_BASE_URL
 
 
 export const getChatLogsByRoomsArray = createAsyncThunk(
