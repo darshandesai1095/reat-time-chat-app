@@ -39,7 +39,7 @@ const io = new Server(server, {
 
 connectToRedis().then(() => { socket(io) }) 
 
-// Enable CORS for all routes (you can also configure it for specific routes)
+// Enable CORS for specific routes
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'https://boisterous-sunburst-f3d32f.netlify.app')
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
