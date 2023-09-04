@@ -1,7 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// const baseURL = 'https://server-boisterous-sunburst-f3d32f.onrender.com/api'
+const baseURL = process.env.PRODUCTION_BASE_URL
+
 export const roomApi = createApi({
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/rooms' }),
+    baseQuery: fetchBaseQuery({ baseUrl: `${baseURL}/rooms` }),
     endpoints: (build) => ({
 
         createNewRoom: build.mutation({

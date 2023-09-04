@@ -1,7 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+// const baseURL = 'https://server-boisterous-sunburst-f3d32f.onrender.com/api'
+const baseURL = process.env.PRODUCTION_BASE_URL
+
 export const userApi = createApi({
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/users' }),
+    baseQuery: fetchBaseQuery({ baseUrl: `${baseURL}/users` }),
     tagTypes: ['User'],
     endpoints: (build) => ({
 
