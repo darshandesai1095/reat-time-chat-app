@@ -64,7 +64,7 @@ const MainPage = () => {
     useEffect(() => {
         loadChats()
         // eslint-disable-next-line
-    }, [])
+    }, [userId])
 
 
     const joinRoomsSocketIo = async () => {
