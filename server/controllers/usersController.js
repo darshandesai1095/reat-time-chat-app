@@ -87,7 +87,7 @@ const userController = {
             res.status(200).json(user)
         } catch (error) {
             // If there is an error, return a 500 status with a generic error message
-            res.status(500).json({ error: 'Error fetching user details (◎ ◎)ゞ' })
+            res.status(500).json({ error: 'Error fetching user details (◎ ◎)ゞ', message: error.message })
         }
     },
 
