@@ -59,12 +59,14 @@ const MainPage = () => {
 
     // load all chats into redux store
     const loadChats = async () => {
+        console.log("loading chats...")
         await Promise.resolve(dispatch(getChatLogsByFirebaseUserId(firebaseUserId)))
     }
     useEffect(() => {
+        if (!firebaseUserId) {return}
         loadChats()
         // eslint-disable-next-line
-    }, [userId])
+    }, [firebaseUserId])
 
 
     const joinRoomsSocketIo = async () => {
