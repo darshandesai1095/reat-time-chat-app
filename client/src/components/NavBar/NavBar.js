@@ -16,9 +16,7 @@ import { getNotifications } from '../../redux/features/globalAlerts/globalAlertS
 const NavBar = () => {
 
     const dispatch = useDispatch()
-    const globalAlertsCount = useSelector(state => state.globalAlerts.totalAlerts)
     const userId = useSelector(state => state.user.mongoDbUserId)
-    console.log("userId", userId)
     useEffect(() => {
         dispatch(getNotifications(userId))
     }, [userId, dispatch])
@@ -36,7 +34,6 @@ const NavBar = () => {
 
     const alertLog = useSelector(state => state.globalAlerts.alertLog)
     const userErrorLog = useSelector(state => state.user.userErrorLog)
-    console.log("alertLog", alertLog, globalAlertsCount)
     const totalNotifications = alertLog?.length + userErrorLog?.length
 
     return (

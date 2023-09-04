@@ -7,7 +7,6 @@ const baseURL = 'http://localhost:8080/api'
 export const getNotifications = createAsyncThunk(
     'globalAlerts/getNotifications',
     async (userId, { rejectWithValue }) => {
-        console.log("userId", userId)
         if (!userId) return
         try {
             const response = await axios.get(`${baseURL}/notifications/getNotifications/${userId}`)
@@ -61,13 +60,11 @@ export const globalAlertSlice = createSlice({
                 alertInfo: action.payload.alertInfo
             }
             state.alertLog = [ ...state.alertLog, newAlert ]
-            console.log("alert log updated", newAlert )
         }
     },
 
     extraReducers: (builder) => {
         builder.addCase(getNotifications.pending, (state, action) => {
-            console.log("pending", action.payload)
         })
         builder.addCase(getNotifications.fulfilled, (state, action) => {
             try{
@@ -77,7 +74,6 @@ export const globalAlertSlice = createSlice({
             } catch (error) {
                 console.log("getNotifications error", error)
             }
-            console.log("fulfilled", action.payload)
         })
         builder.addCase(getNotifications.rejected, (state, action) => {
             console.log("error getting alertLog data", action.payload)
@@ -91,11 +87,9 @@ export const globalAlertSlice = createSlice({
             state.alertLog = []
             state.totalAlerts = 0
             state.status = null
-            console.log("clearNotifications done")
         })
         builder.addCase(clearNotifications.rejected, (state, action) => {
             state.status = null
-            console.log("clearNotifications error:", action.payload)
             state.alertLog = action.payload.alertLog
             state.totalAlerts = action.payload.alertLog.length
         })

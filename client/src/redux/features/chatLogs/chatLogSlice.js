@@ -128,7 +128,6 @@ export const chatLogSlice = createSlice({
             // get current room id from action.payload
             // use room id to find room index in chatLogData
             // state.chatLogData[index].messagesArray.push({})
-            console.log("---setting message...")
             const roomId = action.payload.roomId
             const index = state.chatLogData?.findIndex(rooms => rooms.roomId === roomId)
             const roomMessagesArray = [...state.chatLogData[index]?.messagesArray, action.payload.message]
@@ -155,7 +154,6 @@ export const chatLogSlice = createSlice({
             if (transmissionIDs.includes(transmissionID)) {return}
             // find room by id -> update name
             const activeRoomIdx = state.chatLogData.findIndex(room => room.roomId === roomId)
-            console.log("activeRoomIdx", activeRoomIdx, roomName)
             state.chatLogData[activeRoomIdx].roomName = roomName
         }
     },
