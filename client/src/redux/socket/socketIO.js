@@ -11,7 +11,8 @@ import { updateOnlineUsersList } from "../features/users/onlineUsersSlice";
 
 // connect to socket.io
 // const URL = "http://localhost:8080"
-const URL = "https://server-boisterous-sunburst-f3d32f.onrender.com"
+const URL = "https://server-boisterous-sunburst-f3d32f.onrender.com/"
+
 
 export const socket = io(URL, {
         reconnection: true,       
