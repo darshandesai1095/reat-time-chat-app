@@ -24,7 +24,7 @@ connectToDatabase().then(async () => syncCache())
 //     },
 // }))
 
-const PORT = process.env.PORT || 8080 // https://boisterous-sunburst-f3d32f.netlify.app/
+const PORT = process.env.PORT || 10000// https://boisterous-sunburst-f3d32f.netlify.app/
 const server = app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`)
 })
