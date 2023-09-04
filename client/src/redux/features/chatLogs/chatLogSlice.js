@@ -194,7 +194,7 @@ export const chatLogSlice = createSlice({
             state.loading = false
             state.chatLogData = null
             state.error = action.payload // The error message from rejectWithValue is set in the state
-            console.log("rejected", action.payload)
+            console.log("rejected - CHAT LOGS", action.payload)
         })
 
 
