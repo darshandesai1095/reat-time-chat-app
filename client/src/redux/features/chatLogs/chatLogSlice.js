@@ -179,16 +179,19 @@ export const chatLogSlice = createSlice({
         builder.addCase(getChatLogsByFirebaseUserId.pending, (state) => {
             state.loading = true
             state.error = false
+            console.log("pending...")
         })
         builder.addCase(getChatLogsByFirebaseUserId.fulfilled, (state, action) => {
             state.loading = false
             state.chatLogData = action.payload
             state.error = null
+            console.log("fulfilled", action.payload)
         })
         builder.addCase(getChatLogsByFirebaseUserId.rejected, (state, action) => {
             state.loading = false
             state.chatLogData = null
             state.error = action.payload // The error message from rejectWithValue is set in the state
+            console.log("rejected", action.payload)
         })
 
 
