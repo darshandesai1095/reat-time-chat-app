@@ -5,11 +5,7 @@ const redis = require("redis")
 const redisURL = 'redis://red-cjqu2c61208c73fcnbd0:6379'
 const hostname = 'redis://red-cjqu2c61208c73fcnbd0'
 const client = redis.createClient({
-  socket: {
-      host: hostname,
-      port: 6379,
-      tls: true,
-  }
+      url: redisURL
 })
 
 client.on('error', err => console.log('Redis Client Error', err))
