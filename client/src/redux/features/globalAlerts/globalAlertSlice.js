@@ -64,10 +64,10 @@ export const globalAlertSlice = createSlice({
     },
 
     extraReducers: (builder) => {
-        builder.addCase(getNotifications.pending, (state, action) => {
-        })
+        // builder.addCase(getNotifications.pending, (state, action) => {
+        // })
         builder.addCase(getNotifications.fulfilled, (state, action) => {
-            try{
+            try {
                 state.alertLog = [...state.alertLog, ...action?.payload]
                 state.totalAlerts = state.alertLog.length
                 // function to prevent duplicate alert ids
