@@ -2,6 +2,7 @@
 
 ### Project Description
 The Real-time Chat Application - a modern web-based communication platform that allows users to engage in real-time conversations with each other
+---
 
 ### Features
 ##### Main
@@ -9,8 +10,7 @@ Include the ability to create multiple groups, add users to groups, remove users
 
 ##### Additional
 Notifications menu, search bar (to search for recent chats), message status (sent, unsent, and sending error), personalization (e.g. set user icon), online user count (to see how many and which group members are online at any given time - updates in real time), authentication, password reset
-
-
+---
 
 ### Demo
 ---
@@ -22,6 +22,7 @@ Notifications menu, search bar (to search for recent chats), message status (sen
 Front-End: React JS, Redux-Toolkit (rtk query, redux-thunk), Firebase (authentication)
 
 Back-End: Node JS, Express JS, Mongo DB, Socket.IO, Redis
+---
 
 ### Screenshots
 
