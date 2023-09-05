@@ -41,7 +41,7 @@ connectToRedis().then(() => { socket(io) })
 
 // Enable CORS for specific routes
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'https://boisterous-sunburst-f3d32f.netlify.app')
+    res.header('Access-Control-Allow-Origin', '*')
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
     next()
