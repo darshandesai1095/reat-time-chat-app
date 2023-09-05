@@ -1,4 +1,4 @@
-## Project Title: Real-Time Chat App
+## Project Title: Realtime Chat App
 
 ### Project Description
 The Real-time Chat Application - a modern web-based communication platform that allows users to engage in real-time conversations with each other. 
