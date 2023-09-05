@@ -25,7 +25,7 @@ Back-End: Node JS, Express JS, Mongo DB, Socket.IO, Redis
 
 ### Screenshots
 
-<img width="900" alt="main" src="https://github.com/darshandesai1095/chat-app/assets/43254178/f50bcf3a-4d56-4294-b248-dde062a3b776">
+<img width="900" alt="main" src="https://github.com/darshandesai1095/chat-app/assets/43254178/3faae3cc-f4d6-458f-a9b0-e115e8f6069d">
 
 <img width="900" alt="search" src="https://github.com/darshandesai1095/chat-app/assets/43254178/cdf04279-b98f-430a-9cc9-5fa4eef7953e">
 
