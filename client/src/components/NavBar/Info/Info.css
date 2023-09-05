@@ -1,0 +1,42 @@
+.menu__info {
+    width: 180px;
+    border-radius: 15px;
+    border: 2px solid var(--secondary-color-light);
+    background-color: var(--secondary-color-dark);
+}
+
+.info__body {
+    padding: 15px 20px;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s;
+    user-select: none;
+    display: flex;
+    flex-direction: row;
+    font-size: 0.75rem;
+    line-height: 1.2rem;
+}
+
+.info__body > svg {
+    transform: scale(0.7);
+    color: var(--tertiary-color-dark);
+    transition: 0.3s;
+}
+
+.info__body > svg:hover {
+    color: var(--tertiary-color-light);
+    cursor: pointer;
+}
+
+
+.info__body span {
+    font-weight: 800;
+    transition: 0.3s;
+}
+
+.info__body span:hover {
+    cursor: pointer;
+    font-weight: 800;
+    color: var(--primary-color);
+}
+

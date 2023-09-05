@@ -21,14 +21,15 @@
 }
 
 .icons {
-    cursor: pointer;
     color: var(--tertiary-color-dark);
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: 0.3s;
 }
 
 .icons:hover {
+    cursor: pointer;
     color: var(--tertiary-color);
 }
 
@@ -62,8 +63,16 @@
     display: none;
 }
 
-.nav-bar__notifications-menu {
+.nav-bar__notifications-menu,
+.nav-bar__info {
     position: absolute;
     z-index: 999;
     left: 80px;
+}
+
+.nav-bar__info {
+    position: absolute;
+    z-index: 998;
+    left: 80px;
+    top: 110px;
 }
