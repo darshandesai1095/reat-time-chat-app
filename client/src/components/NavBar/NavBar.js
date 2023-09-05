@@ -11,6 +11,8 @@ import UnreadMessageCount from '../AllChats/UnreadMessageCount/UnreadMessageCoun
 import NotificationsMenu from './NotificationsMenu/NotificationsMenu';
 import { useEffect, useState } from 'react';
 import { getNotifications } from '../../redux/features/globalAlerts/globalAlertSlice';
+import Info from './Info/Info';
+
 
 
 const NavBar = () => {
@@ -31,6 +33,7 @@ const NavBar = () => {
     }
 
     const [notificationsMenuVisible, setNotificationsMenuVisible] = useState(false)
+    const [infoVisible, setInfoVisible] = useState(false)
 
     const alertLog = useSelector(state => state.globalAlerts.alertLog)
     const userErrorLog = useSelector(state => state.user.userErrorLog)
@@ -42,7 +45,6 @@ const NavBar = () => {
 
                 <div className='icons' onClick={() => dispatch(toggleCreateNewGroupModal())}>
                     <AddBoxRoundedIcon style={style}/>
-                    {/* <p>New Group</p> */}
                 </div>
 
                 <div className='icons global-alerts'>
@@ -56,8 +58,10 @@ const NavBar = () => {
                 </div>
                 
                 <div className='icons'>
-                    <InfoRoundedIcon style={style}/>
-                    {/* <p>About</p> */}
+                    <InfoRoundedIcon 
+                        style={style}
+                        onClick={() => {setInfoVisible(prev => !prev)}}
+                    />
                 </div>
 
             </div>
@@ -66,7 +70,6 @@ const NavBar = () => {
 
                 <div className='icons' onClick={() => dispatch(toggleShowSettingsModal())}>
                     <SettingsRoundedIcon style={style}/>
-                    {/* <p>Settings</p> */}
                 </div>
 
                 <div className='icons'
@@ -79,14 +82,24 @@ const NavBar = () => {
 
             {
                 notificationsMenuVisible ?
-                <div className='nav-bar__notifications-menu'>
-                    <NotificationsMenu
-                        setNotificationsMenuVisible={setNotificationsMenuVisible}
-                    />
-                </div>
-                :
-                null
-          
+                    <div className='nav-bar__notifications-menu'>
+                        <NotificationsMenu
+                            setNotificationsMenuVisible={setNotificationsMenuVisible}
+                        />
+                    </div>
+                    :
+                    null
+            }
+
+{
+                infoVisible ?
+                    <div className='nav-bar__info'>
+                        <Info
+                            setInfoVisible={setInfoVisible}
+                        />
+                    </div>
+                    :
+                    null
             }
     
 
