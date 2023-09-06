@@ -14,9 +14,6 @@ Notifications menu, search bar (to search for recent chats), message status (sen
 ### Demo
 https://boisterous-sunburst-f3d32f.netlify.app/
 
-### CodeSandbox
----
-
 ### Technologies Used
 Front-End: React JS, Redux-Toolkit (rtk query, redux-thunk), Firebase (authentication)
 
