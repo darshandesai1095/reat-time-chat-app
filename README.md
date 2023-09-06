@@ -8,7 +8,7 @@ The Real-time Chat Application - a modern web-based communication platform that 
 Create multiple groups, add users to groups, remove users from groups, save chats to persistant storage, view user status (online/offline) 
 
 ##### Additional
-Notifications menu, search bar (to search for recent chats), message status (sent, unsent, and sending error), personalization (e.g. set user icon), online user count (to see how many and which group members are online at any given time - updates in real time), authentication, password reset
+Notifications menu, search bar (to search for recent chats), message status (sent, unsent, and sending error), personalization (e.g. set user icon), online user count (to see how many and which group members are online at any given time - updates in real time), authentication, password reset, optimistic updates (e.g. for message sending and updating group names)
 
 
 ### Demo
